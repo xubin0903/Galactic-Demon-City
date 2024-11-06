@@ -25,46 +25,45 @@ public class Player : MonoBehaviour
     private void Update()
     {
 
-        //移动
-        isMove = Input.GetButtonDown("Horizontal")||Input.GetButton("Horizontal");
+        //检测输入
+        CheckInput();
+        //速度限制
+        isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
         if (isMove == true)
         {
             Move();
-            //移动动画
-            if (xInput < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1);//反转
-            }
-            else
-            {
-                transform.localScale = new Vector3(1, 1, 1);
-            }
-            animator.SetBool("isMove", true);
         }
-        if(isMove == true&&currentspeed<maxspeed)
+        if (isMove == true && currentspeed < maxspeed)
         {
-            currentspeed += Time.deltaTime*acceleration;
-            acceleration += Time.deltaTime*1.5f;
-            
+            currentspeed += Time.deltaTime * acceleration;
+            acceleration += Time.deltaTime * 1.5f;
+
 
         }
-        if (isMove==false)
+        if (isMove == false)
         {
             currentspeed = beginspeed;
             rb.velocity = new Vector2(0, rb.velocity.y);
             acceleration = 1;
             animator.SetBool("isMove", false);
         }
-        //跳跃
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
+
+
     }
     private void Move()
     {
         xInput = Input.GetAxis("Horizontal");
         rb.velocity = new Vector2(xInput * currentspeed, rb.velocity.y);
+        //移动动画
+        if (xInput < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);//反转
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+        animator.SetBool("isMove", true);
     }
     private void Jump()
     {
@@ -72,5 +71,18 @@ public class Player : MonoBehaviour
         isJump = true;
         animator.SetBool("isJump", true);
     }
-    
+    private void CheckInput()
+    {   
+        //移动
+        isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
+        if (isMove == true)
+        {
+            Move();
+        }
+        //跳跃
+        if (Input.GetButtonDown("Jump"))
+        {
+            Jump();
+        }
+    }
 }
