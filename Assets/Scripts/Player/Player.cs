@@ -4,17 +4,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player :PublicCharacter
 {
     [Header("»ù±¾ÊôÐÔ")]
     [SerializeField] private float beginspeed;
     [SerializeField] private float maxspeed;
     [SerializeField] private float acceleration = 1;
-    [SerializeField] private float currentspeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float xInput;
-    [SerializeField] private bool isMove;
-    [SerializeField] private int faceDir;
+    
     
     [Header("³å´Ì")]
     [SerializeField] private float dashSpeed;
@@ -27,34 +25,32 @@ public class Player : MonoBehaviour
     [Header("¹¥»÷")]
     [SerializeField] private float attackTimer;
     [SerializeField] private float attackDuration;
-    private bool isAttack;
+    [SerializeField] private bool isAttack;
     [SerializeField] private int comobatCount;
+    [Header("»¬²ù")]
+    [SerializeField] private float slidingSpeed;
+    [SerializeField] private float slideDuration;
+    [SerializeField] private bool isSlide;
+    [SerializeField] private float slidingCooldown;
+    [SerializeField] private float slidingCooldownTimer;
     
-    [Header("×é¼þ")]
-    [SerializeField] private Animator animator;
-    private Rigidbody2D rb;
-    [Header("Åö×²¼ì²â")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private float groundCheckRadius;
-    [SerializeField] private bool isGrounded;
+    
+   
+   
 
-    private void Awake()
+    protected override void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
-    private void Update()
+    protected override void Update()
     {
 
         //¼ì²âÊäÈë
         CheckInput();
         //ËÙ¶ÈÏÞÖÆ
         isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
-        if (isMove == true&&!isDash)
-        {
-            Move();
-        }
+        
         if (isMove == true && currentspeed < maxspeed)
         {
             currentspeed += Time.deltaTime * acceleration;
@@ -69,7 +65,7 @@ public class Player : MonoBehaviour
             acceleration = 1;
             animator.SetBool("isMove", false);
         }
-        CheckGrounded();
+        CollisionCheck();
         AnimationControl();
         //³å´Ì
         if (dashTime>0)
@@ -106,9 +102,67 @@ public class Player : MonoBehaviour
         {
             DashMent();
         }
-
+        //»¬²ùÀäÈ´
+        if (slidingCooldownTimer > 0)
+        {
+            slidingCooldownTimer -= Time.deltaTime;
+               
+        }
 
     }
+    private void CheckInput()
+    {
+        //ÒÆ¶¯
+        isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
+        if (isMove == true && !isDash && !isAttack)
+        {
+            Move();
+        }
+        //ÌøÔ¾
+        if (Input.GetButtonDown("Jump")&&isGrounded)
+        {
+            Jump();
+
+        }
+        //³å´Ì
+        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable)
+        {
+            Dash();
+        }
+        //¹¥»÷
+        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded)
+        {
+            Attack();
+        }
+        //»¬²ù
+        if (Input.GetKeyDown(KeyCode.C)&&isGrounded)
+        {
+            Slide();
+        }
+    }
+
+    private void Slide()
+    {
+        if (isSlide)
+        {
+            return;
+        }
+        if (slidingCooldownTimer > 0)
+        {
+            return;
+        }
+        isSlide = true;
+        currentspeed=slidingSpeed;
+        //Æô¶¯Ð­³Ì
+        StartCoroutine(SlideStart(slideDuration));
+    }
+
+    private IEnumerator SlideStart(float slideDuration)
+    {
+        yield return new WaitForSeconds(slideDuration);
+        SlideOver();
+    }
+
     private void Move()
     {
         
@@ -141,42 +195,13 @@ public class Player : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         AttackOver();
-       
-        
     }
-    private void CheckInput()
-    {
-        //ÒÆ¶¯
-        isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
-        if (isMove == true)
-        {
-            Move();
-        }
-        //ÌøÔ¾
-        if (Input.GetButtonDown("Jump")&&isGrounded)
-        {
-            Jump();
-
-        }
-        //³å´Ì
-        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable)
-        {
-            Dash();
-        }
-        //¹¥»÷
-        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded)
-        {
-            Attack();
-        }
-    }
-
-
-    private void OnDrawGizmos()
+    protected override void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(transform.position.x+groundCheckRadius,transform.position.y,transform.position.z), transform.position + Vector3.down * groundCheckDistance+Vector3.right*groundCheckRadius);
     }
-    private void CheckGrounded()
+    protected override void CollisionCheck()
     {
       isGrounded = Physics2D.Raycast(new Vector2(transform.position.x+groundCheckRadius,transform.position.y), Vector2.down, groundCheckDistance, groundLayer);
       
@@ -189,6 +214,7 @@ public class Player : MonoBehaviour
         animator.SetBool("isDash", isDash);
         animator.SetBool("isAttack", isAttack);
         animator.SetInteger("comobatCount", comobatCount);
+        animator.SetBool("isSlide", isSlide);
     }   
     private void Dash()
     {
@@ -206,9 +232,22 @@ public class Player : MonoBehaviour
         isAttack = true;
         attackTimer = attackDuration;
         rb.velocity = new Vector2(0, rb.velocity.y);
+       
         
 
     }
+    private void DashMent()
+    {
+        rb.velocity = new Vector2(faceDir * currentspeed, rb.velocity.y);
+    }
+    public void SlideOver()
+    {
+        isSlide = false;
+        currentspeed = beginspeed;
+        //½øÐÐ»¬²ùÀäÈ´
+        slidingCooldownTimer = slidingCooldown; 
+    }
+
     public void AttackOver()
     {
         isAttack = false;
@@ -219,9 +258,4 @@ public class Player : MonoBehaviour
         }
         
     }
-    private void DashMent()
-    {
-        rb.velocity = new Vector2(faceDir * currentspeed, rb.velocity.y);
-    }
-
 }
