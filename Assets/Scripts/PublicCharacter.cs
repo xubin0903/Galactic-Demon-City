@@ -9,7 +9,7 @@ public class PublicCharacter : MonoBehaviour
    [SerializeField] protected bool isMove;
    [SerializeField] protected int faceDir;
    [SerializeField] protected float currentspeed;
-    protected Animator animator;
+   protected Animator animator;
    protected Rigidbody2D rb;
    protected Collider2D coll;
    [Header("Åö×²¼ì²â")]

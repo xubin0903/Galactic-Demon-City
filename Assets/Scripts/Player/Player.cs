@@ -7,10 +7,12 @@ using UnityEngine;
 public class Player :PublicCharacter
 {
     [Header("ª˘±æ Ù–‘")]
+    [SerializeField] private float offsety;
     [SerializeField] private float beginspeed;
     [SerializeField] private float maxspeed;
     [SerializeField] private float acceleration = 1;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
     
     
@@ -22,6 +24,7 @@ public class Player :PublicCharacter
     [SerializeField] private bool isDashable;
     [SerializeField] private float dashCooldown;
     [SerializeField] private float dashCooldownTimer;
+    [SerializeField] private float wallDashFairDir;
     [Header("π•ª˜")]
     [SerializeField] private float attackTimer;
     [SerializeField] private float attackDuration;
@@ -33,19 +36,41 @@ public class Player :PublicCharacter
     [SerializeField] private bool isSlide;
     [SerializeField] private float slidingCooldown;
     [SerializeField] private float slidingCooldownTimer;
-    
+    [Header("ª¨«Ω")]
+    [SerializeField] private bool isSlideWall;
+    [SerializeField] private bool isWall;
+    [SerializeField] private float wallCheckDistance;
     
    
-   
+
+    //public PlayerStateMachine stateMachine { get; private set; }
+    //public PlayerIdleState idleState{ get; private set;}
+    //public PlayerMoveState moveState { get; private set; }
+    //public PlayerState currentPlayerState;
+
+
 
     protected override void Awake()
     {
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        //stateMachine = new PlayerStateMachine();
+        //idleState = new PlayerIdleState(this,stateMachine,"Idle");
+        //moveState = new PlayerMoveState(this,stateMachine,"Move");
+        
+    }
+    protected override void Start()
+    {
+       //stateMachine.Initialize(idleState);
     }
     protected override void Update()
     {
+        //stateMachine.currentState.Update();
+        
+         faceDir=transform.localScale.x>0?1:-1;
 
+        
         //ºÏ≤‚ ‰»Î
         CheckInput();
         //ÀŸ∂»œﬁ÷∆
@@ -108,6 +133,33 @@ public class Player :PublicCharacter
             slidingCooldownTimer -= Time.deltaTime;
                
         }
+        //ª¨«Ω
+        if (!isGrounded && isWall)
+        {
+            isSlideWall = true;
+            //ΩµµÕµÙ¬‰ÀŸ∂»
+            if (rb.velocity.y < 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                if (Input.GetKey(KeyCode.S))
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 2);
+                }
+            //µ≈«ΩÃ¯
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    currentJumpForce = jumpForce*1.2f ;
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    Jump();
+                }
+               
+            }
+
+        }
+        else
+        {
+            isSlideWall = false;
+        }
 
     }
     private void CheckInput()
@@ -121,11 +173,12 @@ public class Player :PublicCharacter
         //Ã¯‘æ
         if (Input.GetButtonDown("Jump")&&isGrounded)
         {
+            currentJumpForce = jumpForce;
             Jump();
 
         }
         //≥Â¥Ã
-        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable)
+        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable&&!isSlideWall)
         {
             Dash();
         }
@@ -135,9 +188,11 @@ public class Player :PublicCharacter
             Attack();
         }
         //ª¨≤˘
-        if (Input.GetKeyDown(KeyCode.C)&&isGrounded)
+        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove)
         {
             Slide();
+            
+
         }
     }
 
@@ -167,15 +222,6 @@ public class Player :PublicCharacter
     {
         
         xInput = Input.GetAxis("Horizontal");
-        if (xInput > 0)
-        {
-            faceDir = 1;
-
-        }
-        else if (xInput < 0)
-        {
-            faceDir = -1;
-        }
         
         rb.velocity = new Vector2( xInput * currentspeed, rb.velocity.y);
         
@@ -193,18 +239,19 @@ public class Player :PublicCharacter
     }
     private void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        AttackOver();
+        rb.velocity = new Vector2(rb.velocity.x, currentJumpForce);
+        isAttack = false;
     }
     protected override void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(transform.position.x+groundCheckRadius,transform.position.y,transform.position.z), transform.position + Vector3.down * groundCheckDistance+Vector3.right*groundCheckRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(faceDir * wallCheckDistance, 0, 0)); // ª≠≥ˆ…‰œﬂ
+        Gizmos.DrawLine(new Vector3(transform.position.x+groundCheckRadius*faceDir,transform.position.y-offsety,transform.position.z), transform.position + Vector3.down * groundCheckDistance+Vector3.right*groundCheckRadius*faceDir);
     }
     protected override void CollisionCheck()
     {
-      isGrounded = Physics2D.Raycast(new Vector2(transform.position.x+groundCheckRadius,transform.position.y), Vector2.down, groundCheckDistance, groundLayer);
-      
+      isGrounded = Physics2D.Raycast(new Vector2(transform.position.x+groundCheckRadius*faceDir,transform.position.y), Vector2.down, groundCheckDistance, groundLayer);
+      isWall = Physics2D.Raycast(transform.position, Vector2.right * faceDir, wallCheckDistance, groundLayer);
     }
    private void AnimationControl()
     {
@@ -215,6 +262,7 @@ public class Player :PublicCharacter
         animator.SetBool("isAttack", isAttack);
         animator.SetInteger("comobatCount", comobatCount);
         animator.SetBool("isSlide", isSlide);
+        animator.SetBool("isSlideWall", isSlideWall);
     }   
     private void Dash()
     {
@@ -222,10 +270,12 @@ public class Player :PublicCharacter
         isDash = true;
         isDashable = false;
         dashCooldownTimer = dashCooldown;
-        if (!isMove)
+        if (isSlideWall)
         {
-            rb.velocity = new Vector2(faceDir * currentspeed, rb.velocity.y);
+            wallDashFairDir = faceDir*-1;
         }
+        
+        
     }
     private void Attack()
     {
@@ -238,7 +288,10 @@ public class Player :PublicCharacter
     }
     private void DashMent()
     {
-        rb.velocity = new Vector2(faceDir * currentspeed, rb.velocity.y);
+        
+        rb.velocity = new Vector2(faceDir * currentspeed, 0);
+        
+
     }
     public void SlideOver()
     {
