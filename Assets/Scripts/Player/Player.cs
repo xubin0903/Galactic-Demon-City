@@ -30,6 +30,12 @@ public class Player :PublicCharacter
     [SerializeField] private float attackDuration;
     [SerializeField] private bool isAttack;
     [SerializeField] private int comobatCount;
+    [Header("¹¥»÷Ï¸½Ú")]
+    [SerializeField] private float[] attackMovex;
+    [SerializeField] private float[] attackMovey;
+    [SerializeField] private float attackTime;
+    [SerializeField] private float attackDir;
+
     [Header("»¬²ù")]
     [SerializeField] private float slidingSpeed;
     [SerializeField] private float slideDuration;
@@ -160,6 +166,16 @@ public class Player :PublicCharacter
         {
             isSlideWall = false;
         }
+        //¹¥»÷ÒÆ¶¯
+        if (isAttack)
+        {
+            if (attackTime > 0)
+            {
+                attackTime -= Time.deltaTime;
+                AttackMove();
+            }
+
+        }
 
     }
     private void CheckInput()
@@ -282,9 +298,17 @@ public class Player :PublicCharacter
         isAttack = true;
         attackTimer = attackDuration;
         rb.velocity = new Vector2(0, rb.velocity.y);
-       
-        
-
+        attackTime = 0.1f;
+    }
+    private void AttackMove()
+    {
+        //¹¥»÷ÒÆ¶¯
+        attackDir = faceDir;
+        if (xInput != 0)
+        {
+            attackDir = xInput;
+        }
+        rb.velocity = new Vector2(attackMovex[comobatCount]*attackDir, attackMovey[comobatCount]*0.8f);
     }
     private void DashMent()
     {
@@ -311,4 +335,5 @@ public class Player :PublicCharacter
         }
         
     }
+
 }
