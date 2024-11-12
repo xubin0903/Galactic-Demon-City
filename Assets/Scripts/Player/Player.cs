@@ -180,7 +180,9 @@ public class Player :PublicCharacter
         {
             if (rb.velocity.y == 0)
             {
-                isMove = false;//强制修复跳下来遇到边缘卡成下落动画
+                isGrounded = true;
+                animator.SetBool("isGrounded", true);
+                
             }
         }
 
