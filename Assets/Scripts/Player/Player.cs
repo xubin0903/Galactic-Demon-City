@@ -14,6 +14,7 @@ public class Player :PublicCharacter
     [SerializeField] private float jumpForce;
     [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
+    public Animator animator { get; private set; }
     
     
     [Header("³å´Ì")]
@@ -60,7 +61,7 @@ public class Player :PublicCharacter
     {
 
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         //stateMachine = new PlayerStateMachine();
         //idleState = new PlayerIdleState(this,stateMachine,"Idle");
         //moveState = new PlayerMoveState(this,stateMachine,"Move");
@@ -176,15 +177,15 @@ public class Player :PublicCharacter
             }
 
         }
-        if (!isAttack && !isDash && !isSlideWall && !isSlide&&!isMove)
-        {
-            if (rb.velocity.y == 0)
-            {
-                isGrounded = true;
-                animator.SetBool("isGrounded", true);
+        //if (!isAttack && !isDash && !isSlideWall && !isSlide&&!isMove)
+        //{
+        //    if (rb.velocity.y == 0)
+        //    {
+        //        isGrounded = true;
+        //        animator.SetBool("isGrounded", true);
                 
-            }
-        }
+        //    }
+        //}
 
     }
     private void CheckInput()

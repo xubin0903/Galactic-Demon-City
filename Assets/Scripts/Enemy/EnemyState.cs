@@ -19,8 +19,10 @@ public class EnemyState
 
     public virtual void Enter()
     {
+        
         Debug.Log("Enter " + animName);
         enemy.anim.SetBool(animName, true);
+        triggerCalled = false;
     }
 
     public virtual void Exit()
@@ -32,6 +34,10 @@ public class EnemyState
     public virtual void Update()
     {
         Debug.Log("Update " + animName);
-        stateTimer -= Time.deltaTime;
+        stateTimer-=Time.deltaTime;
+    }
+    public virtual void Trigger()
+    {
+        triggerCalled = true;
     }
 }

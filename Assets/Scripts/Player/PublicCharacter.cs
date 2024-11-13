@@ -9,7 +9,7 @@ public class PublicCharacter : MonoBehaviour
    [SerializeField] protected bool isMove;
    [SerializeField] protected int faceDir;
    [SerializeField] protected float currentspeed;
-   protected Animator animator;
+   
    protected Rigidbody2D rb;
    protected Collider2D coll;
    [Header("Åö×²¼ì²â")]
@@ -21,7 +21,7 @@ public class PublicCharacter : MonoBehaviour
 
     protected virtual void Awake()
    {
-      animator = GetComponent<Animator>();
+     
       rb = GetComponent<Rigidbody2D>();
       coll = GetComponent<Collider2D>();
    }

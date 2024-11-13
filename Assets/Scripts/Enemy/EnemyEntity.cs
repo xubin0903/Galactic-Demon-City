@@ -13,19 +13,18 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected float offsetX;
     [SerializeField] protected float playerCheckDistance;
     [SerializeField] protected LayerMask playerLayer;
-    [SerializeField] protected bool isWall;
-    [SerializeField] protected bool isGrounded;
+    [SerializeField] public bool isWall { private set; get; }
+    [SerializeField] public bool isGrounded {private set; get; }
 
     [SerializeField] public RaycastHit2D playerCheck { get; private set; }
     [Header("×é¼þ")]
     public Rigidbody2D rb;
     public Animator anim;
-    [SerializeField] protected float faceDir;
+    [SerializeField] public float faceDir;       
     //[SerializeField] protected bool facingRight  = true;
     public virtual void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
+       
         
     }
     public virtual void Start()
@@ -36,10 +35,7 @@ public class EnemyEntity : MonoBehaviour
     {
         faceDir = transform.localScale.x > 0 ? 1 : -1;
         CollisionCheck();
-        if (isWall)
-        {
-            Flip();
-        }
+       
         
     }
     #region CollisionCheck

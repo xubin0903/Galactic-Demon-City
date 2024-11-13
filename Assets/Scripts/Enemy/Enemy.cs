@@ -6,11 +6,16 @@ using UnityEngine;
 public class Enemy : EnemyEntity
 {
     public EnemyStateMachine stateMachine;
-    [SerializeField] private float currentSpeed;
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float beginSpeed;
+    [SerializeField] public float currentSpeed;
+    [SerializeField] public float maxSpeed;
+    [SerializeField] public float beginSpeed;
+    [SerializeField] public float lastAttackTime;
+    [SerializeField] private float attckCoolDown;
+    public float idleTimer;
     [Header("状态")]
     public bool isMove;
+    public bool canAttack=true;
+    [SerializeField] private float stateTimer;
     public SkeletonMoveState moveState { get; private set; }
     public SkeletonIdleState idleState { get; private set; }
     public SkeletonAttackState attackState { get; private set; }
@@ -32,45 +37,74 @@ public class Enemy : EnemyEntity
     }
     public override void Update()
     {
+        CanAttack();
         base.Update();
-        SetVelocity(new Vector2(currentSpeed*faceDir, rb.velocity.y));
-        CollisionCheck();
-        
-        
-        if (rb.velocity.x!=0&&!isMove)
+        stateMachine.currentState.Update();
+        if (stateMachine.currentState == moveState)
         {
-            
-            stateMachine.ChangeState(moveState);
-            Debug.Log("Move");
+            Move();
         }
-        
+        CollisionCheck();
+
+
+
+
         if (playerCheck.collider != null)
         {
             if (playerCheck.distance > 1)
             {
-                while (currentSpeed < maxSpeed)
+                if (currentSpeed < maxSpeed)
                 {
-                    currentSpeed += Time.deltaTime*0.8f;
+                    currentSpeed += Time.deltaTime * 0.8f;
+                    Debug.Log(currentSpeed);
 
                 }
             }
-            else if(playerCheck.distance < 1)
+            else if (playerCheck.distance < 1)
             {
                 rb.velocity = Vector2.zero;
-                stateMachine.ChangeState(attackState);
+                if (stateMachine.currentState != attackState)
+                {
+                    if (canAttack)
+                    {
+                        stateMachine.ChangeState(attackState);
+                        lastAttackTime = Time.time;
+                    }
+                }
+                
             }
         }
         else
         {
-            while (currentSpeed > beginSpeed)
+            if (currentSpeed > beginSpeed)
             {
                 currentSpeed -= Time.deltaTime;
             }
-            stateMachine.ChangeState(moveState);
+            
         }
-        
+
+
+
 
 
     }
-
+    public  void Move()
+    {
+        SetVelocity(new Vector2(currentSpeed * faceDir, rb.velocity.y));
+    }
+    public void CanAttack()
+    {
+        if (Time.time > lastAttackTime + attckCoolDown)
+        {
+            canAttack = true;
+        }
+        else
+        {
+            canAttack = false;
+        }
+    }
+    public void AttackFinish()
+    {
+        stateMachine.currentState.Trigger();
+    }
 }

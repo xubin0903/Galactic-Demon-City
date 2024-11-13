@@ -17,11 +17,20 @@ public class SkeletonMoveState : EnemyState
     public override void Exit()
     {
         base.Exit();
+        enemy.isMove = false;
     }
 
     public override void Update()
     {
         base.Update();
-        enemy.isMove = false;
+       
+        
+        if (!enemy.isGrounded || enemy.isWall)
+        {
+           
+            enemy.stateMachine.ChangeState(enemy.idleState);
+            
+        }
+
     }
 }
