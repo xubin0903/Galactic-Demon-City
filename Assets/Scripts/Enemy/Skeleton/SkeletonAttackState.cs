@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class SkeletonAttackState : EnemyState
 {
-
-    public SkeletonAttackState(Enemy _enemy, EnemyStateMachine _stateMachine, string _animName) : base(_enemy, _stateMachine, _animName)
+    public Skeleton enemy;
+    public SkeletonAttackState(Enemy enemyBase, EnemyStateMachine _stateMachine, string _animName,Skeleton _enemy) : base(enemyBase, _stateMachine, _animName)
     {
+        enemy = _enemy;
     }
 
     public override void Enter()
@@ -25,11 +26,11 @@ public class SkeletonAttackState : EnemyState
         base.Update();
         if (enemy.playerCheck.collider == null)
         {
-            stateMachine.ChangeState(enemy.moveState);
+            enemy.stateMachine.ChangeState(enemy.moveState);
         }
         if (triggerCalled)
         {
-            stateMachine.ChangeState(enemy.idleState);
+            enemy.stateMachine.ChangeState(enemy.idleState);
         }
     }
 

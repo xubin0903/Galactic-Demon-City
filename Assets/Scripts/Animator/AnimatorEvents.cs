@@ -13,4 +13,19 @@ public class AnimatorEvents : MonoBehaviour
     {
         player.AttackOver();
     }
+    public void AnimationAttackEvent()
+    {
+        Debug.Log("¹¥»÷");
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
+        foreach (var collider in colliders)
+        {
+            Debug.Log(collider.name);
+            var enemy = collider.GetComponent<Enemy>();
+            if (enemy!= null)
+            {
+                enemy.Damage();
+            }
+        }
+            
+    }
 }

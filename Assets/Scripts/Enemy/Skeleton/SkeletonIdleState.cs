@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class SkeletonIdleState : EnemyState
 {
+    public Skeleton enemy;
    
-    public SkeletonIdleState(Enemy _enemy, EnemyStateMachine _stateMachine, string _animName) : base(_enemy, _stateMachine, _animName)
+    public SkeletonIdleState(Enemy enemyBase, EnemyStateMachine _stateMachine, string _animName,Skeleton _enemy) : base(enemyBase, _stateMachine, _animName)
     {
+        enemy = _enemy;
     }
 
     public override void Enter()
@@ -31,7 +33,7 @@ public class SkeletonIdleState : EnemyState
        enemy.SetVelocity(Vector2.zero);
         if (stateTimer < 0)
         {
-           stateMachine.ChangeState(enemy.moveState);
+           enemy.stateMachine.ChangeState(enemy.moveState);
         }
         
     }

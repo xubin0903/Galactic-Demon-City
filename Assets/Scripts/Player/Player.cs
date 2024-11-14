@@ -273,6 +273,8 @@ public class Player :PublicCharacter
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(faceDir * wallCheckDistance, 0, 0)); // 画出射线
         Gizmos.DrawLine(new Vector3(transform.position.x+groundCheckRadius*faceDir,transform.position.y-offsety,transform.position.z), transform.position + Vector3.down * groundCheckDistance+Vector3.right*groundCheckRadius*faceDir);
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(attackCheck.position, attackRadius);
     }
     protected override void CollisionCheck()
     {
@@ -339,11 +341,28 @@ public class Player :PublicCharacter
     {
         isAttack = false;
         comobatCount++;
-        if (comobatCount > 2)
+        
+        if (comobatCount == 0)
         {
+            attackRadius = 0.85f;
+        }else if (comobatCount == 1)
+        {
+            attackRadius = 0.5f;
+        }else if (comobatCount == 2)
+        {
+            attackRadius = 1.35f;
+        }
+        else
+        {
+            attackRadius = 1f;
             comobatCount = 0;
         }
         
+        
+    }
+    public void Damage()
+    {
+        Debug.Log(gameObject.name + "受到伤害");
     }
 
 }

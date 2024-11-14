@@ -17,6 +17,8 @@ public class PublicCharacter : MonoBehaviour
    [SerializeField] protected float groundCheckDistance;
    [SerializeField] protected float groundCheckRadius;
    [SerializeField] protected bool isGrounded;
+    public Transform attackCheck;
+    public float attackRadius;
 
 
     protected virtual void Awake()
@@ -49,6 +51,7 @@ public class PublicCharacter : MonoBehaviour
    {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(new Vector3(transform.position.x + groundCheckRadius, transform.position.y, transform.position.z), transform.position + Vector3.down * groundCheckDistance + Vector3.right * groundCheckRadius);
+       
     }
   
 }

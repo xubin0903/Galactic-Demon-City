@@ -13,6 +13,9 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected float offsetX;
     [SerializeField] protected float playerCheckDistance;
     [SerializeField] protected LayerMask playerLayer;
+    public Transform attackCheck;
+    [SerializeField] public float attackRadius;
+
     [SerializeField] public bool isWall { private set; get; }
     [SerializeField] public bool isGrounded {private set; get; }
 
@@ -57,6 +60,7 @@ public class EnemyEntity : MonoBehaviour
         Gizmos.DrawRay(groundCheckPosition.position +faceDir * offsetX * Vector3.right, Vector2.down*groundCheckDistance);
         Gizmos.DrawRay(wallCheckPosition.position,Vector2.right*wallCheckDistance*faceDir);
         Gizmos.DrawRay(transform.position,Vector2.right*playerCheckDistance*faceDir);
+        Gizmos.DrawWireSphere(attackCheck.position,attackRadius);
     }
     #endregion
     #region Flip
@@ -82,7 +86,13 @@ public class EnemyEntity : MonoBehaviour
     public virtual void SetVelocity(Vector2 _velocity)
     {
         rb.velocity = _velocity;
-       
+
     }
-    #endregion  
+    #endregion
+    #region Damage
+    public void Damage()
+    {
+        Debug.Log(" ‹µΩ…À∫¶");
+    }
+#endregion
 }
