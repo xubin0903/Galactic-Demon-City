@@ -30,7 +30,7 @@ public class Enemy : EnemyEntity
     }
     public void CanAttack()
     {
-        if (Time.time > lastAttackTime + attckCoolDown)
+        if (Time.time > lastAttackTime + attckCoolDown&&!isKoncked)
         {
             canAttack = true;
         }

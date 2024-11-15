@@ -23,7 +23,7 @@ public class AnimatorEvents : MonoBehaviour
             var enemy = collider.GetComponent<Enemy>();
             if (enemy!= null)
             {
-                enemy.Damage();
+                enemy.Damage(player);
             }
         }
             

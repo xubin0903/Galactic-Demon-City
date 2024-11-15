@@ -52,7 +52,7 @@ public class NightBorne : Enemy
             }
             else if (playerCheck.distance < 1)
             {
-                rb.velocity = Vector2.zero;
+                SetZeroVelocity();
                 if (stateMachine.currentState != attackState)
                 {
                     if (canAttack)

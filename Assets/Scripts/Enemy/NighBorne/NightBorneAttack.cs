@@ -23,14 +23,16 @@ public class NightBorneAttack :EnemyState
     public override void Update()
     {
         base.Update();
-        if (enemy.playerCheck.collider == null)
-        {
-            enemy.stateMachine.ChangeState(enemy.moveState);
-        }
+        //if (enemy.playerCheck.collider == null)
+        //{
+        //    enemy.stateMachine.ChangeState(enemy.moveState);
+        //}
         if (triggerCalled)
         {
             enemy.stateMachine.ChangeState(enemy.idleState);
         }
+        //∞‘ÃÂ
+        enemy.rb.velocity = Vector2.zero;
     }
 
 }

@@ -7,7 +7,7 @@ public class PublicCharacter : MonoBehaviour
    [Header("»ù±¾ÊôÐÔ")]
    [SerializeField] protected float speed;
    [SerializeField] protected bool isMove;
-   [SerializeField] protected int faceDir;
+   [SerializeField] public int faceDir;
    [SerializeField] protected float currentspeed;
    
    protected Rigidbody2D rb;

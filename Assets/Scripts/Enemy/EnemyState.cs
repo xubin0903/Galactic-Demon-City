@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.U2D;
 using UnityEngine;
 
 public class EnemyState 
 {
     protected Enemy enemyBase;
     protected EnemyStateMachine stateMachine;
-    protected string animName;
+    public string animName;
     protected float stateTimer;
     protected bool triggerCalled;
 
@@ -23,6 +24,7 @@ public class EnemyState
         Debug.Log("Enter " + animName);
         enemyBase.anim.SetBool(animName, true);
         triggerCalled = false;
+        enemyBase.currentState = this;
     }
 
     public virtual void Exit()

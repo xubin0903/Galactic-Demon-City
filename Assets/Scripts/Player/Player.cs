@@ -14,6 +14,7 @@ public class Player :PublicCharacter
     [SerializeField] private float jumpForce;
     [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
+    private EntityFX fx;
     public Animator animator { get; private set; }
     
     
@@ -30,7 +31,7 @@ public class Player :PublicCharacter
     [SerializeField] private float attackTimer;
     [SerializeField] private float attackDuration;
     [SerializeField] private bool isAttack;
-    [SerializeField] private int comobatCount;
+    [SerializeField] public int comobatCount { get; private set; }
     [Header("¹¥»÷Ï¸½Ú")]
     [SerializeField] private float[] attackMovex;
     [SerializeField] private float[] attackMovey;
@@ -47,6 +48,11 @@ public class Player :PublicCharacter
     [SerializeField] private bool isSlideWall;
     [SerializeField] private bool isWall;
     [SerializeField] private float wallCheckDistance;
+    [Header("ÊÜ»÷·´À¡")]
+    [SerializeField] private Vector2 HurtBackDir;
+    [SerializeField] private float backDuration;
+    [SerializeField] private bool isKoncked;
+
     
    
 
@@ -62,6 +68,7 @@ public class Player :PublicCharacter
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
+        fx = GetComponent<EntityFX>();
         //stateMachine = new PlayerStateMachine();
         //idleState = new PlayerIdleState(this,stateMachine,"Idle");
         //moveState = new PlayerMoveState(this,stateMachine,"Move");
@@ -90,7 +97,7 @@ public class Player :PublicCharacter
 
 
         }
-        if (isMove == false)
+        if (isMove == false&&!isKoncked)
         {
             currentspeed = beginspeed;
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -192,29 +199,29 @@ public class Player :PublicCharacter
     {
         //ÒÆ¶¯
         isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
-        if (isMove == true && !isDash && !isAttack)
+        if (isMove == true && !isDash && !isAttack&&!isKoncked)
         {
             Move();
         }
         //ÌøÔ¾
-        if (Input.GetButtonDown("Jump")&&isGrounded)
+        if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked)
         {
             currentJumpForce = jumpForce;
             Jump();
 
         }
         //³å´Ì
-        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable&&!isSlideWall)
+        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable&&!isSlideWall&&!isKoncked)
         {
             Dash();
         }
         //¹¥»÷
-        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded)
+        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked)
         {
             Attack();
         }
         //»¬²ù
-        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove)
+        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked)
         {
             Slide();
             
@@ -360,9 +367,26 @@ public class Player :PublicCharacter
         
         
     }
-    public void Damage()
+    public void Damage(Enemy enemy)
     {
         Debug.Log(gameObject.name + "ÊÜµ½ÉËº¦");
+        fx.Hurt();
+        StartCoroutine(HurtBack(backDuration,enemy));
+    }
+    private IEnumerator HurtBack(float duration,Enemy enemy)
+    {
+        isKoncked = true;
+        if (enemy.faceDir == faceDir)
+        {
+            rb.velocity = new Vector2(HurtBackDir.x * (faceDir), HurtBackDir.y);
+        }
+        else
+        {
+        rb.velocity = new Vector2(HurtBackDir.x*(-faceDir), HurtBackDir.y);
+
+        }
+        yield return new WaitForSeconds(duration);
+        isKoncked = false;
     }
 
 }

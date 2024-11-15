@@ -15,6 +15,12 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected LayerMask playerLayer;
     public Transform attackCheck;
     [SerializeField] public float attackRadius;
+    private EntityFX fx;
+
+    [Header("受击反馈")]
+    [SerializeField] protected Vector2[] HurtBackDir;
+    [SerializeField] protected float backDuration;
+    [SerializeField] protected bool isKoncked;
 
     [SerializeField] public bool isWall { private set; get; }
     [SerializeField] public bool isGrounded {private set; get; }
@@ -23,11 +29,14 @@ public class EnemyEntity : MonoBehaviour
     [Header("组件")]
     public Rigidbody2D rb;
     public Animator anim;
-    [SerializeField] public float faceDir;       
+    [SerializeField] public float faceDir;
+    [Header("Animation状态")]
+    public EnemyState currentState;
+
     //[SerializeField] protected bool facingRight  = true;
     public virtual void Awake()
     {
-       
+        fx = GetComponent<EntityFX>();
         
     }
     public virtual void Start()
@@ -82,17 +91,50 @@ public class EnemyEntity : MonoBehaviour
     //}
     #endregion
     #region Velocity
-    public virtual void SetZeroVelocity() =>new Vector2(0,0);
+    public virtual void SetZeroVelocity()
+    {
+        if (isKoncked)
+        {
+            return;
+        }
+       
+        rb.velocity = new Vector2(0, 0);
+    }
     public virtual void SetVelocity(Vector2 _velocity)
     {
+        if (isKoncked)
+        {
+            return;
+        }
         rb.velocity = _velocity;
 
     }
     #endregion
     #region Damage
-    public void Damage()
+    public void Damage(Player player)
     {
-        Debug.Log("受到伤害");
+        Debug.Log(gameObject.name+"受到伤害");
+        if(currentState.animName!="Attack")
+        fx.Hurt();
+        StartCoroutine(HurtBack(backDuration, player));
     }
-#endregion
+    private IEnumerator HurtBack(float duration, Player player)
+    {
+        isKoncked = true;
+        if (player.faceDir == faceDir)
+        {
+            
+            rb.velocity = new Vector2(HurtBackDir[player.comobatCount].x * (faceDir), HurtBackDir[player.comobatCount].y);
+            Debug.Log("受击反馈");
+        }
+        else
+        {
+            rb.velocity = new Vector2(HurtBackDir[player.comobatCount].x * (-faceDir), HurtBackDir[player.comobatCount].y);
+            Debug.Log("受击反馈");
+
+        }
+        yield return new WaitForSeconds(duration);
+        isKoncked = false;
+    }
+    #endregion
 }
