@@ -804,7 +804,7 @@ MonoBehaviour:
   - {x: 3, y: 0}
   - {x: 0, y: 4}
   - {x: 6, y: 0}
-  backDuration: 0.07
+  backDuration: 0.1
   isKoncked: 0
   rb: {fileID: 361334265}
   anim: {fileID: 605049520}
@@ -817,7 +817,9 @@ MonoBehaviour:
   idleTimer: 2
   isMove: 0
   canAttack: 1
-  stateTimer: 0
+  stundDuration: 2
+  isStund: 0
+  stundDir: {x: 0, y: 0}
 --- !u!114 &361334269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2901,7 +2903,6 @@ MonoBehaviour:
   idleTimer: 4
   isMove: 0
   canAttack: 1
-  stateTimer: 0
 --- !u!114 &1296810918
 MonoBehaviour:
   m_ObjectHideFlags: 0

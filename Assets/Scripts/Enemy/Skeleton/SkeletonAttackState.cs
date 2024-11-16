@@ -33,8 +33,9 @@ public class SkeletonAttackState : EnemyState
             enemy.stateMachine.ChangeState(enemy.idleState);
         }
         //∞‘ÃÂ
-        enemy.rb.velocity = Vector2.zero;
         
+            enemy.rb.velocity = Vector2.zero;
+
     }
 
 }

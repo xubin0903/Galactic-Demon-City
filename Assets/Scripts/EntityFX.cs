@@ -26,4 +26,24 @@ public class EntityFX : MonoBehaviour
         yield return new WaitForSeconds(time);
         sr.material = originalMaterial;
     }
+    public void RedColorBlink()
+    {
+        if (sr.color != Color.white)
+        {
+            sr.color = Color.white;
+            Debug.Log("white");
+        }
+        else
+        {
+            Debug.Log("Red");
+            sr.color = Color.red;
+        }
+    }
+    public void CancelRedColorBlink()
+    {
+        //È¡Ïû
+        CancelInvoke();
+        Debug.Log("cancel");
+        sr.color = Color.white;
+    }
 }

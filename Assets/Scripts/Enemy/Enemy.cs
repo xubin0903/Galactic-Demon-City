@@ -15,7 +15,8 @@ public class Enemy : EnemyEntity
     [Header("状态")]
     public bool isMove;
     public bool canAttack=true;
-    [SerializeField] private float stateTimer;
+    
+    
    
     public override void Awake()
     {

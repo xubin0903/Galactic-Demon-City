@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class Skeleton : Enemy
 {
+    #region ×´Ì¬»ú
     public EnemyStateMachine stateMachine;
     public SkeletonMoveState moveState { get; private set; }
     public SkeletonIdleState idleState { get; private set; }
     public SkeletonAttackState attackState { get; private set; }
+    public SkeletonStundState stundState { get; private set; }
+    #endregion
+    [Header("Ñ£ÔÎ")]
+    public float stundDuration;
+    public bool isStund;
+    public Vector2 stundDir;
+
     public override void Awake()
     {
         base.Awake();
         idleState = new SkeletonIdleState(this, stateMachine, "Idle", this);
         moveState = new SkeletonMoveState(this, stateMachine, "Move", this);
         attackState = new SkeletonAttackState(this, stateMachine, "Attack", this);
+        stundState = new SkeletonStundState(this, stateMachine, "Stund", this);
         stateMachine= new EnemyStateMachine();
 
     }
@@ -35,7 +44,10 @@ public class Skeleton : Enemy
         }
         CollisionCheck();
 
-
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            stateMachine.ChangeState(stundState);
+        }
 
 
         if (playerCheck.collider != null)
@@ -81,4 +93,6 @@ public class Skeleton : Enemy
     {
         stateMachine.currentState.Trigger();
     }
+    
+
 }

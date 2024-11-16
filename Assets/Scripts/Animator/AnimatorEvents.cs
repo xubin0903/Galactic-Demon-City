@@ -19,10 +19,12 @@ public class AnimatorEvents : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
         foreach (var collider in colliders)
         {
-            Debug.Log(collider.name);
+            //Debug.Log(collider.name);
             var enemy = collider.GetComponent<Enemy>();
             if (enemy!= null)
             {
+                Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
+
                 enemy.Damage(player);
             }
         }

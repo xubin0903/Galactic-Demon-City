@@ -15,12 +15,12 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected LayerMask playerLayer;
     public Transform attackCheck;
     [SerializeField] public float attackRadius;
-    private EntityFX fx;
+    public EntityFX fx { get; private set; }
 
     [Header("受击反馈")]
     [SerializeField] protected Vector2[] HurtBackDir;
     [SerializeField] protected float backDuration;
-    [SerializeField] protected bool isKoncked;
+    [SerializeField] public bool isKoncked;
 
     [SerializeField] public bool isWall { private set; get; }
     [SerializeField] public bool isGrounded {private set; get; }
@@ -111,14 +111,14 @@ public class EnemyEntity : MonoBehaviour
     }
     #endregion
     #region Damage
-    public void Damage(Player player)
+    public virtual void Damage(Player player)
     {
         Debug.Log(gameObject.name+"受到伤害");
         if(currentState.animName!="Attack")
         fx.Hurt();
         StartCoroutine(HurtBack(backDuration, player));
     }
-    private IEnumerator HurtBack(float duration, Player player)
+    public virtual IEnumerator HurtBack(float duration, Player player)
     {
         isKoncked = true;
         if (player.faceDir == faceDir)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.U2D;
 using UnityEngine;
 
-public class EnemyState 
+public class EnemyState
 {
     protected Enemy enemyBase;
     protected EnemyStateMachine stateMachine;
@@ -11,9 +11,9 @@ public class EnemyState
     protected float stateTimer;
     protected bool triggerCalled;
 
-    public  EnemyState(Enemy _enemy, EnemyStateMachine _stateMachine, string _animName)
+    public  EnemyState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animName)
     {
-        this.enemyBase = _enemy;
+        this.enemyBase = _enemyBase;
         this.stateMachine = _stateMachine;
         this.animName = _animName;
     }
