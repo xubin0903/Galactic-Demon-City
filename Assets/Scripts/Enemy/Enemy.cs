@@ -15,7 +15,9 @@ public class Enemy : EnemyEntity
     [Header("状态")]
     public bool isMove;
     public bool canAttack=true;
-    
+    [Header("counter 窗户")]
+    [SerializeField] protected bool canbeStunned;
+    [SerializeField] protected GameObject counterImage;
     
    
     public override void Awake()
@@ -40,5 +42,25 @@ public class Enemy : EnemyEntity
             canAttack = false;
         }
     }
-   
+   public virtual void OpenCounterWindow()
+    {
+        canbeStunned = true;
+        counterImage.SetActive(true);
+    }
+    public virtual void CloseCounterWindow()
+    {
+        canbeStunned = false;
+        counterImage.SetActive(false);
+    }
+    public virtual bool CanStun()
+    {
+        if (canbeStunned)
+        {
+            CloseCounterWindow();
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
 }

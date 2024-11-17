@@ -52,7 +52,10 @@ public class Player :PublicCharacter
     [SerializeField] private Vector2 HurtBackDir;
     [SerializeField] private float backDuration;
     [SerializeField] private bool isKoncked;
-
+    [Header("·´»÷")]
+    [SerializeField] private bool isCounterAttack;
+    [SerializeField] public bool isSuccessfulCounterAttack;
+    [SerializeField] private float counterAttackDuration;
     
    
 
@@ -202,18 +205,21 @@ public class Player :PublicCharacter
         if (isMove == true && !isDash && !isAttack&&!isKoncked)
         {
             Move();
+            CounterAttackOver();
         }
         //ÌøÔ¾
         if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked)
         {
             currentJumpForce = jumpForce;
             Jump();
+            CounterAttackOver();
 
         }
         //³å´Ì
         if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable&&!isSlideWall&&!isKoncked)
         {
             Dash();
+            CounterAttackOver();
         }
         //¹¥»÷
         if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked)
@@ -224,11 +230,41 @@ public class Player :PublicCharacter
         if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked)
         {
             Slide();
-            
+            CounterAttackOver();
 
         }
+        //·´»÷
+        if (Input.GetKeyDown(KeyCode.E)&&isGrounded&&!isKoncked&&!isAttack)
+        {
+            CounterAttack();
+        }
     }
+    private void CounterAttack()
+    {
+        if (isCounterAttack)
+        {
+            return;
+        }
+        isCounterAttack = true;
+        isSuccessfulCounterAttack = false;
+        StartCoroutine(CounterAttackStart(counterAttackDuration));
+    }
+    public void CounterAttackOver()
+    {
+        isCounterAttack = false;
+        
+    }
+    public void SuccessfulCounterAttackOver()
+    {
+        isSuccessfulCounterAttack = false;
+    }
+    private IEnumerator CounterAttackStart(float counterAttackDuration)
+    {
 
+
+        yield return new WaitForSeconds(counterAttackDuration);
+        CounterAttackOver();
+    }
     private void Slide()
     {
         if (isSlide)
@@ -298,6 +334,8 @@ public class Player :PublicCharacter
         animator.SetInteger("comobatCount", comobatCount);
         animator.SetBool("isSlide", isSlide);
         animator.SetBool("isSlideWall", isSlideWall);
+        animator.SetBool("isCounterAttack", isCounterAttack);
+        animator.SetBool("isSuccessfulCounterAttack", isSuccessfulCounterAttack);
     }   
     private void Dash()
     {

@@ -30,4 +30,26 @@ public class AnimatorEvents : MonoBehaviour
         }
             
     }
+    public void CounterAttackEvent()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
+        foreach (var collider in colliders)
+        {
+            //Debug.Log(collider.name);
+            var enemy = collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                if (enemy.CanStun())
+                {
+                    
+                player.CounterAttackOver();
+                player.isSuccessfulCounterAttack = true;
+                }
+            }
+        }
+    }
+    public void SuccessfulCounterAttackOverEvent()
+    {
+        player.SuccessfulCounterAttackOver();
+    }
 }

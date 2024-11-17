@@ -21,6 +21,8 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected Vector2[] HurtBackDir;
     [SerializeField] protected float backDuration;
     [SerializeField] public bool isKoncked;
+    [Header("Stun")]
+    [SerializeField] public bool Stunned;
 
     [SerializeField] public bool isWall { private set; get; }
     [SerializeField] public bool isGrounded {private set; get; }
@@ -93,7 +95,7 @@ public class EnemyEntity : MonoBehaviour
     #region Velocity
     public virtual void SetZeroVelocity()
     {
-        if (isKoncked)
+        if (isKoncked||Stunned)
         {
             return;
         }
@@ -102,7 +104,7 @@ public class EnemyEntity : MonoBehaviour
     }
     public virtual void SetVelocity(Vector2 _velocity)
     {
-        if (isKoncked)
+        if (isKoncked||Stunned)
         {
             return;
         }

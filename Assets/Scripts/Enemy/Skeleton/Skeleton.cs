@@ -43,11 +43,11 @@ public class Skeleton : Enemy
             Move();
         }
         CollisionCheck();
-
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            stateMachine.ChangeState(stundState);
-        }
+        //µ˜ ‘”√
+        //if (Input.GetKeyUp(KeyCode.Mouse0))
+        //{
+        //    stateMachine.ChangeState(stundState);
+        //}
 
 
         if (playerCheck.collider != null)
@@ -93,6 +93,17 @@ public class Skeleton : Enemy
     {
         stateMachine.currentState.Trigger();
     }
-    
+    public override bool CanStun()
+    {
+        if (base.CanStun())
+        {
+            Debug.Log("skeleton begin stun");
+            stateMachine.ChangeState(stundState);
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
 
 }
