@@ -23,7 +23,7 @@ public class AnimatorEvents : MonoBehaviour
             var enemy = collider.GetComponent<Enemy>();
             if (enemy!= null)
             {
-                Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
+                //Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
 
                 enemy.Damage(player);
             }

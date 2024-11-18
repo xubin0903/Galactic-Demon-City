@@ -23,9 +23,8 @@ public class Player :PublicCharacter
     [SerializeField] private float dashTime;
     [SerializeField] private float dashDuration;
     [SerializeField] private bool isDash;
-    [SerializeField] private bool isDashable;
-    [SerializeField] private float dashCooldown;
-    [SerializeField] private float dashCooldownTimer;
+    
+    
     [SerializeField] private float wallDashFairDir;
     [Header("¹¥»÷")]
     [SerializeField] private float attackTimer;
@@ -56,13 +55,16 @@ public class Player :PublicCharacter
     [SerializeField] private bool isCounterAttack;
     [SerializeField] public bool isSuccessfulCounterAttack;
     [SerializeField] private float counterAttackDuration;
-    
-   
 
-    //public PlayerStateMachine stateMachine { get; private set; }
-    //public PlayerIdleState idleState{ get; private set;}
-    //public PlayerMoveState moveState { get; private set; }
-    //public PlayerState currentPlayerState;
+
+
+    public PlayerStateMachine stateMachine { get; private set; }
+    public PlayerBaseState baseState { get; private set; }
+    public PlayerAimSwordState aimSword { get; private set; }
+    public PlayerCatchSwordState catchSword { get; private set; }
+    public PlayerThrowSwordState throwSword { get; private set; }
+    
+    public PlayerState currentPlayerState;
 
 
 
@@ -72,20 +74,23 @@ public class Player :PublicCharacter
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         fx = GetComponent<EntityFX>();
-        //stateMachine = new PlayerStateMachine();
-        //idleState = new PlayerIdleState(this,stateMachine,"Idle");
-        //moveState = new PlayerMoveState(this,stateMachine,"Move");
-        
+        stateMachine = new PlayerStateMachine();
+        baseState = new PlayerBaseState(this, stateMachine,"BaseState");
+        aimSword = new PlayerAimSwordState(this, stateMachine,"AimSword");
+        catchSword = new PlayerCatchSwordState(this, stateMachine,"CatchSword");
+        throwSword = new PlayerThrowSwordState(this, stateMachine,"ThrowSword");
+
+
     }
     protected override void Start()
     {
-       //stateMachine.Initialize(idleState);
+       stateMachine.Initialize(baseState);
     }
     protected override void Update()
     {
-        //stateMachine.currentState.Update();
-        
-         faceDir=transform.localScale.x>0?1:-1;
+        stateMachine.currentState.Update();
+        #region »ù±¾×´Ì¬¼ì²â
+        faceDir = transform.localScale.x>0?1:-1;
 
         
         //¼ì²âÊäÈë
@@ -121,15 +126,15 @@ public class Player :PublicCharacter
                 isDash = false;
             }
         }
-        //³å´ÌÀäÈ´
-        if (!isDashable)
-        {
-            dashCooldownTimer -= Time.deltaTime;
-            if (dashCooldownTimer<=0)
-            {
-                isDashable = true;
-            }
-        }
+        ////³å´ÌÀäÈ´
+        //if (!isDashable)
+        //{
+        //    dashCooldownTimer -= Time.deltaTime;
+        //    if (dashCooldownTimer<=0)
+        //    {
+        //        isDashable = true;
+        //    }
+        //}
         //¹¥»÷¼ä¸ô
         if (attackTimer > 0)
         {
@@ -193,10 +198,18 @@ public class Player :PublicCharacter
         //    {
         //        isGrounded = true;
         //        animator.SetBool("isGrounded", true);
-                
+
         //    }
         //}
-
+        #endregion
+        if (isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Debug.Log("Êó±ê×ó¼ü°´ÏÂ");
+                stateMachine.ChangeState(aimSword);
+            }
+        }
     }
     private void CheckInput()
     {
@@ -208,7 +221,7 @@ public class Player :PublicCharacter
             CounterAttackOver();
         }
         //ÌøÔ¾
-        if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked)
+        if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked&&!isDash)
         {
             currentJumpForce = jumpForce;
             Jump();
@@ -216,25 +229,25 @@ public class Player :PublicCharacter
 
         }
         //³å´Ì
-        if (Input.GetKeyDown(KeyCode.LeftShift)&&isDashable&&!isSlideWall&&!isKoncked)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash_skill.CanUseSkill()&&!isSlideWall&&!isKoncked)
         {
             Dash();
             CounterAttackOver();
         }
         //¹¥»÷
-        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked)
+        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked&&!isDash)
         {
             Attack();
         }
         //»¬²ù
-        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked)
+        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked&&!isDash)
         {
             Slide();
             CounterAttackOver();
 
         }
         //·´»÷
-        if (Input.GetKeyDown(KeyCode.E)&&isGrounded&&!isKoncked&&!isAttack)
+        if (Input.GetKeyDown(KeyCode.E)&&isGrounded&&!isKoncked&&!isAttack&&!isDash)
         {
             CounterAttack();
         }
@@ -341,8 +354,8 @@ public class Player :PublicCharacter
     {
         dashTime=dashDuration;
         isDash = true;
-        isDashable = false;
-        dashCooldownTimer = dashCooldown;
+        SkillManager.instance.clone.CreateClone(transform);
+        
         if (isSlideWall)
         {
             wallDashFairDir = faceDir*-1;

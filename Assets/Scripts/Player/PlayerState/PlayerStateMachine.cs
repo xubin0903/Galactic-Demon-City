@@ -14,7 +14,7 @@ public class PlayerStateMachine
     }
 
     // Update is called once per frame
-   public void ChangState(PlayerState newState)
+   public void ChangeState(PlayerState newState)
     {
         if (currentState!= null)
         {

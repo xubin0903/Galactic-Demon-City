@@ -138,5 +138,19 @@ public class EnemyEntity : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isKoncked = false;
     }
+    public virtual void OtherDamage( Vector2 hitDir)
+    {
+        Debug.Log(gameObject.name + " ‹µΩ…À∫¶");
+        if (currentState.animName != "Attack")
+            fx.Hurt();
+       StartCoroutine(OtherHuatBack(backDuration,hitDir ));
+    }
+    public virtual IEnumerator OtherHuatBack(float duration, Vector2 dir)
+    {
+        isKoncked = true;
+        rb.velocity = dir;
+        yield return new WaitForSeconds(duration);
+        isKoncked = false;
+    }    
     #endregion
 }
