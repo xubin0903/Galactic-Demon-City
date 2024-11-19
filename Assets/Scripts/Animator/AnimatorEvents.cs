@@ -52,4 +52,13 @@ public class AnimatorEvents : MonoBehaviour
     {
         player.SuccessfulCounterAttackOver();
     }
+    public void ThrowSwordEvent()
+    {
+        player.stateMachine.ChangeState(player.baseState);
+        SkillManager.instance.sword.CreateSword();
+    }
+    public void ChangeBaseSatetEvent()
+    {
+        player.stateMachine.ChangeState(player.baseState);
+    }
 }

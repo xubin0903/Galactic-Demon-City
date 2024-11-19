@@ -66,6 +66,8 @@ public class Player :PublicCharacter
     
     public PlayerState currentPlayerState;
 
+    [Header("Sword")]
+    public GameObject sword;
 
 
     protected override void Awake()
@@ -202,15 +204,20 @@ public class Player :PublicCharacter
         //    }
         //}
         #endregion
+        #region 技能剑的相关控制
         if (isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 Debug.Log("鼠标左键按下");
+                if(!HaveSword())//剑没回来不能继续攻击
                 stateMachine.ChangeState(aimSword);
             }
         }
+        
+        #endregion
     }
+
     private void CheckInput()
     {
         //移动
@@ -439,5 +446,39 @@ public class Player :PublicCharacter
         yield return new WaitForSeconds(duration);
         isKoncked = false;
     }
+    #region 检查并储存剑
+    public void CheckSword(GameObject _sword)
+    {
+        if (sword == null)
+        {
+            sword=_sword;
+        }
+        else
+        {
+            return;
+        }
+    }
+    private bool HaveSword()
+    {
+        if (sword == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (sword.GetComponent<Sword_Skill_Controller>().canReturn)
+            {
+                sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
+                stateMachine.ChangeState(catchSword);
+
+            }
+            return true;
+        }
+    }
+    public void ClearSword()
+    {
+        Destroy(sword);
+    }
+    #endregion
 
 }
