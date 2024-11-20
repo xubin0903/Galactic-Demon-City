@@ -6,11 +6,11 @@ public class PublicCharacter : MonoBehaviour
 {
    [Header("»ù±¾ÊôÐÔ")]
    [SerializeField] protected float speed;
-   [SerializeField] protected bool isMove;
+   [SerializeField] public bool isMove;
    [SerializeField] public int faceDir;
    [SerializeField] protected float currentspeed;
    
-   protected Rigidbody2D rb;
+   public Rigidbody2D rb;
    protected Collider2D coll;
    [Header("Åö×²¼ì²â")]
    [SerializeField] protected LayerMask groundLayer;

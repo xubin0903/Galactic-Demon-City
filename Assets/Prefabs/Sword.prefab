@@ -51,6 +51,12 @@ MonoBehaviour:
   canReturn: 0
   isReturn: 0
   returnDistance: 1.5
+  attackForce: {x: 4, y: 1}
+  isBouncing: 1
+  maxBounceAmount: 5
+  bounceCount: 0
+  bounceList: []
+  bounceSpeed: 20
 --- !u!50 &8594049385573337559
 Rigidbody2D:
   serializedVersion: 4

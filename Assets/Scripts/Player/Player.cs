@@ -207,13 +207,15 @@ public class Player :PublicCharacter
         #region 技能剑的相关控制
         if (isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1)&&(sword!=null||!isAttack&&!isDash&&!isSlideWall&&!isSlide&&!isMove))
             {
                 Debug.Log("鼠标左键按下");
                 if(!HaveSword())//剑没回来不能继续攻击
+                
                 stateMachine.ChangeState(aimSword);
             }
         }
+
         
         #endregion
     }
@@ -222,7 +224,7 @@ public class Player :PublicCharacter
     {
         //移动
         isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
-        if (isMove == true && !isDash && !isAttack&&!isKoncked)
+        if (isMove == true && !isDash && !isAttack&&!isKoncked&&stateMachine.currentState!=aimSword)
         {
             Move();
             CounterAttackOver();
@@ -469,14 +471,16 @@ public class Player :PublicCharacter
             if (sword.GetComponent<Sword_Skill_Controller>().canReturn)
             {
                 sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
-                stateMachine.ChangeState(catchSword);
+                
 
             }
             return true;
         }
     }
-    public void ClearSword()
+    public void CatchSword()
     {
+        if(!isAttack&&!isDash&&!isSlideWall&&!isSlide&&!isMove)
+        stateMachine.ChangeState(catchSword);
         Destroy(sword);
     }
     #endregion

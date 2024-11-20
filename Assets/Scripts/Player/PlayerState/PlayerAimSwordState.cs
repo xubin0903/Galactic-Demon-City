@@ -26,5 +26,18 @@ public class PlayerAimSwordState : PlayerState
         {
             stateMachine.ChangeState(player.throwSword);
         }
+        player.rb.velocity = Vector2.zero;
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (mousePos.x > player.transform.position.x && player.faceDir == -1)
+        {
+            //·­×ª
+            player.transform.localScale = new Vector3(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
+        }
+        else if (mousePos.x < player.transform.position.x && player.faceDir == 1)
+        {
+            //·­×ª
+            player.transform.localScale = new Vector3(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
+        }
+        
     }
 }    
