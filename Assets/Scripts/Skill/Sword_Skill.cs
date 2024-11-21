@@ -1,15 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum SkillType 
+{
+    Regular,
+    Bounce,
+    Pierce,
+    Spin,
+}
 public class Sword_Skill : Skill
 {
     [Header("Sword Skill Settings")]
-    [SerializeField] private GameObject swordPrefab;
-    [SerializeField] private float swordSpeed;
-    [SerializeField] private Vector2 launchDir;
+    private bool isFlip=true;
     [SerializeField] private float gravity;
     private Vector2 finalDir;
+    private bool haveDots;
+    [SerializeField] private GameObject swordPrefab;
+    [SerializeField] private Vector2 launchDir;
+    [SerializeField] private SkillType skillType;
+
+    [Header("Bouncing Info")]
+    [SerializeField] private int maxBounceNumber;
+    [SerializeField] private bool isBouncing;
+    [SerializeField] private float bounceSpeed;
+    [SerializeField] private float bounceGravity;
+    [SerializeField] private bool isFlipBounce;
+    [SerializeField] private bool haveDotsBounce;
+    [Header("Pierce Info")]
+    [SerializeField] private int pierceAmount;
+    [SerializeField] private float pierceSpeed;
+    [SerializeField] private Vector2 pierceDir;
+    [SerializeField] private float pierceGravity;
+    [SerializeField] private bool isFlipPierce;
+    [SerializeField] private bool haveDotsPierce;
 
     [Header("Dots Info")]
     [SerializeField] private int dotNumber;
@@ -22,6 +45,7 @@ public class Sword_Skill : Skill
     {
         base.Start();
         CreateDots();
+        
     }
     public override void Update()
     {
@@ -42,6 +66,7 @@ public class Sword_Skill : Skill
         {
             Debug.LogError("dots array is null! Ensure CreateDots is called in Start.");
         }
+        SetSword();
 
     }
     public void CreateSword()
@@ -50,9 +75,19 @@ public class Sword_Skill : Skill
         var swordController=newsword.GetComponent<Sword_Skill_Controller>();
         //检查是否已经有其他的sword
         player.CheckSword(newsword);
+        //根据类型设置sword的属性
+        if(skillType == SkillType.Bounce)
+        {
+            newsword.GetComponent<Sword_Skill_Controller>().SetBounce(true,maxBounceNumber,bounceSpeed);
+        }
+        else if(skillType == SkillType.Pierce)
+        {
+            newsword.GetComponent<Sword_Skill_Controller>().SetPierce(true,pierceAmount,pierceSpeed);
+        }
+        
         
         swordController.SetupSword(finalDir,gravity);
-        swordController.AnimationSword(true);
+        swordController.AnimationSword(isFlip);
         SetActiveDots(false);//扔出关闭锚点
     }
     public Vector2 AimDir()
@@ -98,9 +133,30 @@ public class Sword_Skill : Skill
     }
     public void SetActiveDots(bool _isActive)
     {
+        //笔直发射的sword不需要显示锚点
+        if (skillType == SkillType.Pierce)
+        {
+            return;
+        }
         for (int i = 0; i < dotNumber; i++)
         {
             dots[i].SetActive(_isActive);
+        }
+    }
+    //根据类型设置sword的属性
+    private void SetSword()
+    {
+        if (skillType == SkillType.Bounce)
+        {
+            gravity =bounceGravity;
+            isFlip = isFlipBounce;
+            haveDots = haveDotsBounce;
+        }else if (skillType == SkillType.Pierce)
+        {
+            launchDir = pierceDir;
+            gravity = pierceGravity;
+            isFlip = isFlipPierce;
+            haveDots = haveDotsPierce;
         }
     }
 }

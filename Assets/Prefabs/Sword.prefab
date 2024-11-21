@@ -47,16 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80ae194749c42044938c8c3292d2a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beginReturnSpeed: 10
   returnSpeed: 10
   canReturn: 0
   isReturn: 0
   returnDistance: 1.5
   attackForce: {x: 4, y: 1}
-  isBouncing: 1
-  maxBounceAmount: 5
+  maxDistance: 40
+  isBouncing: 0
   bounceCount: 0
   bounceList: []
-  bounceSpeed: 20
 --- !u!50 &8594049385573337559
 Rigidbody2D:
   serializedVersion: 4
@@ -116,9 +116,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.008295655, y: -0.063497305}
+  m_Offset: {x: 0.04480794, y: 0.0053932667}
   serializedVersion: 2
-  m_Radius: 0.54544914
+  m_Radius: 0.27419204
 --- !u!1 &8204329850694353050
 GameObject:
   m_ObjectHideFlags: 0

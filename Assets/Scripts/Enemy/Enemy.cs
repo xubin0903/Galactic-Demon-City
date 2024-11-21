@@ -11,6 +11,7 @@ public class Enemy : EnemyEntity
     [SerializeField] public float beginSpeed;
     [SerializeField] public float lastAttackTime;
     [SerializeField] private float attckCoolDown;
+    public bool isFrozen;
     public float idleTimer;
     [Header("状态")]
     public bool isMove;
@@ -61,6 +62,21 @@ public class Enemy : EnemyEntity
         }else
         {
             return false;
+        }
+    }
+    public virtual void FreezeTime(bool isFreeze)
+    {
+        if (isFreeze)
+        {
+            currentSpeed = 0;
+            anim.speed = 0;
+            isFrozen=true;
+        }
+        else
+        {
+            currentSpeed = beginSpeed;
+            anim.speed = 1;
+            isFrozen = false;
         }
     }
 }

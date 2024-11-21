@@ -35,10 +35,16 @@ public class NightBorne : Enemy
             Move();
         }
         CollisionCheck();
+        FindPlayerAccelerate();
 
+    }
 
-
-
+    private void FindPlayerAccelerate()
+    {
+        if (isFrozen)
+        {
+            return;
+        }
         if (playerCheck.collider != null)
         {
             if (playerCheck.distance > 1)
@@ -72,12 +78,8 @@ public class NightBorne : Enemy
             }
 
         }
-
-
-
-
-
     }
+
     public void AttackFinish()
     {
         stateMachine.currentState.Trigger();

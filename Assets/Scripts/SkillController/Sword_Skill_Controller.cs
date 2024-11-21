@@ -9,20 +9,26 @@ public class Sword_Skill_Controller : MonoBehaviour
     private CircleCollider2D coll;
     private SpriteRenderer sr;
     private bool canRotate = true;
+    [SerializeField] private float beginReturnSpeed;
     [SerializeField] private float returnSpeed;
     public bool canReturn;
     public bool isReturn;
     //[SerializeField] private float existduration;
     [SerializeField] private float returnDistance;
     [SerializeField] private Vector2 attackForce;
+    [SerializeField] private float maxDistance;
     [Header("µ¯Ìø")]
     [SerializeField] private bool isBouncing;
-    [SerializeField] private int maxBounceAmount;
+     private int maxBounceAmount;
     [SerializeField] private int bounceCount = 0;
     [SerializeField] private List<Transform> bounceList;
-    [SerializeField] private float bounceSpeed;
+    private float bounceSpeed;
     private int targetIndex = 0;
-    
+    [Header("Pierce Info")]
+    private bool isPiercing;
+    private int pierceCount;
+    private int pieceAmount;
+    private float pierceSpeed;
     
 
     private void Awake()
@@ -48,12 +54,19 @@ public class Sword_Skill_Controller : MonoBehaviour
         transform.right = rb.velocity;
         if (isReturn)
         {
+            returnSpeed = beginReturnSpeed+Vector2.Distance(transform.position, PlayerManager.instance.player.transform.position);
             transform.position = Vector3.MoveTowards(transform.position, PlayerManager.instance.player.transform.position, returnSpeed*Time.deltaTime);
             if(Vector2.Distance(transform.position, PlayerManager.instance.player.transform.position) < returnDistance)
             {
                 PlayerManager.instance.player.CatchSword();
+                returnSpeed = 0;
             }
             transform.right = -rb.velocity;
+        }
+        //¾àÀë¹ýÔ¶×Ô¶¯Ïú»Ù
+        if(Vector2.Distance(transform.position, PlayerManager.instance.player.transform.position) >= maxDistance)
+        {
+            Destroy(gameObject);
         }
 #region µ¯Ìø
         if (isBouncing && bounceList.Count > 1)
@@ -78,12 +91,13 @@ public class Sword_Skill_Controller : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+       
         if (bounceList.Count <= 0)
         {
             AddBounceList(collision);
 
         }
-        if (bounceCount == maxBounceAmount)
+        if (bounceCount >= maxBounceAmount)
         {
             isBouncing = false;
             bounceCount = 0;
@@ -114,6 +128,19 @@ public class Sword_Skill_Controller : MonoBehaviour
 
     private void StuckInto(Collider2D collision)
     {
+        if (isPiercing&&collision.GetComponent<Enemy>() != null)
+        {
+            
+             collision.GetComponent<Enemy>().OtherDamage(attackForce);
+            
+            pierceCount++;
+            if (pierceCount >= pieceAmount)
+            {
+                isPiercing = false;
+                pierceCount = 0;
+            }
+            return;
+        }
         canRotate = false;
         //Debug.Log("Sword collided with " + collision.transform.name);
         rb.velocity = Vector2.zero;
@@ -131,11 +158,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         transform.parent = collision.transform;
     }
 
-    //private IEnumerator ReturnAfterTime(float duration)
-    //{
-    //    yield return new WaitForSeconds(duration);
-    //    ReturnSword();
-    //}
+   
 
 
 
@@ -149,7 +172,29 @@ public class Sword_Skill_Controller : MonoBehaviour
        
         transform.parent = null;
         
-       
-        AnimationSword(true);
+       if (isPiercing)
+        {
+            AnimationSword(false);
+        }
+       else 
+        {
+            AnimationSword(true);
+
+        }
+    }
+    //µ¯ÌøÄ£Ê½½£
+    public void SetBounce(bool _isBouncing,int _maxBounceAmount,float _bounceSpeed)
+    {
+        isBouncing=_isBouncing;
+        maxBounceAmount=_maxBounceAmount;
+        bounceSpeed=_bounceSpeed;
+    }
+    public void SetPierce(bool _isPiercing,int _pieceAmount,float _pierceSpeed)
+    {   
+        isPiercing = _isPiercing;
+        pieceAmount = _pieceAmount;
+        pierceSpeed = _pierceSpeed;
+    
+
     }
 }

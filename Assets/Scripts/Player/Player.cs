@@ -216,8 +216,17 @@ public class Player :PublicCharacter
             }
         }
 
-        
+
         #endregion
+        #region 黑洞技能相关控制
+        if (!isGrounded && !isKoncked && !isDash && !isAttack && !isSlideWall && !isSlide && !isMove)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                SkillManager.instance.blackhole.CanUseSkill();
+            }
+        }
+#endregion
     }
 
     private void CheckInput()
@@ -363,7 +372,7 @@ public class Player :PublicCharacter
     {
         dashTime=dashDuration;
         isDash = true;
-        SkillManager.instance.clone.CreateClone(transform);
+        SkillManager.instance.clone.CreateClone(transform,Vector3.zero);
         
         if (isSlideWall)
         {

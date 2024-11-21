@@ -50,6 +50,16 @@ public class Skeleton : Enemy
         //}
 
 
+        FindPlayerAccelerate();
+
+    }
+
+    private void FindPlayerAccelerate()
+    {
+        if (isFrozen)
+        {
+            return;
+        }
         if (playerCheck.collider != null)
         {
             if (playerCheck.distance > 1)
@@ -83,12 +93,8 @@ public class Skeleton : Enemy
             }
 
         }
-
-
-
-
-
     }
+
     public void AttackFinish()
     {
         stateMachine.currentState.Trigger();
