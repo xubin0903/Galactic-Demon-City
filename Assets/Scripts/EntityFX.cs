@@ -46,4 +46,15 @@ public class EntityFX : MonoBehaviour
         Debug.Log("cancel");
         sr.color = Color.white;
     }
+    public void TransParent(bool isParent)
+    {
+        if (isParent)
+        {
+           sr.color = Color.clear;
+        }
+        else
+        {
+            sr.color = Color.white;
+        }
+    }
 }

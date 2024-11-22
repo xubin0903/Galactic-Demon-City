@@ -34,9 +34,16 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             if (transform.localScale.x <= 0)
             {
                 Destroy(gameObject);
+                
+
+            }
+            if(transform.localScale.x <= 5f)
+            {
+                //player退出黑洞状态
+                PlayerManager.instance.player.ExitBlackHole();
             }
         }
-        attackCooldownTimer -= Time.fixedDeltaTime;
+       attackCooldownTimer -= Time.deltaTime;
         if (Input.GetKeyUp(KeyCode.R))
         {
             canAttack = true;
@@ -44,13 +51,21 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             {
                 canAttack = false;
             }
+            //player变成透明
+            PlayerManager.instance.player.fx.TransParent(true);
+            if(targets.Count <= 0)
+            {
+                Invoke("AttackBlackHoleFinish", 0);
+                
+            }
+
         }
         CloneAttackLogic();
     }
 
     private void CloneAttackLogic()
     {
-        if (canAttack && attackCooldownTimer <= 0)
+        if (canAttack && attackCooldownTimer <= 0&&amountAttacked <=maxAttackAmount)
         {
             attackCooldownTimer = attackCooldown;
             if (targets.Count <= 0)
@@ -58,25 +73,38 @@ public class BlackHole_Skill_Controller : MonoBehaviour
                 Debug.Log("No Targets left");
                 return;
             }
-            //随机选择偏移量
-            if (Random.Range(0, 2) == 0)
+            Vector3 offset;
+            if (Random.Range(0, 100) < 50)
             {
-                CloneOffset = Vector3.left;
+                offset = -CloneOffset;
             }
             else
             {
-                CloneOffset = Vector3.right;
+                offset= CloneOffset;
             }
             int randomTargetIndex = Random.Range(0, targets.Count);
-            SkillManager.instance.clone.CreateClone(targets[randomTargetIndex], CloneOffset);
+            Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
+            SkillManager.instance.clone.CreateClone(targets[randomTargetIndex], offset);
+            Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
             amountAttacked++;
-            if (amountAttacked >= maxAttackAmount)
-            {
-                canAttack = false;
-                isShrinking = true;
-                OnDestroyKeyCodes();
-            }
+            if(amountAttacked >= maxAttackAmount)
+            AttackBlackHoleFinish();
         }
+    }
+
+    private void AttackBlackHoleFinish()
+    {
+        
+            
+            canAttack = false;
+            isShrinking = true;
+            OnDestroyKeyCodes();
+        
+    }
+    private void PLayerStateChange()
+    {
+        //player退出黑洞状态
+        PlayerManager.instance.player.ExitBlackHole();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,23 +121,30 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             return;
         }
         //如果已经开始攻击了或者黑洞已经完全生成，就不再生成KeyCode
-        if(canAttack&&transform.localScale.x>= maxSize)
+        if(canAttack&&transform.localScale.x>= maxSize-1)
         {
             return;
         }
-        if (collision.GetComponent<Enemy>() != null)
+        if (collision.GetComponentInChildren<BlackHole_KeyCode_Controller>() == null&&collision.GetComponent<Enemy>()!= null)
         {
-            if (collision.GetComponent<Enemy>().isFrozen)
-            {
-                return;
-            }
+           
             collision.GetComponent<Enemy>().FreezeTime(true);
-            var newBlackHole_KeyCode = Instantiate(blackHoleKeyCodePrefab, collision.transform.position + Vector3.up * 2f, Quaternion.identity);
+            var newBlackHole_KeyCode = Instantiate(blackHoleKeyCodePrefab, collision.transform.position + Vector3.up * 2f, Quaternion.identity,collision.transform);
+            //追踪每一个键对应一个敌人
+            
             blackHoleKeyCodes.Add(newBlackHole_KeyCode);
             var choosenKeyCode = keyCodes[Random.Range(0, keyCodes.Count)];
             keyCodes.Remove(choosenKeyCode);
             newBlackHole_KeyCode.GetComponent<BlackHole_KeyCode_Controller>().SetKeyCode(choosenKeyCode, collision.transform,this);
 
+        }
+        if(collision.GetComponent<Enemy>()!= null)
+        {
+            if(collision.GetComponentInChildren<BlackHole_KeyCode_Controller>() != null)
+            {
+                if(!collision.GetComponent<Enemy>().isFrozen)
+                collision.GetComponent<Enemy>().FreezeTime(true);
+            }
         }
     }
     public void AddEnemyToTargets(Transform _enemyTransform)=> targets.Add(_enemyTransform);
@@ -139,7 +174,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
         growSpeed = _growSpeed;
         canGrow = _canGrow;
      
-        keyCodes = _keyCodes;
+        keyCodes = new List<KeyCode>(_keyCodes);
         blackHoleKeyCodePrefab = _blackHoleKeyCodePrefab;
         canAttack = _canAttack;
         maxAttackAmount = _maxAttackAmount;

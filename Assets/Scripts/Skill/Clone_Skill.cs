@@ -10,8 +10,8 @@ public class Clone_Skill : Skill
     [SerializeField] private bool canAttack;
      public void CreateClone(Transform target,Vector3 offset)
     {
-        target.position += offset;
-        var newclone = Instantiate(clonePrefab, target.position, Quaternion.identity);
-        newclone.GetComponent<Clone_Player_Controller>().SetupClone(cloneDuration,target,canAttack);
+        var position=target.position+offset;
+        var newclone = Instantiate(clonePrefab, position, Quaternion.identity);
+        newclone.GetComponent<Clone_Player_Controller>().SetupClone(cloneDuration,position,canAttack);
     }
 }

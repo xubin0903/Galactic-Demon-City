@@ -31,6 +31,19 @@ public class BlackHole_Skill : Skill
     public override void Update()
     {
         base.Update();
+        if(coolTimer <=0)
+        {
+            PlayerManager.instance.player.canBlackHole = true;
+        }
+        else
+        {
+            PlayerManager.instance.player.canBlackHole = false;
+        }
+    }
+    public override bool CanUseSkill()
+    {
+        return base.CanUseSkill();
+
     }
     public override void UseSkill()
     {

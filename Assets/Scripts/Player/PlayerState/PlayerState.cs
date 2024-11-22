@@ -9,11 +9,13 @@ public class PlayerState
    protected PlayerStateMachine stateMachine;
    protected Rigidbody2D rb;
    protected string animName;
+    protected float stateTimer;
    public PlayerState(Player _player, PlayerStateMachine _stateMachine,string _animName)
    {
       this.player = _player;
       this.stateMachine = _stateMachine;
       this.animName = _animName;
+      this.rb = player.GetComponent<Rigidbody2D>();
    }
 
    public virtual void Enter()
@@ -26,7 +28,7 @@ public class PlayerState
 
    public virtual void Update()
    {
-      
+      stateTimer -= Time.deltaTime;
    }
    public virtual void Exit()
    {

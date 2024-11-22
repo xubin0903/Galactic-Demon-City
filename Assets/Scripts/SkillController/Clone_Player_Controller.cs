@@ -10,7 +10,7 @@ public class Clone_Player_Controller : MonoBehaviour
     [SerializeField] private Vector2 beatBack;
     [SerializeField] private Transform attackCheck;
     [SerializeField] private float attackRadius;
-    [SerializeField] private Animator animator;
+     private Animator animator;
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -29,9 +29,11 @@ public class Clone_Player_Controller : MonoBehaviour
 
         }
     }
-    public void SetupClone( float cloneDuraion,Transform cloneTransform,bool _canAttack)
+    public void SetupClone( float cloneDuraion,Vector3 clonePosition,bool _canAttack)
     {
-        transform.position = cloneTransform.position;
+
+        Debug.Log("CloneTransform: " +clonePosition);
+        transform.position = clonePosition;
         CloneTimer = cloneDuraion;
         if (_canAttack)
         {

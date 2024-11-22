@@ -10,7 +10,7 @@ public class PublicCharacter : MonoBehaviour
    [SerializeField] public int faceDir;
    [SerializeField] protected float currentspeed;
    
-   public Rigidbody2D rb;
+   [HideInInspector]public Rigidbody2D rb;
    protected Collider2D coll;
    [Header("Åö×²¼ì²â")]
    [SerializeField] protected LayerMask groundLayer;

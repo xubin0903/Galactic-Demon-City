@@ -14,7 +14,7 @@ public class Player :PublicCharacter
     [SerializeField] private float jumpForce;
     [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
-    private EntityFX fx;
+    public EntityFX fx { get; private set; }
     public Animator animator { get; private set; }
     
     
@@ -63,11 +63,15 @@ public class Player :PublicCharacter
     public PlayerAimSwordState aimSword { get; private set; }
     public PlayerCatchSwordState catchSword { get; private set; }
     public PlayerThrowSwordState throwSword { get; private set; }
+    public PlayerBlackHoleState blackhole { get; private set; }
     
     public PlayerState currentPlayerState;
 
     [Header("Sword")]
     public GameObject sword;
+    [Header("Black Hole")]
+    public bool isBlackHole;
+    public bool canBlackHole;
 
 
     protected override void Awake()
@@ -81,6 +85,7 @@ public class Player :PublicCharacter
         aimSword = new PlayerAimSwordState(this, stateMachine,"AimSword");
         catchSword = new PlayerCatchSwordState(this, stateMachine,"CatchSword");
         throwSword = new PlayerThrowSwordState(this, stateMachine,"ThrowSword");
+        blackhole = new PlayerBlackHoleState(this, stateMachine,"isGrounded");
 
 
     }
@@ -219,27 +224,37 @@ public class Player :PublicCharacter
 
         #endregion
         #region 黑洞技能相关控制
-        if (!isGrounded && !isKoncked && !isDash && !isAttack && !isSlideWall && !isSlide && !isMove)
+        if (  isGrounded&&!isKoncked && !isDash && !isAttack && !isSlideWall && !isSlide && !isMove)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.R)&&canBlackHole)
             {
-                SkillManager.instance.blackhole.CanUseSkill();
+                isBlackHole = true;
+               stateMachine.ChangeState(blackhole);
             }
         }
-#endregion
+        #endregion
+        #region 水晶技能相关控制
+        if ( !isKoncked &&  !isAttack && !isSlideWall && !isSlide&&!isBlackHole )
+        {
+            if (Input.GetKeyDown(KeyCode.F) && SkillManager.instance.crystal.CanUseSkill())
+            {
+                Debug.Log("水晶技能");
+            }
+        }
+        #endregion
     }
 
     private void CheckInput()
     {
         //移动
         isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
-        if (isMove == true && !isDash && !isAttack&&!isKoncked&&stateMachine.currentState!=aimSword)
+        if (isMove == true && !isDash && !isAttack&&!isKoncked&&stateMachine.currentState!=aimSword&&!isBlackHole)
         {
             Move();
             CounterAttackOver();
         }
         //跳跃
-        if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked&&!isDash)
+        if (Input.GetButtonDown("Jump")&&isGrounded&&!isKoncked&&!isDash&&!isBlackHole)
         {
             currentJumpForce = jumpForce;
             Jump();
@@ -247,25 +262,25 @@ public class Player :PublicCharacter
 
         }
         //冲刺
-        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash_skill.CanUseSkill()&&!isSlideWall&&!isKoncked)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && SkillManager.instance.dash_skill.CanUseSkill()&&!isSlideWall&&!isKoncked&&!isBlackHole)
         {
             Dash();
             CounterAttackOver();
         }
         //攻击
-        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked&&!isDash)
+        if (Input.GetKeyDown(KeyCode.Mouse0)&&isGrounded&&!isKoncked&&!isDash&&!isBlackHole)
         {
             Attack();
         }
         //滑铲
-        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked&&!isDash)
+        if (Input.GetKeyDown(KeyCode.C)&&isGrounded&&isMove&&!isKoncked&&!isDash&&!isBlackHole)
         {
             Slide();
             CounterAttackOver();
 
         }
         //反击
-        if (Input.GetKeyDown(KeyCode.E)&&isGrounded&&!isKoncked&&!isAttack&&!isDash)
+        if (Input.GetKeyDown(KeyCode.E)&&isGrounded&&!isKoncked&&!isAttack&&!isDash&&!isBlackHole)
         {
             CounterAttack();
         }
@@ -493,5 +508,10 @@ public class Player :PublicCharacter
         Destroy(sword);
     }
     #endregion
-
+    public void ExitBlackHole()
+    {
+        stateMachine.ChangeState(baseState);
+        fx.TransParent(false);
+        isBlackHole = false;
+    }
 }
