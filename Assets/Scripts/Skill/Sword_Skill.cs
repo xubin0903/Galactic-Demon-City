@@ -86,7 +86,7 @@ public class Sword_Skill : Skill
         }
         
         
-        swordController.SetupSword(finalDir,gravity);
+        swordController.SetupSword(finalDir,gravity,damage);
         swordController.AnimationSword(isFlip);
         SetActiveDots(false);//ÈÓ³ö¹Ø±ÕÃªµã
     }

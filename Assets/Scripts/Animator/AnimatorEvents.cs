@@ -25,7 +25,7 @@ public class AnimatorEvents : MonoBehaviour
             {
                 //Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
 
-                enemy.Damage(player);
+                enemy.Damage(player,player.damage);
             }
         }
             
@@ -42,8 +42,9 @@ public class AnimatorEvents : MonoBehaviour
                 if (enemy.CanStun())
                 {
                     
-                player.CounterAttackOver();
-                player.isSuccessfulCounterAttack = true;
+                    player.CounterAttackOver();
+                    player.isSuccessfulCounterAttack = true;
+                    SkillManager.instance.clone.CreateCloneOnCounterClone(collider.transform, new Vector3(player.faceDir * 1.5f, 0, 0));
                 }
             }
         }

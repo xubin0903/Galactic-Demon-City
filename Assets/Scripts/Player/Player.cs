@@ -64,8 +64,11 @@ public class Player :PublicCharacter
     public PlayerCatchSwordState catchSword { get; private set; }
     public PlayerThrowSwordState throwSword { get; private set; }
     public PlayerBlackHoleState blackhole { get; private set; }
+    public CharacterStats stats { get; private set; }
+    [Header("人物基本属性")]
+    [SerializeField] public float damage;
     
-    public PlayerState currentPlayerState;
+
 
     [Header("Sword")]
     public GameObject sword;
@@ -86,7 +89,7 @@ public class Player :PublicCharacter
         catchSword = new PlayerCatchSwordState(this, stateMachine,"CatchSword");
         throwSword = new PlayerThrowSwordState(this, stateMachine,"ThrowSword");
         blackhole = new PlayerBlackHoleState(this, stateMachine,"isGrounded");
-
+        stats = GetComponent<CharacterStats>();
 
     }
     protected override void Start()
@@ -387,7 +390,7 @@ public class Player :PublicCharacter
     {
         dashTime=dashDuration;
         isDash = true;
-        SkillManager.instance.clone.CreateClone(transform,Vector3.zero);
+        SkillManager.instance.clone.CreateCloneOnDashSatrt(transform, new Vector3(0, 0, 0));
         
         if (isSlideWall)
         {
@@ -451,11 +454,13 @@ public class Player :PublicCharacter
         
         
     }
-    public void Damage(Enemy enemy)
+    public void Damage(Enemy enemy,float _damage)
     {
         Debug.Log(gameObject.name + "受到伤害");
         fx.Hurt();
         StartCoroutine(HurtBack(backDuration,enemy));
+        stats.TakeDamage(_damage);
+
     }
     private IEnumerator HurtBack(float duration,Enemy enemy)
     {

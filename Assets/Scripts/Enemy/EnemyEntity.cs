@@ -26,6 +26,7 @@ public class EnemyEntity : MonoBehaviour
 
     [SerializeField] public bool isWall { private set; get; }
     [SerializeField] public bool isGrounded {private set; get; }
+    public CharacterStats stats { get; private set; }
 
     [SerializeField] public RaycastHit2D playerCheck { get; private set; }
     [Header("组件")]
@@ -39,6 +40,7 @@ public class EnemyEntity : MonoBehaviour
     public virtual void Awake()
     {
         fx = GetComponent<EntityFX>();
+        stats = GetComponent<CharacterStats>();
         
     }
     public virtual void Start()
@@ -113,12 +115,13 @@ public class EnemyEntity : MonoBehaviour
     }
     #endregion
     #region Damage
-    public virtual void Damage(Player player)
+    public virtual void Damage(Player player,float _damage)
     {
         Debug.Log(gameObject.name+"受到伤害");
         if(currentState.animName!="Attack")
         fx.Hurt();
         StartCoroutine(HurtBack(backDuration, player));
+        stats.TakeDamage(_damage);
     }
     public virtual IEnumerator HurtBack(float duration, Player player)
     {
@@ -138,12 +141,13 @@ public class EnemyEntity : MonoBehaviour
         yield return new WaitForSeconds(duration);
         isKoncked = false;
     }
-    public virtual void OtherDamage( Vector2 hitDir)
+    public virtual void OtherDamage( Vector2 hitDir,float _damage)
     {
         Debug.Log(gameObject.name + "受到伤害");
         if (currentState.animName != "Attack")
-            fx.Hurt();
+       fx.Hurt();
        StartCoroutine(OtherHuatBack(backDuration,hitDir ));
+        stats.TakeDamage(_damage);
     }
     public virtual IEnumerator OtherHuatBack(float duration, Vector2 dir)
     {

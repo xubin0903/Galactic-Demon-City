@@ -11,6 +11,7 @@ public class Clone_Player_Controller : MonoBehaviour
     [SerializeField] private Transform attackCheck;
     [SerializeField] private float attackRadius;
      private Animator animator;
+    private float damage;
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
@@ -29,9 +30,9 @@ public class Clone_Player_Controller : MonoBehaviour
 
         }
     }
-    public void SetupClone( float cloneDuraion,Vector3 clonePosition,bool _canAttack)
+    public void SetupClone( float cloneDuraion,Vector3 clonePosition,bool _canAttack,float _damage)
     {
-
+        damage=_damage;
         Debug.Log("CloneTransform: " +clonePosition);
         transform.position = clonePosition;
         CloneTimer = cloneDuraion;
@@ -57,7 +58,7 @@ public class Clone_Player_Controller : MonoBehaviour
             {
                 //Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
 
-                enemy.OtherDamage(beatBack);
+                enemy.OtherDamage(beatBack,damage);
             }
         }
 

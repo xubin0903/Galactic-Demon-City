@@ -17,6 +17,7 @@ public class Sword_Skill_Controller : MonoBehaviour
     [SerializeField] private float returnDistance;
     [SerializeField] private Vector2 attackForce;
     [SerializeField] private float maxDistance;
+    private float damage;
     [Header("弹跳")]
     [SerializeField] private bool isBouncing;
      private int maxBounceAmount;
@@ -38,11 +39,12 @@ public class Sword_Skill_Controller : MonoBehaviour
         coll = GetComponent<CircleCollider2D>();
         sr=GetComponentInChildren<SpriteRenderer>();
     }
-    public void SetupSword(Vector2 launchDir,float gravityScale)
+    public void SetupSword(Vector2 launchDir,float gravityScale,float _damage)
     {
         Debug.Log("Setting up sword");
         rb.velocity = launchDir;
         rb.gravityScale = gravityScale;
+        damage=_damage;
     }
     public void AnimationSword(bool _Flip)
     {
@@ -106,7 +108,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         //如果是敌人进行攻击
         if (collision.GetComponent<Enemy>() != null)
         {
-            collision.GetComponent<Enemy>().OtherDamage(attackForce);
+            collision.GetComponent<Enemy>().OtherDamage(attackForce,damage);
         }
         //StartCoroutine(ReturnAfterTime(existduration));
     }
@@ -131,7 +133,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         if (isPiercing&&collision.GetComponent<Enemy>() != null)
         {
             
-             collision.GetComponent<Enemy>().OtherDamage(attackForce);
+             collision.GetComponent<Enemy>().OtherDamage(attackForce,damage);
             
             pierceCount++;
             if (pierceCount >= pieceAmount)

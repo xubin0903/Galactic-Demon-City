@@ -19,7 +19,8 @@ public class Enemy : EnemyEntity
     [Header("counter 窗户")]
     [SerializeField] protected bool canbeStunned;
     [SerializeField] protected GameObject counterImage;
-    
+    [Header("Character Stats")]
+    [SerializeField] public float damage;
    
     public override void Awake()
     {

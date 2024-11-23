@@ -18,6 +18,7 @@ public class EntityFX : MonoBehaviour
     }
     public void Hurt()
     {
+        //Debug.Log("HurtFX");
         StartCoroutine(HurtFX(hurtTime));
     }
     private IEnumerator HurtFX(float time)
