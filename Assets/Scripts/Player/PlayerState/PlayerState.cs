@@ -20,7 +20,7 @@ public class PlayerState
 
    public virtual void Enter()
    {
-      Debug.Log(animName + ": Enter");
+      //Debug.Log(animName + ": Enter");
       player.animator.SetBool(animName,true);
      
    }
@@ -32,7 +32,7 @@ public class PlayerState
    }
    public virtual void Exit()
    {
-     Debug.Log(animName + ": Exit");
+        //Debug.Log(animName + ": Exit");
       player.animator.SetBool(animName,false);
 
    }

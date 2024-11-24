@@ -14,6 +14,7 @@ public class Player :PublicCharacter
     [SerializeField] private float jumpForce;
     [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
+    [SerializeField] private bool isDead;
     public EntityFX fx { get; private set; }
     public Animator animator { get; private set; }
     
@@ -65,6 +66,7 @@ public class Player :PublicCharacter
     public PlayerThrowSwordState throwSword { get; private set; }
     public PlayerBlackHoleState blackhole { get; private set; }
     public CharacterStats stats { get; private set; }
+    public PlayerDieState die { get; private set; }
     [Header("人物基本属性")]
     [SerializeField] public float damage;
     
@@ -90,6 +92,7 @@ public class Player :PublicCharacter
         throwSword = new PlayerThrowSwordState(this, stateMachine,"ThrowSword");
         blackhole = new PlayerBlackHoleState(this, stateMachine,"isGrounded");
         stats = GetComponent<CharacterStats>();
+        die = new PlayerDieState(this, stateMachine,"Die");
 
     }
     protected override void Start()
@@ -98,6 +101,12 @@ public class Player :PublicCharacter
     }
     protected override void Update()
     {
+        //人物死亡不进行任何输入
+        if (isDead)
+        {
+            return;
+        }
+        
         stateMachine.currentState.Update();
         #region 基本状态检测
         faceDir = transform.localScale.x>0?1:-1;
@@ -217,7 +226,7 @@ public class Player :PublicCharacter
         {
             if (Input.GetKeyDown(KeyCode.Mouse1)&&(sword!=null||!isAttack&&!isDash&&!isSlideWall&&!isSlide&&!isMove))
             {
-                Debug.Log("鼠标左键按下");
+                //Debug.Log("鼠标左键按下");
                 if(!HaveSword())//剑没回来不能继续攻击
                 
                 stateMachine.ChangeState(aimSword);
@@ -405,6 +414,25 @@ public class Player :PublicCharacter
         attackTimer = attackDuration;
         rb.velocity = new Vector2(0, rb.velocity.y);
         attackTime = 0.1f;
+        if (comobatCount == 0)
+        {
+            attackRadius = 0.85f;
+        }
+        else if (comobatCount == 1)
+        {
+            attackRadius = 0.5f;
+        }
+        else if (comobatCount == 2)
+        {
+            attackRadius = 1.35f;
+
+        }
+        else
+        {
+            attackRadius = 1f;
+           
+        }
+        stats.damage.AddModifier(comobatCount*2);
     }
     private void AttackMove()
     {
@@ -433,33 +461,25 @@ public class Player :PublicCharacter
 
     public void AttackOver()
     {
+
         isAttack = false;
         comobatCount++;
-        
-        if (comobatCount == 0)
+        stats.damage.RemoveModifier((comobatCount-1)*2);
+        if (comobatCount >= 3)
         {
-            attackRadius = 0.85f;
-        }else if (comobatCount == 1)
-        {
-            attackRadius = 0.5f;
-        }else if (comobatCount == 2)
-        {
-            attackRadius = 1.35f;
-        }
-        else
-        {
-            attackRadius = 1f;
             comobatCount = 0;
         }
         
+        //Debug.Log("攻击段数："+comobatCount);
+        
         
     }
-    public void Damage(Enemy enemy,float _damage)
+    public void Damage(Enemy enemy)
     {
-        Debug.Log(gameObject.name + "受到伤害");
+        //Debug.Log(gameObject.name + "受到伤害");
         fx.Hurt();
         StartCoroutine(HurtBack(backDuration,enemy));
-        stats.TakeDamage(_damage);
+       
 
     }
     private IEnumerator HurtBack(float duration,Enemy enemy)
@@ -518,5 +538,17 @@ public class Player :PublicCharacter
         stateMachine.ChangeState(baseState);
         fx.TransParent(false);
         isBlackHole = false;
+    }
+    public void OnDie()
+    {
+        stateMachine.ChangeState(die);
+       
+        
+    }
+    public void GameOver()
+    {
+        //Time.timeScale = 0;
+        isDead = true;
+        Debug.Log("Game Over");
     }
 }

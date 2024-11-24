@@ -41,7 +41,7 @@ public class Sword_Skill_Controller : MonoBehaviour
     }
     public void SetupSword(Vector2 launchDir,float gravityScale,float _damage)
     {
-        Debug.Log("Setting up sword");
+        //Debug.Log("Setting up sword");
         rb.velocity = launchDir;
         rb.gravityScale = gravityScale;
         damage=_damage;
@@ -108,7 +108,8 @@ public class Sword_Skill_Controller : MonoBehaviour
         //如果是敌人进行攻击
         if (collision.GetComponent<Enemy>() != null)
         {
-            collision.GetComponent<Enemy>().OtherDamage(attackForce,damage);
+            collision.GetComponent<Enemy>().OtherDamage(attackForce);
+
         }
         //StartCoroutine(ReturnAfterTime(existduration));
     }
@@ -133,7 +134,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         if (isPiercing&&collision.GetComponent<Enemy>() != null)
         {
             
-             collision.GetComponent<Enemy>().OtherDamage(attackForce,damage);
+             collision.GetComponent<Enemy>().OtherDamage(attackForce);
             
             pierceCount++;
             if (pierceCount >= pieceAmount)

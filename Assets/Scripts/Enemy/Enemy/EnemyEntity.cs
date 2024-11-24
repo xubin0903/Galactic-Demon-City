@@ -32,6 +32,7 @@ public class EnemyEntity : MonoBehaviour
     [Header("组件")]
     public Rigidbody2D rb;
     public Animator anim;
+    [HideInInspector]public CapsuleCollider2D cd;
     [SerializeField] public float faceDir;
     [Header("Animation状态")]
     public EnemyState currentState;
@@ -41,6 +42,7 @@ public class EnemyEntity : MonoBehaviour
     {
         fx = GetComponent<EntityFX>();
         stats = GetComponent<CharacterStats>();
+        cd = GetComponent<CapsuleCollider2D>();
         
     }
     public virtual void Start()
@@ -62,7 +64,7 @@ public class EnemyEntity : MonoBehaviour
         playerCheck = Physics2D.Raycast(transform.position,Vector2.right*faceDir,playerCheckDistance,playerLayer);
         if(playerCheck.collider != null)
         {
-            Debug.Log("Player is detected");
+            //Debug.Log("Player is detected");
         }
         isWall = Physics2D.Raycast(wallCheckPosition.position, Vector2.right * faceDir, wallCheckDistance, groundLayer).collider != null;
         isGrounded = Physics2D.Raycast(groundCheckPosition.position + faceDir * offsetX * Vector3.right, Vector2.down, groundCheckDistance, groundLayer).collider != null;
@@ -115,13 +117,13 @@ public class EnemyEntity : MonoBehaviour
     }
     #endregion
     #region Damage
-    public virtual void Damage(Player player,float _damage)
+    public virtual void Damage(Player player)
     {
-        Debug.Log(gameObject.name+"受到伤害");
+       
         if(currentState.animName!="Attack")
         fx.Hurt();
         StartCoroutine(HurtBack(backDuration, player));
-        stats.TakeDamage(_damage);
+        
     }
     public virtual IEnumerator HurtBack(float duration, Player player)
     {
@@ -130,24 +132,24 @@ public class EnemyEntity : MonoBehaviour
         {
             
             rb.velocity = new Vector2(HurtBackDir[player.comobatCount].x * (faceDir), HurtBackDir[player.comobatCount].y);
-            Debug.Log("受击反馈");
+            //Debug.Log("受击反馈");
         }
         else
         {
             rb.velocity = new Vector2(HurtBackDir[player.comobatCount].x * (-faceDir), HurtBackDir[player.comobatCount].y);
-            Debug.Log("受击反馈");
+            //Debug.Log("受击反馈");
 
         }
         yield return new WaitForSeconds(duration);
         isKoncked = false;
     }
-    public virtual void OtherDamage( Vector2 hitDir,float _damage)
+    public virtual void OtherDamage( Vector2 hitDir)
     {
-        Debug.Log(gameObject.name + "受到伤害");
+        //Debug.Log(gameObject.name + "受到伤害");
         if (currentState.animName != "Attack")
        fx.Hurt();
        StartCoroutine(OtherHuatBack(backDuration,hitDir ));
-        stats.TakeDamage(_damage);
+      
     }
     public virtual IEnumerator OtherHuatBack(float duration, Vector2 dir)
     {

@@ -20,7 +20,8 @@ public class NightBorneAnimationEvent : MonoBehaviour
         {
             if (coll.GetComponent<Player> ()!= null)
             {
-                coll.GetComponent<Player>().Damage(enemy,enemy.damage);
+                coll.GetComponent<Player>().Damage(enemy);
+                //coll.GetComponent<CharacterStats>().TakeDamage(enemy.stats.damage.GetValue());
             }
         }
     }

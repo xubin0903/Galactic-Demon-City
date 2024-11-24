@@ -15,7 +15,7 @@ public class AnimatorEvents : MonoBehaviour
     }
     public void AnimationAttackEvent()
     {
-        Debug.Log("攻击");
+        //Debug.Log("攻击");
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
         foreach (var collider in colliders)
         {
@@ -25,7 +25,10 @@ public class AnimatorEvents : MonoBehaviour
             {
                 //Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
 
-                enemy.Damage(player,player.damage);
+               enemy.Damage(player);
+               EnemyStats targetStats = enemy.GetComponent<EnemyStats>();
+                player.stats.DoDamage(targetStats);
+               
             }
         }
             
@@ -61,5 +64,9 @@ public class AnimatorEvents : MonoBehaviour
     public void ChangeBaseSatetEvent()
     {
         player.stateMachine.ChangeState(player.baseState);
+    }
+    public void GameOverEvent()
+    {
+        player.GameOver();
     }
 }

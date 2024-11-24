@@ -15,7 +15,7 @@ public class SkillManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Debug.Log("SkillManager instance created");
+            //Debug.Log("SkillManager instance created");
         }
         else
         {

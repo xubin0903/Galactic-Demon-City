@@ -16,6 +16,7 @@ public class Enemy : EnemyEntity
     [Header("状态")]
     public bool isMove;
     public bool canAttack=true;
+    public bool isDead;
     [Header("counter 窗户")]
     [SerializeField] protected bool canbeStunned;
     [SerializeField] protected GameObject counterImage;
@@ -79,5 +80,11 @@ public class Enemy : EnemyEntity
             anim.speed = 1;
             isFrozen = false;
         }
+    }
+    public virtual void OnDie()
+    {
+        isDead = true;
+        Debug.Log(gameObject.name + "OnDie");
+
     }
 }

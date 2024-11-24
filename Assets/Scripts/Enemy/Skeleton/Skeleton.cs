@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,13 @@ public class Skeleton : Enemy
     public SkeletonIdleState idleState { get; private set; }
     public SkeletonAttackState attackState { get; private set; }
     public SkeletonStundState stundState { get; private set; }
+    public SkeletonDieState dieState { get; private set; }
     #endregion
     [Header("яётн")]
     public float stundDuration;
     public bool isStund;
     public Vector2 stundDir;
+
 
     public override void Awake()
     {
@@ -24,7 +27,7 @@ public class Skeleton : Enemy
         attackState = new SkeletonAttackState(this, stateMachine, "Attack", this);
         stundState = new SkeletonStundState(this, stateMachine, "Stund", this);
         stateMachine= new EnemyStateMachine();
-
+        dieState = new SkeletonDieState(this, stateMachine, "Die", this);
     }
     public override void Start()
     {
@@ -35,6 +38,11 @@ public class Skeleton : Enemy
     }
     public override void Update()
     {
+        if (isDead)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
         CanAttack();
         base.Update();
         stateMachine.currentState.Update();
@@ -70,10 +78,13 @@ public class Skeleton : Enemy
                     //Debug.Log(currentSpeed);
 
                 }
+                //Debug.Log("skeleton accelerate");
             }
             else if (playerCheck.distance < 1)
             {
                 SetZeroVelocity();
+                //Debug.Log("skeleton stop");
+
                 if (stateMachine.currentState != attackState)
                 {
                     if (canAttack)
@@ -81,6 +92,11 @@ public class Skeleton : Enemy
                         stateMachine.ChangeState(attackState);
                         lastAttackTime = Time.time;
                     }
+                    //else
+                    //{
+                    //    stateMachine.ChangeState(idleState);
+                    //}
+                  
                 }
 
             }
@@ -111,5 +127,12 @@ public class Skeleton : Enemy
             return false;
         }
     }
+    public override void OnDie()
+    {
+        base.OnDie();
 
+        stateMachine.ChangeState(dieState);
+    }
+
+    
 }
