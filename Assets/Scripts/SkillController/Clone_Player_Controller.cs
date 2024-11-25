@@ -48,7 +48,7 @@ public class Clone_Player_Controller : MonoBehaviour
     }
     public void AnimationAttackEvent()
     {
-        Debug.Log("¹¥»÷");
+        //Debug.Log("¹¥»÷");
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackCheck.position, attackRadius);
         foreach (var collider in colliders)
         {

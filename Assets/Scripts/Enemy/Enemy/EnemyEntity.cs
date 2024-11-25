@@ -47,7 +47,7 @@ public class EnemyEntity : MonoBehaviour
     }
     public virtual void Start()
     {
-
+        
     }
     public virtual void Update()
     {
@@ -84,6 +84,7 @@ public class EnemyEntity : MonoBehaviour
         //翻转
         new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        EventHandler.OnEnemyHealthUI();//不让血条UI一起翻转
     }
     //public virtual void FlipControllerr(float _x)
     //{

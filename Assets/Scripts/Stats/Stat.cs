@@ -25,5 +25,9 @@ public class Stat
         modifiers.Remove(modifier);
         //Debug.Log("Removed modifier: " + modifier);
     }
+    public void SetDefaultValue(float value)
+    {
+        baseValune = value;
+    }
 
 }

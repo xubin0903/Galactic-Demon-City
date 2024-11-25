@@ -432,7 +432,7 @@ public class Player :PublicCharacter
             attackRadius = 1f;
            
         }
-        stats.damage.AddModifier(comobatCount*2);
+      
     }
     private void AttackMove()
     {
@@ -464,7 +464,7 @@ public class Player :PublicCharacter
 
         isAttack = false;
         comobatCount++;
-        stats.damage.RemoveModifier((comobatCount-1)*2);
+     
         if (comobatCount >= 3)
         {
             comobatCount = 0;
