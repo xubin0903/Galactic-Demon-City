@@ -10,8 +10,11 @@ public class Player :PublicCharacter
     [SerializeField] private float offsety;
     [SerializeField] private float beginspeed;
     [SerializeField] private float maxspeed;
+    private float defaultmaxspeed;
     [SerializeField] private float acceleration = 1;
+    private float defaultAcceleration;
     [SerializeField] private float jumpForce;
+    private float defaultJumpForce;
     [SerializeField] private float currentJumpForce;
     [SerializeField] private float xInput;
     [SerializeField] private bool isDead;
@@ -21,6 +24,7 @@ public class Player :PublicCharacter
     
     [Header("冲刺")]
     [SerializeField] private float dashSpeed;
+    private float defaultdashSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashDuration;
     [SerializeField] private bool isDash;
@@ -40,6 +44,7 @@ public class Player :PublicCharacter
 
     [Header("滑铲")]
     [SerializeField] private float slidingSpeed;
+    private float defaultslidingSpeed;
     [SerializeField] private float slideDuration;
     [SerializeField] private bool isSlide;
     [SerializeField] private float slidingCooldown;
@@ -68,7 +73,7 @@ public class Player :PublicCharacter
     public CharacterStats stats { get; private set; }
     public PlayerDieState die { get; private set; }
     [Header("人物基本属性")]
-    [SerializeField] public float damage;
+   
     
 
 
@@ -98,6 +103,13 @@ public class Player :PublicCharacter
     protected override void Start()
     {
        stateMachine.Initialize(baseState);
+        //初始化基本属性
+        defaultmaxspeed = maxspeed;
+        defaultAcceleration = acceleration;
+        defaultJumpForce = jumpForce;
+        defaultdashSpeed = dashSpeed;
+        defaultslidingSpeed = slidingSpeed;
+
     }
     protected override void Update()
     {
@@ -106,6 +118,7 @@ public class Player :PublicCharacter
         {
             return;
         }
+      
         
         stateMachine.currentState.Update();
         #region 基本状态检测
@@ -254,6 +267,7 @@ public class Player :PublicCharacter
             }
         }
         #endregion
+       
     }
 
     private void CheckInput()
@@ -549,6 +563,46 @@ public class Player :PublicCharacter
     {
         //Time.timeScale = 0;
         isDead = true;
+        ////所有状态设置为死亡状态
+        //isAttack = false;
+        //isDash = false;
+        //isSlide = false;
+        //isSlideWall = false;
+        //isCounterAttack = false;
+        //isSuccessfulCounterAttack = false;
+        //isKoncked = false;
         Debug.Log("Game Over");
     }
+    public void IcedSlowEffect(float duration,float slowPercent)
+    {
+        currentspeed*=(1- slowPercent);
+        maxspeed*= (1- slowPercent);
+        currentJumpForce*= (1- slowPercent);
+        jumpForce*= (1- slowPercent);
+        animator.speed = 1- slowPercent;
+        slidingSpeed*= (1- slowPercent);
+        dashSpeed*= (1- slowPercent);
+        
+        acceleration*= (1- slowPercent);
+       
+        //Debug.Log("冰冻效果");
+        StartCoroutine(IcedSlowEffcetEnd(duration));
+    
+    }
+    public IEnumerator IcedSlowEffcetEnd(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        currentspeed = beginspeed;
+        currentJumpForce = defaultJumpForce;
+        jumpForce = defaultJumpForce;
+        slidingSpeed = defaultslidingSpeed;
+        dashSpeed = defaultdashSpeed;
+     
+        acceleration = defaultAcceleration;
+        animator.speed = 1;
+        maxspeed = defaultmaxspeed;
+      
+        //Debug.Log("冰冻效果结束");
+    }
+
 }

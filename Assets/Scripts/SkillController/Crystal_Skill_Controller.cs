@@ -100,6 +100,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
                     attackForce.x = -attackForce.x;
                 }
                 coll.gameObject.GetComponent<Enemy>().OtherDamage(attackForce);
+                coll.gameObject.GetComponent<CharacterStats>().TakeDamage(damage);
             }
         }
        

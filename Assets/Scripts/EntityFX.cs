@@ -6,8 +6,11 @@ public class EntityFX : MonoBehaviour
 {
     private SpriteRenderer sr;
     [SerializeField] private Material hurtMaterial;
-    [SerializeField] private Material originalMaterial;
+    private Material originalMaterial;
     [SerializeField] private float hurtTime;
+    [SerializeField] private Color icedColor;
+    [SerializeField] private Color[] FiredColor;
+    [SerializeField] private Color[] LightnedColor;
     private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -23,8 +26,11 @@ public class EntityFX : MonoBehaviour
     }
     private IEnumerator HurtFX(float time)
     {
+        Color color=sr.color;
         sr.material = hurtMaterial;
+        sr.color = Color.white;
         yield return new WaitForSeconds(time);
+        sr.color = color;
         sr.material = originalMaterial;
     }
     public void RedColorBlink()
@@ -40,7 +46,7 @@ public class EntityFX : MonoBehaviour
             sr.color = Color.red;
         }
     }
-    public void CancelRedColorBlink()
+    public void CancelColorBlink()
     {
         //È¡Ïû
         CancelInvoke();
@@ -57,5 +63,53 @@ public class EntityFX : MonoBehaviour
         {
             sr.color = Color.white;
         }
+    }
+    public void FiredColorFor(float time)
+    {
+        Debug.Log("FiredColorFor");
+        InvokeRepeating("FiredColorBlink", 0, 0.2f);
+        Invoke("CancelColorBlink", time);
+    }
+    public void LightnedColorFor(float time)
+    {
+        Debug.Log("LightnedColorFor");
+        InvokeRepeating("LightnedColorBlink", 0, 0.2f);
+        Invoke("CancelColorBlink", time);
+    }
+    public void IcedColorFor(float time)
+    {
+        Debug.Log("IcedColorFor");
+        InvokeRepeating("IcedColorBlink", 0,0.1f);
+        Invoke("CancelColorBlink", time);
+    }
+    private void LightnedColorBlink()
+    {
+        Debug.Log("LightnedColorBlink");
+        if (sr.color!= LightnedColor[0])
+        {
+            sr.color = LightnedColor[0];
+           Debug.Log("LightnedColor[0]");
+        }
+        else
+        {
+            Debug.Log("LightnedColor[1]");
+            sr.color = LightnedColor[1];
+        }
+    }
+    private void FiredColorBlink()
+    {
+        if(sr.color!= FiredColor[0])
+        {
+            sr.color = FiredColor[0];
+           
+        }
+        else
+        {
+            sr.color = FiredColor[1];
+        }
+    }
+    private void IcedColorBlink()
+    {
+        sr.color = icedColor;
     }
 }

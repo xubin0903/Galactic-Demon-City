@@ -8,6 +8,7 @@ public class Enemy : EnemyEntity
     
     [SerializeField] public float currentSpeed;
     [SerializeField] public float maxSpeed;
+    private float defaultSpeed;
     [SerializeField] public float beginSpeed;
     [SerializeField] public float lastAttackTime;
     [SerializeField] private float attckCoolDown;
@@ -29,7 +30,13 @@ public class Enemy : EnemyEntity
         
         
     }
-   
+    public  override void Start()
+    {
+        base.Start();
+        currentSpeed = beginSpeed;
+        defaultSpeed = currentSpeed;
+
+    }
     public  void Move()
     {
         SetVelocity(new Vector2(currentSpeed * faceDir, rb.velocity.y));
@@ -85,6 +92,20 @@ public class Enemy : EnemyEntity
     {
         isDead = true;
         Debug.Log(gameObject.name + "OnDie");
+
+    }
+    public void IcedSlowEffect(float duration,float slowPercentage)
+    {
+        currentSpeed*=(1-slowPercentage);
+        maxSpeed*=(1-slowPercentage);
+        anim.speed = 1 - slowPercentage;
+        Invoke("ResetSpeed", duration);
+    }
+    public void ResetSpeed()
+    {
+        currentSpeed = beginSpeed;
+        maxSpeed = defaultSpeed;
+        anim.speed = 1; 
 
     }
 }

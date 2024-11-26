@@ -11,10 +11,12 @@ public class Clone_Skill : Skill
     [SerializeField] private bool canAttack;
     [SerializeField] private bool canCreateOnCounterClone;
     [SerializeField] private bool canCreateOnDashStart;
-     public void CreateClone(Transform target,Vector3 offset)
+  
+     public void CreateClone(Transform target,Vector3 offset,float _damage)
     {
         var position=target.position+offset;
         var newclone = Instantiate(clonePrefab, position, Quaternion.identity);
+        damage=_damage;
         newclone.GetComponent<Clone_Player_Controller>().SetupClone(cloneDuration,position,canAttack,damage);
     }
     public void CreateCloneOnCounterClone(Transform target, Vector3 offset)
@@ -28,13 +30,13 @@ public class Clone_Skill : Skill
     private IEnumerator CreateOnCounterCloneDalay(Transform target, Vector3 offset)
     {
         yield return new WaitForSeconds(.3f);
-        CreateClone(target, offset);
+        CreateClone(target, offset, damage);
     }
     public void CreateCloneOnDashSatrt(Transform target, Vector3 offset)
     {
         if (canCreateOnDashStart)
         {
-            CreateClone(target, offset);
+            CreateClone(target, offset, damage);
         }
     }
 }

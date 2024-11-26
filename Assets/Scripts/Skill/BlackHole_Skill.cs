@@ -22,6 +22,8 @@ public class BlackHole_Skill : Skill
 
     [SerializeField] private bool isShrinking;
     [SerializeField] private float shrinkSpeed;
+    [SerializeField] private float[]  damages;
+    [SerializeField] private GameObject attackPrefab;
 
     protected override void Start()
     {
@@ -53,7 +55,7 @@ public class BlackHole_Skill : Skill
     public void CreateBlackHole()
     {
         blackHole = Instantiate(blackHolePrefab, PlayerManager.instance.player.transform.position , Quaternion.identity);
-        blackHole.GetComponent<BlackHole_Skill_Controller>().SetupBlackHole(maxSize, growSpeed, canGrow, keyCodes, blackHoleKeyCodePrefab, canAttack, maxAttackAmount, attackCooldown, CloneOffset, isShrinking, shrinkSpeed);
+        blackHole.GetComponent<BlackHole_Skill_Controller>().SetupBlackHole(maxSize, growSpeed, canGrow, keyCodes, blackHoleKeyCodePrefab, canAttack, maxAttackAmount, attackCooldown, CloneOffset, isShrinking, shrinkSpeed, damages, attackPrefab);
     }
 }
   

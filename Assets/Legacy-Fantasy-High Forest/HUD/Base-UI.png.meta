@@ -203,7 +203,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 94
-        y: 270
+        y: 271
         width: 20
         height: 20
       alignment: 0
@@ -1501,7 +1501,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Base-UI_65
+      name: Icon
       rect:
         serializedVersion: 2
         x: 323
@@ -1907,7 +1907,6 @@ TextureImporter:
       Base-UI_62: 163201775
       Base-UI_63: -103215825
       Base-UI_64: -818379443
-      Base-UI_65: -688633781
       Base-UI_66: -558712590
       Base-UI_67: -1433252364
       Base-UI_68: -1199530799
@@ -1926,6 +1925,7 @@ TextureImporter:
       Base-UI_9: 93262476
       GreenHealthUI: 1711422881
       HeathUI: 399821491
+      Icon: -688633781
       Xuetiao: 2019794093
       redHealthUI: 1947662295
   mipmapLimitGroupName: 

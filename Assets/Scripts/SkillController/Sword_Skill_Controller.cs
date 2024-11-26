@@ -109,6 +109,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         if (collision.GetComponent<Enemy>() != null)
         {
             collision.GetComponent<Enemy>().OtherDamage(attackForce);
+            collision.GetComponent<CharacterStats>().TakeDamage(damage);
 
         }
         //StartCoroutine(ReturnAfterTime(existduration));
@@ -135,6 +136,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         {
             
              collision.GetComponent<Enemy>().OtherDamage(attackForce);
+            collision.GetComponent<CharacterStats>().TakeDamage(damage);
             
             pierceCount++;
             if (pierceCount >= pieceAmount)
@@ -168,6 +170,10 @@ public class Sword_Skill_Controller : MonoBehaviour
     //½£µÄ·µ»Ø
     public void ReturnSword()
     {
+        if (isPiercing)
+        {
+            coll.enabled = true;
+        }
         canReturn = false;
         canRotate = true;
         isReturn=true;

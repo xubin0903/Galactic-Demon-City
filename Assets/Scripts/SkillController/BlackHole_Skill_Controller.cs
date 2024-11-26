@@ -21,6 +21,8 @@ public class BlackHole_Skill_Controller : MonoBehaviour
     private List<GameObject> blackHoleKeyCodes=new List<GameObject>();
     private bool isShrinking;
     private float shrinkSpeed;
+    private GameObject attackPrefab;
+    private float[] damage;
     
     private void Update()
     {
@@ -71,6 +73,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             if (targets.Count <= 0)
             {
                 Debug.Log("No Targets left");
+                AttackBlackHoleFinish();
                 return;
             }
             Vector3 offset;
@@ -84,8 +87,13 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             }
             int randomTargetIndex = Random.Range(0, targets.Count);
             Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
-            SkillManager.instance.clone.CreateClone(targets[randomTargetIndex], offset);
+            var randomDamage = damage[Random.Range(0, damage.Length)];
+            SkillManager.instance.clone.CreateClone(targets[randomTargetIndex], offset, randomDamage);
             Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
+            //GameObject newclone=Instantiate(attackPrefab);
+            //var position = targets[randomTargetIndex].position ;
+            //targets.Remove(targets[randomTargetIndex]);
+            //newclone.GetComponent<BlackHole_Attack_Controller>().SetUp(damage,0.3f,position);
             amountAttacked++;
             if(amountAttacked >= maxAttackAmount)
             AttackBlackHoleFinish();
@@ -168,7 +176,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             collision.GetComponent<Enemy>().FreezeTime(false);
         }
     }
-    public void SetupBlackHole(float _maxSize, float _growSpeed, bool _canGrow, List<KeyCode> _keyCodes, GameObject _blackHoleKeyCodePrefab, bool _canAttack, int _maxAttackAmount, float _attackCooldown, Vector3 _cloneOffset, bool _isShrinking, float _shrinkSpeed)
+    public void SetupBlackHole(float _maxSize, float _growSpeed, bool _canGrow, List<KeyCode> _keyCodes, GameObject _blackHoleKeyCodePrefab, bool _canAttack, int _maxAttackAmount, float _attackCooldown, Vector3 _cloneOffset, bool _isShrinking, float _shrinkSpeed, float[] _damage, GameObject _attackPrefab)
     {
         maxSize = _maxSize;
         growSpeed = _growSpeed;
@@ -184,5 +192,7 @@ public class BlackHole_Skill_Controller : MonoBehaviour
      
         isShrinking = _isShrinking;
         shrinkSpeed = _shrinkSpeed;
+        damage = _damage;
+        attackPrefab = _attackPrefab;
     }
 }

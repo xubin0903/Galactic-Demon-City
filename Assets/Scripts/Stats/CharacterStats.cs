@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterStats : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class CharacterStats : MonoBehaviour
     [Header("Major Stats")]
 
     public Stat strength;//力量：增加一点伤害和1%的暴击率
-    public Stat agility;//敏捷：增加一点移动速度和1%的闪避率
+    public Stat agility;//敏捷：增加一点移动速度（只能减少寒冰的减速效果）和1%的闪避率
     public Stat intelligence;//智力：增加3点魔法抗性和1点的魔法攻击力
     public Stat vitality;//体力：增加3或5点最大生命值
     [Header("Defensive Stats")]
@@ -21,7 +22,7 @@ public class CharacterStats : MonoBehaviour
     public Stat criticalPower;//默认·150
     [Header("Magic Stats")]
     public bool isFired;//持续性火焰伤害
-    public bool isIced;//减抗性冰冻减少20%
+    public bool isIced;//减抗性冰冻减少20% and 减速20%
     public bool isLightned;//增加命中绿
     public Stat magicResist;
     public Stat FireDamage;
@@ -31,54 +32,97 @@ public class CharacterStats : MonoBehaviour
     public float lightningDuration;
     public float fireDuration;
     public float fireCooldown;
-    private float fireTimer;
-    private float fireCooldownTimer;
-    private float iceTimer; 
-    private float lightningTimer;
-
-
+    protected float fireTimer;
+    protected float fireCooldownTimer;
+    protected float iceTimer; 
+    protected float lightningTimer;
+    [Header("Alive Status and Effect")]
+    public Sprite FiredEffectSprite;
+    public Sprite IcedEffectSprite;
+    public Sprite LightningEffectSprite;
+    protected Sprite aliveEffectSprite;
+    public GameObject aliveEffectUI;
+    protected EntityFX fx;
+    [Header("Current Health")]
     [SerializeField] public float currentHealth;
+   
 
     protected virtual void Start()
     {
         currentHealth = maxHealth.GetValue();
         criticalPower.SetDefaultValue(150);
+        aliveEffectSprite = aliveEffectUI.GetComponent<SpriteRenderer>().sprite;
+        fx = GetComponent<EntityFX>();
+        
+        
     }
     protected virtual void Update()
     {
-        if(fireTimer > 0)
+        AliveEffectUpdate();
+       
+
+    }
+
+    public virtual float GetSlowPercent()
+    {
+        float slowPercent = 0;
+        slowPercent = agility.GetValue() / 100;
+        if (isIced)
+        {
+            slowPercent+=0.2f;
+        }
+        return slowPercent;
+    }
+
+    private void AliveEffectUpdate()
+    {
+        if (fireTimer > 0)
         {
             fireTimer -= Time.deltaTime;
             fireCooldownTimer -= Time.deltaTime;
             if (fireTimer <= 0)
             {
                 isFired = false;
-                
+                TurnoffAliveEffect();
             }
         }
-        if (fireCooldownTimer <0&&isFired)
+        if (fireCooldownTimer < 0 && isFired)
         {
             TakeDamage(2);
             Debug.Log(gameObject.name + "is do firedamage");
             fireCooldownTimer = fireCooldown;
         }
-        if(iceTimer > 0)
+        if (iceTimer > 0)
         {
             iceTimer -= Time.deltaTime;
             if (iceTimer <= 0)
             {
                 isIced = false;
+                TurnoffAliveEffect();
             }
         }
-        if(lightningTimer > 0)
+        if (lightningTimer > 0)
         {
             lightningTimer -= Time.deltaTime;
-            if(lightningTimer <= 0)
+            if (lightningTimer <= 0)
             {
                 isLightned = false;
+                TurnoffAliveEffect();
             }
         }
-        
+    }
+
+    public virtual void ApplyAliveEffect()
+    {
+        if (aliveEffectSprite != null)
+        {
+            aliveEffectUI.GetComponent<SpriteRenderer>().sprite = aliveEffectSprite;
+            aliveEffectUI.SetActive(true);
+        }
+    }
+    public virtual void TurnoffAliveEffect()
+    {
+        aliveEffectUI.SetActive(false);
     }
     public virtual void TakeDamage(float _damage)
     {
@@ -237,6 +281,9 @@ public class CharacterStats : MonoBehaviour
             isFired = _isFired;
             fireTimer = fireDuration;
             fireCooldownTimer = fireCooldown;
+          
+            aliveEffectSprite = FiredEffectSprite;
+            fx.FiredColorFor(fireDuration);
            // Debug.Log(gameObject.name + "is using fire");
 
         }else if (_isIced)
@@ -244,6 +291,18 @@ public class CharacterStats : MonoBehaviour
 
             isIced = _isIced;
             iceTimer = iceDuration;
+            
+           aliveEffectSprite = IcedEffectSprite;
+            if (GetComponent<Player>() != null)
+            {
+                GetComponent<Player>().IcedSlowEffect(iceDuration, GetSlowPercent());
+                Debug.Log(gameObject.name + "is using ice");
+            }
+            else if(GetComponent<Enemy>() != null)
+            {
+                GetComponent<Enemy>().IcedSlowEffect(iceDuration, GetSlowPercent());
+            }
+            fx.IcedColorFor(iceDuration);
            // Debug.Log(gameObject.name + "is using ice");
         }
         else if (_isLightned)
@@ -251,9 +310,12 @@ public class CharacterStats : MonoBehaviour
 
             isLightned = _isLightned;
             lightningTimer = lightningDuration;
+            
+            aliveEffectSprite = LightningEffectSprite;
+            fx.LightnedColorFor(lightningDuration);
             //Debug.Log(gameObject.name + "is using lightning");
         }
-        
+        ApplyAliveEffect();
     }
 
     public virtual float CheckTargetMagicResist(CharacterStats _TargetStats, float _damage)
@@ -263,4 +325,6 @@ public class CharacterStats : MonoBehaviour
         return _damage * (100 - magicResist) / 100;
 
     }
+   
+  
 }

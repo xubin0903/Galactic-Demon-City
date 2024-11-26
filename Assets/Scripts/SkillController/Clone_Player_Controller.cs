@@ -59,6 +59,7 @@ public class Clone_Player_Controller : MonoBehaviour
                 //Debug.Log("Enemy Type: " + enemy.GetType().Name); // 打印实际类型
 
                 enemy.OtherDamage(beatBack);
+                enemy.GetComponent<CharacterStats>().TakeDamage(damage);
             }
         }
 
