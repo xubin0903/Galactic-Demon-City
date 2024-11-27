@@ -7,6 +7,11 @@ public class EnemyStats : CharacterStats
 {
     private Skeleton enemy;
     private Slider healthBar;
+    [Header("Level")]
+    public int level;
+    [Range(0f, 1f)]
+    [SerializeField] private float perecentage;
+    
  
 
 
@@ -15,6 +20,7 @@ public class EnemyStats : CharacterStats
         enemy = GetComponent<Skeleton>();
         healthBar=GetComponentInChildren<Slider>();
     }
+   
     public override void DoDamage(CharacterStats _TargetStats)
     {
         base.DoDamage(_TargetStats);
@@ -27,6 +33,16 @@ public class EnemyStats : CharacterStats
 
     protected override void Start()
     {
+
+     
+        Modify(maxHealth);
+        Modify(damage);
+        Modify(FireDamage);
+        Modify(IceDamage);
+        Modify(LightningDamage);
+        Modify(criticalChance);
+        Modify(evasion);
+        Modify(armor);
         base.Start();
     }
     protected override void Update()
@@ -40,5 +56,13 @@ public class EnemyStats : CharacterStats
         enemy.OnDie();
         healthBar.gameObject.SetActive(false);
 
+    }
+    private void Modify(Stat _stat)
+    {
+        for (int i = 1; i < level; i++)
+        {
+            float modifier = _stat.GetValue() * perecentage;
+            _stat.AddModifier(Mathf.RoundToInt(modifier));
+        }
     }
 }
