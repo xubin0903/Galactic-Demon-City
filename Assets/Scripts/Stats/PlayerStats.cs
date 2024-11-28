@@ -10,6 +10,11 @@ public class PlayerStats : CharacterStats
     public Image redHealBar;
     public float bufferEffect;
 
+    public PlayerDropItem dropitemSystem;
+    private void Awake()
+    {
+        dropitemSystem = GetComponent<PlayerDropItem>();
+    }
     public override void DoDamage(CharacterStats _TargetStats)
     {
         base.DoDamage(_TargetStats);
@@ -45,6 +50,7 @@ public class PlayerStats : CharacterStats
     {
         base.Die();
         PlayerManager.instance.player.OnDie();
+        dropitemSystem.GenerateDropItem();
     }
 
     public override float CheckTargetArmor(CharacterStats _TargetStats, float finalDamage)
@@ -75,6 +81,18 @@ public class PlayerStats : CharacterStats
         {
             aliveEffectUI.GetComponent<Image>().sprite = aliveEffectSprite;
             aliveEffectUI.SetActive(true);
+        }
+    }
+    protected override void DecreaseHealthBy(float _damage)
+    {
+        base.DecreaseHealthBy(_damage);
+        if (currentHealth < GetMaxHealth() * 0.2f)
+        {
+            ItemData_Equipment equipArmor = Inventory.instance.GetEquippedment(EquipmentType.Armor);
+            if (Inventory.instance.CanUseArmor())
+            {
+                equipArmor.ExecuteEffects(PlayerManager.instance.player.transform);
+            }
         }
     }
 

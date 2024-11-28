@@ -8,8 +8,10 @@ public class Enemy : EnemyEntity
     
     [SerializeField] public float currentSpeed;
     [SerializeField] public float maxSpeed;
-    private float defaultSpeed;
+ 
     [SerializeField] public float beginSpeed;
+    private float defaultMaxSpeed;
+    private float defaultBeginSpeed;
     [SerializeField] public float lastAttackTime;
     [SerializeField] private float attckCoolDown;
     public bool isFrozen;
@@ -34,7 +36,8 @@ public class Enemy : EnemyEntity
     {
         base.Start();
         currentSpeed = beginSpeed;
-        defaultSpeed = currentSpeed;
+        defaultMaxSpeed= maxSpeed;
+        defaultBeginSpeed = beginSpeed;
 
     }
     public  void Move()
@@ -78,33 +81,52 @@ public class Enemy : EnemyEntity
         if (isFreeze)
         {
             currentSpeed = 0;
+            beginSpeed = 0;
+            maxSpeed = 0;
             anim.speed = 0;
             isFrozen=true;
+            //Debug.Log(gameObject.name + " is frozen");
         }
         else
         {
             currentSpeed = beginSpeed;
+            beginSpeed = defaultBeginSpeed;
+            maxSpeed = defaultMaxSpeed;
             anim.speed = 1;
             isFrozen = false;
+            //Debug.Log(gameObject.name + " is unfrozen");
         }
+    }
+    public virtual void Freeze(float duration)
+    {
+        StartCoroutine(FreezeFor(duration));
+    }
+    private IEnumerator  FreezeFor(float duration)
+    {
+        //Debug.Log(gameObject.name + " is frozen for " + duration + " seconds");
+        FreezeTime(true);
+        yield return new WaitForSeconds(duration);
+        FreezeTime(false);
     }
     public virtual void OnDie()
     {
         isDead = true;
-        Debug.Log(gameObject.name + "OnDie");
+        //Debug.Log(gameObject.name + "OnDie");
 
     }
     public void IcedSlowEffect(float duration,float slowPercentage)
     {
         currentSpeed*=(1-slowPercentage);
         maxSpeed*=(1-slowPercentage);
+        beginSpeed*=(1-slowPercentage);
         anim.speed = 1 - slowPercentage;
         Invoke("ResetSpeed", duration);
     }
     public void ResetSpeed()
     {
         currentSpeed = beginSpeed;
-        maxSpeed = defaultSpeed;
+        beginSpeed = defaultBeginSpeed;
+        maxSpeed = defaultMaxSpeed;
         anim.speed = 1; 
 
     }

@@ -38,11 +38,11 @@ public class EntityFX : MonoBehaviour
         if (sr.color != Color.white)
         {
             sr.color = Color.white;
-            Debug.Log("white");
+            //Debug.Log("white");
         }
         else
         {
-            Debug.Log("Red");
+            //Debug.Log("Red");
             sr.color = Color.red;
         }
     }
@@ -50,7 +50,7 @@ public class EntityFX : MonoBehaviour
     {
         //È¡Ïû
         CancelInvoke();
-        Debug.Log("cancel");
+        //Debug.Log("cancel");
         sr.color = Color.white;
     }
     public void TransParent(bool isParent)
@@ -66,33 +66,33 @@ public class EntityFX : MonoBehaviour
     }
     public void FiredColorFor(float time)
     {
-        Debug.Log("FiredColorFor");
+        //Debug.Log("FiredColorFor");
         InvokeRepeating("FiredColorBlink", 0, 0.2f);
         Invoke("CancelColorBlink", time);
     }
     public void LightnedColorFor(float time)
     {
-        Debug.Log("LightnedColorFor");
+        //Debug.Log("LightnedColorFor");
         InvokeRepeating("LightnedColorBlink", 0, 0.2f);
         Invoke("CancelColorBlink", time);
     }
     public void IcedColorFor(float time)
     {
-        Debug.Log("IcedColorFor");
+        //Debug.Log("IcedColorFor");
         InvokeRepeating("IcedColorBlink", 0,0.1f);
         Invoke("CancelColorBlink", time);
     }
     private void LightnedColorBlink()
     {
-        Debug.Log("LightnedColorBlink");
+        //Debug.Log("LightnedColorBlink");
         if (sr.color!= LightnedColor[0])
         {
             sr.color = LightnedColor[0];
-           Debug.Log("LightnedColor[0]");
+           //Debug.Log("LightnedColor[0]");
         }
         else
         {
-            Debug.Log("LightnedColor[1]");
+            //Debug.Log("LightnedColor[1]");
             sr.color = LightnedColor[1];
         }
     }

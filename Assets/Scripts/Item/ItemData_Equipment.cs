@@ -12,6 +12,7 @@ public enum EquipmentType
 public class ItemData_Equipment : ItemData
 {
     public EquipmentType equipmentType;
+    public float cooldown;
     [Header("Major Stats")]
 
     public float strength;//力量：增加一点伤害和1%的暴击率
@@ -28,9 +29,14 @@ public class ItemData_Equipment : ItemData
     public float armor;//防御
     public float evasion;//闪避
     [Header("Magic Stats")]
+    public float magicResist;
     public float fireDamage;
     public float iceDamage;
     public float lightningDamage;
+    [Header("Materilas")]
+    public List<InventoryItem> materials;
+    [Header("Item Effects")]
+    public ItemEffect[] itemEffects;
     public void AddModifer()
     {
         Player player = PlayerManager.instance.player;
@@ -48,6 +54,7 @@ public class ItemData_Equipment : ItemData
         player.stats.FireDamage.AddModifier(fireDamage);
         player.stats.IceDamage.AddModifier(iceDamage);
         player.stats.LightningDamage.AddModifier(lightningDamage);
+        player.stats.magicResist.AddModifier(magicResist);
     }
     public void RemoveModifer()
     {
@@ -65,6 +72,14 @@ public class ItemData_Equipment : ItemData
         player.stats.evasion.RemoveModifier(evasion);
         player.stats.FireDamage.RemoveModifier(fireDamage);
         player.stats.IceDamage.RemoveModifier(iceDamage);
-        player.stats.LightningDamage.RemoveModifier(lightningDamage);               
+        player.stats.LightningDamage.RemoveModifier(lightningDamage);    
+        player.stats.magicResist.RemoveModifier(magicResist);
+    }
+    public void ExecuteEffects(Transform target)
+    {
+        foreach (ItemEffect effect in itemEffects)
+        {
+            effect.ExecuteEffect(target);
+        }
     }
 }

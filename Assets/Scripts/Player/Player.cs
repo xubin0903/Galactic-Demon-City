@@ -310,6 +310,17 @@ public class Player :PublicCharacter
         {
             CounterAttack();
         }
+        //使用恢复药品
+        if (Input.GetKeyDown(KeyCode.Alpha1)){
+            if (Inventory.instance.CanUseFlask())
+            {
+                Debug.Log("使用恢复药品");
+            }
+            else
+            {
+                Debug.Log("药品不足");
+            }
+        }
     }
     private void CounterAttack()
     {

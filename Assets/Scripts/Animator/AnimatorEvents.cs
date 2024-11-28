@@ -27,7 +27,9 @@ public class AnimatorEvents : MonoBehaviour
 
                enemy.Damage(player);
                EnemyStats targetStats = enemy.GetComponent<EnemyStats>();
-                player.stats.DoDamage(targetStats);
+                player.stats.DoPhysicsDamage(targetStats);
+
+                Inventory.instance.GetEquippedment(EquipmentType.Weapon)?.ExecuteEffects(enemy.transform);
                
             }
         }

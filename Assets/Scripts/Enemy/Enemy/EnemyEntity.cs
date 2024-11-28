@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,6 +37,7 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] public float faceDir;
     [Header("Animation状态")]
     public EnemyState currentState;
+    public event Action OnHeathUIUpdate;
 
     //[SerializeField] protected bool facingRight  = true;
     public virtual void Awake()
@@ -84,7 +86,7 @@ public class EnemyEntity : MonoBehaviour
         //翻转
         new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        EventHandler.OnEnemyHealthUI();//不让血条UI一起翻转
+       OnHeathUIUpdate?.Invoke();
     }
     //public virtual void FlipControllerr(float _x)
     //{

@@ -186,7 +186,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -917324247
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.9811321, g: 0, b: 0, a: 1}
@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 87236000632606802}
   - component: {fileID: 625548008551932674}
   - component: {fileID: 6471146852566465837}
+  - component: {fileID: 5087976162259501376}
   m_Layer: 9
   m_Name: Enemy_Skeleton
   m_TagString: Enemy
@@ -463,7 +464,7 @@ MonoBehaviour:
   currentSpeed: 3.714863
   maxSpeed: 4
   beginSpeed: 2
-  lastAttackTime: 4.0008397
+  lastAttackTime: -1000000
   attckCoolDown: 3
   isFrozen: 0
   idleTimer: 2
@@ -557,7 +558,7 @@ MonoBehaviour:
     baseValune: 0
     modifiers: []
   maxHealth:
-    baseValune: 1200
+    baseValune: 50
     modifiers: []
   armor:
     baseValune: 0
@@ -579,7 +580,7 @@ MonoBehaviour:
   isIced: 0
   isLightned: 0
   magicResist:
-    baseValune: 100
+    baseValune: 0
     modifiers: []
   FireDamage:
     baseValune: 10
@@ -598,7 +599,34 @@ MonoBehaviour:
   IcedEffectSprite: {fileID: -823186764, guid: bdeaeacf91e805f449e7fa66d480d644, type: 3}
   LightningEffectSprite: {fileID: 21300000, guid: dc9fbeb540e3bd641893fee702d6f6d5, type: 3}
   aliveEffectUI: {fileID: 8224724870870286908}
+  lighteningEffect: {fileID: 5347273271266538967, guid: 2eb26cdcf699f5441ba1826bfdf4ae4e, type: 3}
   currentHealth: 0
+  isDead: 0
+  level: 8
+  perecentage: 0.4
+--- !u!114 &5087976162259501376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644299987501972413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52abc64169062164fbe584e7f52eacec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropPrefab: {fileID: 2880014966874016226, guid: f03b7f7414a95554982ee0cfb293809f, type: 3}
+  possibleItems:
+  - {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
+  - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  - {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
+  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
+  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
+  - {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
+  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
+  - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  maxDropCount: 4
 --- !u!1 &5786783917281496470
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,8 +699,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -917324247
-  m_SortingLayer: 2
+  m_SortingLayerID: 2118192269
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -85727878, guid: 687df074731fbf744b668d2275dbb675, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -788,8 +816,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -917324247
-  m_SortingLayer: 2
+  m_SortingLayerID: 2118192269
+  m_SortingLayer: 3
   m_SortingOrder: 10
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

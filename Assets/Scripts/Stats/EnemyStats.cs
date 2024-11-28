@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyStats : CharacterStats
 {
+    private EnemyDropItem dropitemSystem;
     private Skeleton enemy;
     private Slider healthBar;
     [Header("Level")]
@@ -19,6 +20,7 @@ public class EnemyStats : CharacterStats
     {
         enemy = GetComponent<Skeleton>();
         healthBar=GetComponentInChildren<Slider>();
+        dropitemSystem = GetComponent<EnemyDropItem>();
     }
    
     public override void DoDamage(CharacterStats _TargetStats)
@@ -55,6 +57,7 @@ public class EnemyStats : CharacterStats
         base.Die();
         enemy.OnDie();
         healthBar.gameObject.SetActive(false);
+        dropitemSystem.GenerateDropItems();
 
     }
     private void Modify(Stat _stat)

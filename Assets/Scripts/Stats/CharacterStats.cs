@@ -43,13 +43,16 @@ public class CharacterStats : MonoBehaviour
     protected Sprite aliveEffectSprite;
     public GameObject aliveEffectUI;
     protected EntityFX fx;
+    public GameObject lighteningEffect;
+
     [Header("Current Health")]
     [SerializeField] public float currentHealth;
+    [SerializeField] public bool isDead;
    
 
     protected virtual void Start()
     {
-        currentHealth = maxHealth.GetValue();
+        currentHealth = GetMaxHealth();
         criticalPower.SetDefaultValue(150);
         aliveEffectSprite = aliveEffectUI.GetComponent<SpriteRenderer>().sprite;
         fx = GetComponent<EntityFX>();
@@ -62,7 +65,10 @@ public class CharacterStats : MonoBehaviour
        
 
     }
-
+    public virtual float GetMaxHealth()
+    {
+        return maxHealth.GetValue()+vitality.GetValue()*Random.Range(3,5);
+    }
     public virtual float GetSlowPercent()
     {
         float slowPercent = 0;
@@ -73,7 +79,14 @@ public class CharacterStats : MonoBehaviour
         }
         return slowPercent;
     }
-
+    public virtual void OncreatHealth(float _health)
+    {
+        currentHealth += _health;
+        if (currentHealth > GetMaxHealth())
+        {
+            currentHealth = GetMaxHealth();
+        }
+    }
     private void AliveEffectUpdate()
     {
         if (fireTimer > 0)
@@ -122,18 +135,31 @@ public class CharacterStats : MonoBehaviour
     }
     public virtual void TurnoffAliveEffect()
     {
+        this.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.white;
         aliveEffectUI.SetActive(false);
     }
     public virtual void TakeDamage(float _damage)
     {
+        DecreaseHealthBy(_damage);
+
+    }
+
+    protected virtual void DecreaseHealthBy(float _damage)
+    {
+        if (isDead)
+        {
+            return;
+        }
         currentHealth -= _damage;
         if (currentHealth <= 0)
         {
             Die();
 
         }
+        
 
     }
+
     public virtual void DoDamage(CharacterStats _TargetStats)
     {
        
@@ -157,7 +183,7 @@ public class CharacterStats : MonoBehaviour
             Debug.Log(gameObject.name + "is doing a critical attack");
         }
         _TargetStats.TakeDamage(finalDamage);
-        Debug.Log(_TargetStats.gameObject.name + "is taking Physicedamage:" + finalDamage);
+        //Debug.Log(_TargetStats.gameObject.name + "is taking Physicedamage:" + finalDamage);
     }
 
     public virtual void DoMagicDamage(CharacterStats _TargetStats)
@@ -168,6 +194,7 @@ public class CharacterStats : MonoBehaviour
         var iceDamage = IceDamage.GetValue();
         var lightningDamage = LightningDamage.GetValue();
         finalMagicDamage = fireDamage + iceDamage + lightningDamage;
+       
         if (finalMagicDamage <= 0)
         {
             Debug.Log("no magic damage");
@@ -182,9 +209,47 @@ public class CharacterStats : MonoBehaviour
         useFire = fireDamage>iceDamage&&fireDamage>lightningDamage;
         useIce = iceDamage>fireDamage&&iceDamage>lightningDamage;
         useLightning = lightningDamage>fireDamage&&lightningDamage>iceDamage;
+        
+      
         if(!useFire && !useIce && !useLightning)
         {
-            //使用伪随机算法选择一种伤害类型
+            //如果两个大于零并且相等，另外一个等于零，则随机选择一种
+            if (fireDamage == iceDamage && lightningDamage == 0)
+            {
+                if(Random.value > 0.5f)
+                {
+                    useFire = true;
+                }
+                else
+                {
+                    useIce = true;
+                }
+            }   
+            else if (fireDamage == lightningDamage && iceDamage == 0)
+            {
+                if (Random.value > 0.5f)
+                {
+                    useFire = true;
+                }
+                else
+                {
+                    useLightning = true;
+                }
+            }
+            else if (iceDamage == lightningDamage && fireDamage == 0)
+            {
+                if(Random.value > 0.5f)
+                {
+                    useIce = true;
+                }
+                else
+                {
+                    useLightning = true;
+                }
+            }
+            else
+            {
+            //使用伪随机算法选择一种伤害类型,三个都大于零，则随机选择一种
             int randomNum = Random.Range(0, 3);
             switch (randomNum)
             {
@@ -197,6 +262,9 @@ public class CharacterStats : MonoBehaviour
                 case 2:
                     useLightning = true;  
                 break;
+
+            }
+        
             }
         }
         //Debug.Log("useFire:" + useFire + " useIce:" + useIce + " useLightning:" + useLightning);
@@ -204,9 +272,10 @@ public class CharacterStats : MonoBehaviour
 
         finalMagicDamage += intelligence.GetValue() * 1;
         finalMagicDamage = CheckTargetMagicResist(_TargetStats, finalMagicDamage);
-        finalMagicDamage=Mathf.Clamp(finalMagicDamage,0,float.MaxValue);
+     
+        Debug.Log("finalMagicDamage:" + finalMagicDamage);
         _TargetStats.TakeDamage(finalMagicDamage);
-        Debug.Log(_TargetStats.gameObject.name + "is taking magicdamage:" + finalMagicDamage);
+        //Debug.Log(_TargetStats.gameObject.name + "is taking magicdamage:" + finalMagicDamage);
 
     }
     public virtual float CheckTargetArmor(CharacterStats _TargetStats, float finalDamage)
@@ -216,7 +285,7 @@ public class CharacterStats : MonoBehaviour
         if (_TargetStats.isIced)
         {
             defennce *= 0.8f;
-            Debug.Log(defennce);
+            //Debug.Log(defennce);
         }
 
        
@@ -234,7 +303,7 @@ public class CharacterStats : MonoBehaviour
             toalEvasion -= 20;
         }
         toalEvasion = Mathf.Clamp(toalEvasion, 0, 100);
-        Debug.Log(_TargetStats.gameObject.name + "evasion:" + toalEvasion);
+        //Debug.Log(_TargetStats.gameObject.name + "evasion:" + toalEvasion);
         if (Random.value < toalEvasion / 100)
         {
             //Debug.Log(gameObject.name + "is evading the attack");
@@ -268,7 +337,7 @@ public class CharacterStats : MonoBehaviour
 
     public virtual void Die()
     {
-
+        isDead = true;
     }
     public virtual void ApplyMagicStaus(bool _isFired, bool _isIced, bool _isLightned)
     {
@@ -313,6 +382,9 @@ public class CharacterStats : MonoBehaviour
             
             aliveEffectSprite = LightningEffectSprite;
             fx.LightnedColorFor(lightningDuration);
+            GameObject effect = Instantiate(lighteningEffect);
+
+            effect.GetComponent<Lighten_Controller>().SetUp(this, 10);
             //Debug.Log(gameObject.name + "is using lightning");
         }
         ApplyAliveEffect();
@@ -325,6 +397,18 @@ public class CharacterStats : MonoBehaviour
         return _damage * (100 - magicResist) / 100;
 
     }
-   
-  
+    public void IncreaseStatBy(int modifer, float duration, Stat targetStat)
+    {
+        StartCoroutine(IncreaseStatByCoroutine(modifer, duration, targetStat));
+    }
+
+    private IEnumerator IncreaseStatByCoroutine(int modifer, float duration, Stat targetStat)
+    {
+        targetStat.AddModifier(modifer);
+        yield return new WaitForSeconds(duration);
+        targetStat.RemoveModifier(modifer);
+    }
+
+
+
 }
