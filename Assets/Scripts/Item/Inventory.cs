@@ -17,9 +17,12 @@ public class Inventory : MonoBehaviour
     public Transform itemSlotParent;//材料
     public Transform EquipmentSlotParent;//装备栏
     public Transform equippedSlotParent;//装备UI
+    public Transform statsSlot;//数值栏
+
     private ItemSlot_Controller[] itemSlots;
-    private ItemSlot_Controller[] equipmentSlots;
-    private ItemSlot_Controller[] equippedSlots;
+    public ItemSlot_Controller[] equipmentSlots;//待装备栏
+    private ItemSlot_Controller[] equippedSlots;//装备中的栏
+    private StatSlot[] statSlots;
     [Header("CoolDown")]
     public float flaskLastUseTime = -100000;
     public float armorLastUseTime = -100000;
@@ -37,6 +40,7 @@ public class Inventory : MonoBehaviour
         itemSlots = itemSlotParent.GetComponentsInChildren<ItemSlot_Controller>();
         equipmentSlots = EquipmentSlotParent.GetComponentsInChildren<ItemSlot_Controller>();
         equippedSlots = equippedSlotParent.GetComponentsInChildren<ItemSlot_Controller>();
+        statSlots = statsSlot.GetComponentsInChildren<StatSlot>();
     }
     private void Start()
     {
@@ -187,6 +191,10 @@ public class Inventory : MonoBehaviour
                 break;
             }
             equippedSlots[i].UpdateSlot(equippedItems[i]);
+        }
+        for(int i = 0; i < statSlots.Length; i++)
+        {
+            statSlots[i].UpdateStatValue();
         }
         //清理未使用的槽位
         for(int i = inventoryItems.Count; i < itemSlots.Length; i++)

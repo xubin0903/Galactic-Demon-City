@@ -17,6 +17,7 @@ MonoBehaviour:
   itemIcon: {fileID: -245851270, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0.05
   equipmentType: 2
+  cooldown: 0
   strength: 0
   agility: 0
   intelligence: 0
@@ -27,9 +28,14 @@ MonoBehaviour:
   maxHealth: 0
   armor: 0
   evasion: 0
+  magicResist: 0
   fireDamage: 0
   iceDamage: 0
   lightningDamage: 20
-  materials: []
+  materials:
+  - itemData: {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
+    amount: 100
+  - itemData: {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
+    amount: 10
   itemEffects:
   - {fileID: 11400000, guid: cdc74e5fe4570ec4794f8c64f39347a6, type: 2}

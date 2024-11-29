@@ -10,12 +10,18 @@ public class EquippedmentSlot_Controller : ItemSlot_Controller
     {
         gameObject.name = "Equippedmentobject _"+equipmentType.ToString();
     }
+    
     public override void OnPointerClick(PointerEventData eventData)
     {
-         ItemData_Equipment Equipment = item.itemData as ItemData_Equipment;
+        if (item == null || item.itemData == null)
+        {
+            return;
+        }
+
+        ItemData_Equipment Equipment = item.itemData as ItemData_Equipment;
         Inventory.instance.UnEquipItem(Equipment);
         Inventory.instance.AddItem(Equipment);
+        UI.instance.itemToolTip.HideTip();
         ClearSlot();
-
     }
 }

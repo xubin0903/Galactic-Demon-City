@@ -5,25 +5,33 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot_Controller : MonoBehaviour,IPointerClickHandler
+public class ItemSlot_Controller : MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
 {
     public InventoryItem item;
-    public Image slotImage;
+    public Image image;
     public TextMeshProUGUI itemamount;
-    private void Awake()
+    protected  virtual void Awake()
     {
-        slotImage=GetComponent<Image>();
+        image=GetComponent<Image>();
         itemamount=GetComponentInChildren<TextMeshProUGUI>();
-        slotImage.color = Color.clear;
+        image.color = Color.clear;
         itemamount.text = "";
+        
 
     }
     public  virtual void OnPointerClick(PointerEventData eventData)
     {
+        if (item != null && item.itemData != null && Input.GetKey(KeyCode.LeftControl))
+        {
+            Inventory.instance.RemoveItem(item.itemData);
+            return;
+        }
+       
         if (item!= null && item.itemData!= null && item.itemData.itemType == ItemType.Equipment)
         {
            
             Inventory.instance.EquipItem(item.itemData);
+            UI.instance.itemToolTip.HideTip();
         }
         else
         {
@@ -31,17 +39,17 @@ public class ItemSlot_Controller : MonoBehaviour,IPointerClickHandler
         }
     }
 
-    public void UpdateSlot(InventoryItem _item)
+    public  virtual void UpdateSlot(InventoryItem _item)
     {
-        if (_item == null||_item.itemData==null)
+        if (_item == null||_item.itemData==null||image==null)
         {
-            ClearSlot();
+            
             return;
         }
             this.gameObject.SetActive(true);
             item=_item;
-            slotImage.color = Color.white;
-            slotImage.sprite = item.itemData.itemIcon;
+            image.color = Color.white;
+            image.sprite = item.itemData.itemIcon;
             if(item.amount>1)
             itemamount.text = item.amount.ToString();
             else
@@ -52,18 +60,33 @@ public class ItemSlot_Controller : MonoBehaviour,IPointerClickHandler
     public void ClearSlot()
     {
         item = null;
-        slotImage.color = Color.clear;
-        slotImage.sprite = null;
+        image.color = Color.clear;
+        image.sprite = null;
 
         itemamount.text = "";
     }
-    private void Update()
+    protected virtual void Update()
     {
         if (item == null)
         {
-            slotImage.color = Color.clear;
+            image.color = Color.clear;
             itemamount.text = "";
         }
     }
 
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        if (item != null &&item.itemData != null)
+        {
+            UI.instance.itemToolTip.ShowTip(item.itemData as ItemData_Equipment);
+        }
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        if (item != null &&item.itemData != null)
+        {
+            UI.instance.itemToolTip.HideTip();
+        }
+    }
 }

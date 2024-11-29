@@ -32,6 +32,8 @@ MonoBehaviour:
   fireDamage: 0
   iceDamage: 0
   lightningDamage: 0
-  materials: []
+  materials:
+  - itemData: {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
+    amount: 10
   itemEffects:
   - {fileID: 11400000, guid: 199e515c043f6f148a1921004a401ed7, type: 2}

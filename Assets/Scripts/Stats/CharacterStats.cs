@@ -2,7 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+public enum StatType
+{
+    strength,
+    agility,
+    intelligence,
+    vitality,
+    armor,
+    magicResist,
+    damage,
+    criticalChance,
+    criticalPower,
+    fireDamage,
+    iceDamage,
+    lightningDamage,
+    evasion,
+    maxHealth,
+}
 public class CharacterStats : MonoBehaviour
 {
 
@@ -405,10 +421,50 @@ public class CharacterStats : MonoBehaviour
     private IEnumerator IncreaseStatByCoroutine(int modifer, float duration, Stat targetStat)
     {
         targetStat.AddModifier(modifer);
+        if (targetStat == maxHealth)
+        {
+            currentHealth +=modifer ;
+        }
+        
         yield return new WaitForSeconds(duration);
         targetStat.RemoveModifier(modifer);
     }
 
-
+    public Stat GetStat(StatType type)
+    {
+        switch (type)
+        {
+            case StatType.strength:
+                return strength;
+            case StatType.agility:
+                return agility;
+            case StatType.intelligence:
+                return intelligence;
+            case StatType.vitality:
+                return vitality;
+            case StatType.armor:
+                return armor;
+            case StatType.magicResist:
+                return magicResist;
+            case StatType.damage:
+                return damage;
+            case StatType.criticalChance:
+                return criticalChance;
+            case StatType.criticalPower:
+                return criticalPower;
+            case StatType.fireDamage:
+                return FireDamage;
+            case StatType.iceDamage:
+                return IceDamage;
+            case StatType.lightningDamage:
+                return LightningDamage;
+            case StatType.evasion:
+                return evasion;
+            case StatType.maxHealth:
+                return maxHealth;
+            default:
+                return null;
+        }
+    }
 
 }
