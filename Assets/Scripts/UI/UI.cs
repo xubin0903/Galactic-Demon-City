@@ -6,10 +6,12 @@ public class UI : MonoBehaviour
 {
     public static UI instance;
     public UI_Item_ToolTip itemToolTip;
+    public UI_Skill_ToolTip skillToolTip;
     public GameObject Character;
     public GameObject SkillTree;
     public GameObject Craft;
     public GameObject Options;
+    public GameObject InGameUI;
     public UI_CraftWindow craftWindow;
     private void Awake()
     {
@@ -21,11 +23,12 @@ public class UI : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+       SkillTree.SetActive(true);
     }
     // Start is called before the first frame update
     void Start()
     {
-        SwitchTo(null);
+        SwitchTo(InGameUI);
     }
 
     // Update is called once per frame
@@ -63,14 +66,35 @@ public class UI : MonoBehaviour
         Inventory.instance.UpdateSlotUI();
     }
     public void SwitchWithKey(GameObject _menu)
+
     {
         if(_menu!= null && _menu.activeSelf)
         {
             _menu.SetActive(false);
+            CheckInGameUI();
             return;
         }
         SwitchTo(_menu);
        
+    }
+   public void TurnOffAll()
+    {
+        SkillTree.SetActive(false);
+        Character.SetActive(false);
+        Craft.SetActive(false);
+        Options.SetActive(false);
+        CheckInGameUI();
+    }
+    private void CheckInGameUI()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).gameObject.activeSelf)
+            {
+                return;
+            }
+        }
+        SwitchTo(InGameUI);
     }
   
 }

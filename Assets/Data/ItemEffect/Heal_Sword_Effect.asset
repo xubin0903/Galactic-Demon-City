@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b5cd834988e574c9e50f1c2da431d0, type: 3}
   m_Name: Heal_Sword_Effect
   m_EditorClassIdentifier: 
+  effectDescription: "\u653B\u51FB\u6210\u529F\u56DE\u590D8%\u8840\u91CF"
   healPercent: 0.06

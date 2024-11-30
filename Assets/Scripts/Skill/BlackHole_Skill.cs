@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlackHole_Skill : Skill
 {
     public GameObject blackHolePrefab;
     private GameObject blackHole;
+    public SkillSlot_UI blackHoleUnlockedSlot;
+    public bool blackHoleUnlocked;
     [Header("Skill Settings")]
     [SerializeField] private float maxSize;
     [SerializeField] private float growSpeed;
@@ -28,6 +31,7 @@ public class BlackHole_Skill : Skill
     protected override void Start()
     {
         base.Start();
+        blackHoleUnlockedSlot.GetComponent<Button>().onClick.AddListener(() => UnlockBlackHole());
         
     }
     public override void Update()
@@ -44,6 +48,10 @@ public class BlackHole_Skill : Skill
     }
     public override bool CanUseSkill()
     {
+        //if(balckHoleUnlocked == false)
+        //{
+        //    return false;
+        //}
         return base.CanUseSkill();
 
     }
@@ -56,6 +64,13 @@ public class BlackHole_Skill : Skill
     {
         blackHole = Instantiate(blackHolePrefab, PlayerManager.instance.player.transform.position , Quaternion.identity);
         blackHole.GetComponent<BlackHole_Skill_Controller>().SetupBlackHole(maxSize, growSpeed, canGrow, keyCodes, blackHoleKeyCodePrefab, canAttack, maxAttackAmount, attackCooldown, CloneOffset, isShrinking, shrinkSpeed, damages, attackPrefab);
+    }
+    public void UnlockBlackHole()
+    {
+        if (blackHoleUnlockedSlot.unlocked)
+        {
+            blackHoleUnlocked = true;  
+        }
     }
 }
   

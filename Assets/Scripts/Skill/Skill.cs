@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    [SerializeField] protected float coolDown;
-    protected float coolTimer;
+    [SerializeField] public float coolDown;
+    public float coolTimer;
     protected Player player;
     public float damage;
     protected  virtual void Start()

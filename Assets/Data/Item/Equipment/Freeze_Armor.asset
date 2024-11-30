@@ -16,6 +16,7 @@ MonoBehaviour:
   itemName: Freeze_Armor
   itemIcon: {fileID: 288293509, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0
+  Effectdescription: "\u8840\u91CF\u4F4E\u4E8E20%\u51BB\u7ED3\u9644\u8FD1\u654C\u4EBA\u5341\u79D2\u949F"
   equipmentType: 1
   cooldown: 50
   strength: 3

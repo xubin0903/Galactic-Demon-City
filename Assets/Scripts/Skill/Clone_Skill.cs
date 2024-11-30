@@ -10,7 +10,7 @@ public class Clone_Skill : Skill
     [SerializeField] private float cloneDuration;
     [SerializeField] private bool canAttack;
     [SerializeField] private bool canCreateOnCounterClone;
-    [SerializeField] private bool canCreateOnDashStart;
+    
   
      public void CreateClone(Transform target,Vector3 offset,float _damage)
     {
@@ -32,11 +32,11 @@ public class Clone_Skill : Skill
         yield return new WaitForSeconds(.3f);
         CreateClone(target, offset, damage);
     }
-    public void CreateCloneOnDashSatrt(Transform target, Vector3 offset)
-    {
-        if (canCreateOnDashStart)
-        {
-            CreateClone(target, offset, damage);
-        }
-    }
+    //public void CreateCloneOnDashSatrt(Transform target, Vector3 offset)
+    //{
+    //    if (canCreateOnDashStart)
+    //    {
+    //        CreateClone(target, offset, damage);
+    //    }
+    //}
 }

@@ -16,6 +16,7 @@ MonoBehaviour:
   itemName: SuckBlood_Sword
   itemIcon: {fileID: -1944902997, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0.084
+  Effectdescription: "\u5438\u8840\u5200\u4E00\u5200\u56DE\u590D8%\u8840\u91CF"
   equipmentType: 0
   cooldown: 0
   strength: 0

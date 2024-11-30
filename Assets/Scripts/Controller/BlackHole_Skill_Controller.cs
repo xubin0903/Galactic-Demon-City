@@ -89,7 +89,12 @@ public class BlackHole_Skill_Controller : MonoBehaviour
             Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
             var randomDamage = damage[Random.Range(0, damage.Length)];
             SkillManager.instance.clone.CreateClone(targets[randomTargetIndex], offset, randomDamage);
-            Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
+            //如果敌人已经死亡删除目标
+            if (targets[randomTargetIndex].GetComponent<CharacterStats>().currentHealth <= 0)
+            {
+                targets.Remove(targets[randomTargetIndex]);
+            }
+            //Debug.Log("enemyTransform:" + targets[randomTargetIndex].position);
             //GameObject newclone=Instantiate(attackPrefab);
             //var position = targets[randomTargetIndex].position ;
             //targets.Remove(targets[randomTargetIndex]);

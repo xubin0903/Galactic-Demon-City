@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45929ccbc8744d4429a932fb98f5ddd8, type: 3}
   m_Name: IceandFire_Effect
   m_EditorClassIdentifier: 
+  effectDescription: "\u51B0\u706B\u4EA4\u66FF\u653B\u51FB"
   iceandFireEffect: {fileID: 7018047089092069017, guid: 502ceb8ad59f595488a54eefdb347919, type: 3}
   velocity: {x: 15, y: 0}

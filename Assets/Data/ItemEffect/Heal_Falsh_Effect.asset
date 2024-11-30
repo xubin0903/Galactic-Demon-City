@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b5cd834988e574c9e50f1c2da431d0, type: 3}
   m_Name: Heal_Falsh_Effect
   m_EditorClassIdentifier: 
+  effectDescription: "\u7528\u4E00\u6B21\u6CBB\u759730%"
   healPercent: 0.3

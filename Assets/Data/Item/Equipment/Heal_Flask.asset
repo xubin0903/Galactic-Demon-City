@@ -16,6 +16,7 @@ MonoBehaviour:
   itemName: Heal_Flask
   itemIcon: {fileID: -1698851337, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0
+  Effectdescription: "\u5976\u81EA\u5DF130%\uFF0C\u63091\u4F7F\u7528"
   equipmentType: 3
   cooldown: 20
   strength: 0

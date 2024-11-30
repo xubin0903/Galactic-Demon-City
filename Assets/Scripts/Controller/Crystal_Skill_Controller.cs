@@ -37,6 +37,12 @@ public class Crystal_Skill_Controller : MonoBehaviour
         }
         if (canMove)
         {
+            if (closestEnemy == null)
+            {
+                canMove=false;
+                Invoke("Set_Explode", 0.5f);
+                return;
+            }
             transform.position = Vector2.MoveTowards(transform.position, closestEnemy.position, moveSpeed * Time.deltaTime);
             if (Vector2.Distance(transform.position, closestEnemy.position) <= 0.1f)
             {
@@ -86,7 +92,15 @@ public class Crystal_Skill_Controller : MonoBehaviour
     private IEnumerator CrystalDuration()
     {
         yield return new WaitForSeconds(crystalDuration);
-        Set_Explode();
+        if (SkillManager.instance.crystal.explodedUnlocked)
+        {
+            Set_Explode();
+
+        }
+        else
+        {
+            OnDestroy();
+        }
     }
     public void ExplodeCollision()
     {

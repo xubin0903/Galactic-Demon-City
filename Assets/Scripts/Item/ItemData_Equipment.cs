@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 public enum EquipmentType
 {
@@ -11,6 +13,9 @@ public enum EquipmentType
 [CreateAssetMenu(fileName = "New Equipment Item", menuName = "Data/Equipment Data")]
 public class ItemData_Equipment : ItemData
 {
+
+    [TextArea(3, 10)]
+    public string Effectdescription;
     public EquipmentType equipmentType;
     public float cooldown;
     [Header("Major Stats")]
@@ -37,6 +42,7 @@ public class ItemData_Equipment : ItemData
     public List<InventoryItem> materials;
     [Header("Item Effects")]
     public ItemEffect[] itemEffects;
+    
     private int descriptionLength;
     
     public void AddModifer()
@@ -109,6 +115,12 @@ public class ItemData_Equipment : ItemData
                 sb.Append(" ");
             }
         }
+        if(Effectdescription!= "")
+        {
+            sb.AppendLine();
+            sb.AppendLine("Effect Description:"+Effectdescription);
+           
+        }
        return sb.ToString();
     }
     private void AddItemDescription(string name, float value)
@@ -124,4 +136,6 @@ public class ItemData_Equipment : ItemData
             
         }
     }
+    
+   
 }

@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a3cf46f6bcd93440a179f39c31c42db, type: 3}
   m_Name: FreezeEnemy_Effect
   m_EditorClassIdentifier: 
+  effectDescription: "\u8840\u91CF\u4F4E\u4E8E20%\u51BB\u7ED3\u654C\u4EBA"

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46eb82af1409cba4a87b5d41e2d548d3, type: 3}
   m_Name: Armor
   m_EditorClassIdentifier: 
+  effectDescription: "\u52A020\u9632\u5FA1\u529B"
   statType: 4
   value: 20
   duration: 10

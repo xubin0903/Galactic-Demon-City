@@ -181,7 +181,7 @@ public class Sword_Skill_Controller : MonoBehaviour
     //½£µÄ·µ»Ø
     public void ReturnSword()
     {
-        if (isPiercing)
+        if (SkillManager.instance.sword.doublePierce&&isPiercing)
         {
             coll.enabled = true;
         }

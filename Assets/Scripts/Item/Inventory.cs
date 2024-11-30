@@ -24,7 +24,7 @@ public class Inventory : MonoBehaviour
     private ItemSlot_Controller[] equippedSlots;//装备中的栏
     private StatSlot[] statSlots;
     [Header("CoolDown")]
-    public float flaskLastUseTime = -100000;
+    public float flaskCoolTimer;
     public float armorLastUseTime = -100000;
     
     private void Awake()
@@ -48,8 +48,12 @@ public class Inventory : MonoBehaviour
         {
             AddItem(startingItems[i]);
         }
-        flaskLastUseTime = -100000;
+       
         armorLastUseTime = -100000;
+    }
+    private void Update()
+    {
+        flaskCoolTimer -= Time.deltaTime;
     }
     public void AddItem(ItemData itemData)
     {
@@ -284,7 +288,7 @@ public class Inventory : MonoBehaviour
     {
         ItemData_Equipment flask= GetEquippedment(EquipmentType.Flask);
        
-        if(flask == null||Time.time<flaskLastUseTime+flask.cooldown)
+        if(flask == null||flaskCoolTimer>0)
         {
             
             return false;
@@ -292,7 +296,7 @@ public class Inventory : MonoBehaviour
         else
         {
             flask.ExecuteEffects(null);
-            flaskLastUseTime = Time.time;
+            flaskCoolTimer = flask.cooldown;
             return true;
         }
     }

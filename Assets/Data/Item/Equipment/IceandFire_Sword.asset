@@ -16,6 +16,7 @@ MonoBehaviour:
   itemName: IceandFire_Sword
   itemIcon: {fileID: 1398721256, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0.095
+  Effectdescription: "\u51B0\u706B\u4EA4\u66FF\u653B\u51FB\u7B2C\u4E09\u4E0B\u89E6\u53D1\u51B0\u4E0E\u706B\u4E4B\u7269"
   equipmentType: 0
   cooldown: 0
   strength: 0

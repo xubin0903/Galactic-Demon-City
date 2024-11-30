@@ -16,7 +16,9 @@ MonoBehaviour:
   itemName: Iron_Sword
   itemIcon: {fileID: 1526008332, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
   itemDropChance: 0.504
+  Effectdescription: 
   equipmentType: 0
+  cooldown: 0
   strength: 0
   agility: 0
   intelligence: 0
@@ -27,6 +29,7 @@ MonoBehaviour:
   maxHealth: 0
   armor: 0
   evasion: 0
+  magicResist: 0
   fireDamage: 20
   iceDamage: 0
   lightningDamage: 0
@@ -35,5 +38,4 @@ MonoBehaviour:
     amount: 2
   - itemData: {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
     amount: 1
-  itemEffects:
-  - {fileID: 11400000, guid: 691244a2b67c59647915de0c1c61291b, type: 2}
+  itemEffects: []

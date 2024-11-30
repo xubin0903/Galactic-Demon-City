@@ -237,7 +237,7 @@ public class Player :PublicCharacter
         #region 技能剑的相关控制
         if (isGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1)&&(sword!=null||!isAttack&&!isDash&&!isSlideWall&&!isSlide&&!isMove))
+            if (Input.GetKeyDown(KeyCode.Mouse1)&&(sword!=null||!isAttack&&!isDash&&!isSlideWall&&!isSlide&&!isMove||!isGrounded||!isKoncked||!isBlackHole)&&SkillManager.instance.sword.CanUseSkill())
             {
                 //Debug.Log("鼠标左键按下");
                 if(!HaveSword())//剑没回来不能继续攻击
@@ -251,7 +251,7 @@ public class Player :PublicCharacter
         #region 黑洞技能相关控制
         if (  isGrounded&&!isKoncked && !isDash && !isAttack && !isSlideWall && !isSlide && !isMove)
         {
-            if (Input.GetKeyDown(KeyCode.R)&&canBlackHole)
+            if (Input.GetKeyDown(KeyCode.R)&&canBlackHole&&SkillManager.instance.blackhole.blackHoleUnlocked)
             {
                 isBlackHole = true;
                stateMachine.ChangeState(blackhole);
@@ -259,7 +259,7 @@ public class Player :PublicCharacter
         }
         #endregion
         #region 水晶技能相关控制
-        if ( !isKoncked &&  !isAttack && !isSlideWall && !isSlide&&!isBlackHole )
+        if ( !isKoncked &&  !isAttack && !isSlideWall && !isSlide&&!isBlackHole)
         {
             if (Input.GetKeyDown(KeyCode.F) && SkillManager.instance.crystal.CanUseSkill())
             {
@@ -424,7 +424,7 @@ public class Player :PublicCharacter
     {
         dashTime=dashDuration;
         isDash = true;
-        SkillManager.instance.clone.CreateCloneOnDashSatrt(transform, new Vector3(0, 0, 0));
+        SkillManager.instance.dash_skill.CreateCloneOnDashSatrt(transform,Vector3.zero);
         
         if (isSlideWall)
         {
@@ -544,6 +544,7 @@ public class Player :PublicCharacter
         {
             if (sword.GetComponent<Sword_Skill_Controller>().canReturn)
             {
+                SkillManager.instance.sword.coolTimer=SkillManager.instance.sword.coolDown;
                 sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
                 
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46eb82af1409cba4a87b5d41e2d548d3, type: 3}
   m_Name: FireDamage
   m_EditorClassIdentifier: 
+  effectDescription: "\u52A020\u706B\u7130\u653B\u51FB\u653B\u51FB"
   statType: 9
   value: 20
   duration: 10
