@@ -11,6 +11,7 @@ public class PlayerDieState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        UI.instance.ShowYouDiedText();
     }
 
     public override void Exit()
@@ -21,5 +22,10 @@ public class PlayerDieState : PlayerState
     public override void Update()
     {
         base.Update();
+
+        player.rb.velocity = Vector2.zero;
+       
+        
+
     }
 }

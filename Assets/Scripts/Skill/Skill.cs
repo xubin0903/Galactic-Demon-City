@@ -11,6 +11,7 @@ public class Skill : MonoBehaviour
     public float damage;
     protected  virtual void Start()
     {
+        CheckUnlocked();
         player=PlayerManager.instance.player;
     }
     public virtual void Update()
@@ -28,6 +29,10 @@ public class Skill : MonoBehaviour
         {
             return false;
         }
+    }
+    protected virtual void CheckUnlocked()
+    {
+        //check if skill is unlocked
     }
     public virtual void UseSkill()
     {

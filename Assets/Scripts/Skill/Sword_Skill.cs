@@ -221,4 +221,12 @@ public class Sword_Skill : Skill
             maxBounceNumber *= 2;
         }
     }
+    protected override void CheckUnlocked()
+    {
+        ReguarSkillUnlock();
+        BouceSkillUnlock();
+        PierceSkillUnlock();
+        DoubePierceUnlock();
+        AmountDoubleUnlock();   
+    }
 }

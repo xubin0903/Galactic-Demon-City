@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour,ISaveManager
 {
     public List<ItemData> startingItems= new List<ItemData>();//初始物品
     static public Inventory instance;
@@ -26,6 +27,10 @@ public class Inventory : MonoBehaviour
     [Header("CoolDown")]
     public float flaskCoolTimer;
     public float armorLastUseTime = -100000;
+    [Header("Data Base")]
+    private List<ItemData> itemDataBase;
+    public List<InventoryItem> loadItems;
+
     
     private void Awake()
     {
@@ -44,13 +49,29 @@ public class Inventory : MonoBehaviour
     }
     private void Start()
     {
-        for(int i = 0; i < startingItems.Count; i++)
+        AssingStartingItems();
+        armorLastUseTime = -100000;
+    }
+
+    private void AssingStartingItems()
+    {
+        if (loadItems.Count > 0)
+        {
+            for (int i = 0; i < loadItems.Count; i++)
+            {
+                for(int j = 0; j < loadItems[i].amount; j++)
+                {
+                    AddItem(loadItems[i].itemData);
+                }
+            }
+            return;
+        }
+        for (int i = 0; i < startingItems.Count; i++)
         {
             AddItem(startingItems[i]);
         }
-       
-        armorLastUseTime = -100000;
     }
+
     private void Update()
     {
         flaskCoolTimer -= Time.deltaTime;
@@ -314,4 +335,52 @@ public class Inventory : MonoBehaviour
             return true;
         }
     }
+
+    void ISaveManager.LoadData(GameData _gameData)
+    {
+        Debug.Log("加载背包数据");
+       foreach(KeyValuePair<string,int> pair in _gameData.Inventory)
+        {
+            foreach(var item in GetItemDataBase())
+            {
+                if(item!=null&&item.itemID == pair.Key)
+                {
+                    InventoryItem inventoryItem = new InventoryItem(item, pair.Value);
+                    loadItems.Add(inventoryItem);
+                }
+            }
+        }
+    }
+
+    void ISaveManager.SaveData(ref GameData _gameData)
+    {
+        Debug.Log("保存背包数据");
+       _gameData.Inventory.Clear();
+        foreach(KeyValuePair<ItemData,InventoryItem> pair in inventoryDictionary)
+        {
+            _gameData.Inventory.Add(pair.Key.itemID,pair.Value.amount);
+        }
+        foreach (KeyValuePair<ItemData, InventoryItem> pair in equipmentDictionary)
+        {
+            _gameData.Inventory.Add(pair.Key.itemID, pair.Value.amount);
+        }
+        foreach(KeyValuePair<ItemData_Equipment,InventoryItem> pair in equippedDictionary)
+        {
+            _gameData.Inventory.Add(pair.Key.itemID, pair.Value.amount);
+        }
+    }
+    private List<ItemData> GetItemDataBase()
+    {
+        itemDataBase = new List<ItemData>();
+        string[] assetNames = AssetDatabase.FindAssets("", new[] {"Assets/Data/Item"});
+        foreach(string SOname in assetNames)
+        {
+            var SOpath= AssetDatabase.GUIDToAssetPath(SOname);
+            var iteData = AssetDatabase.LoadAssetAtPath<ItemData>(SOpath);
+            itemDataBase.Add(iteData);
+        }
+        return itemDataBase;
+    }
+        
+    
 }

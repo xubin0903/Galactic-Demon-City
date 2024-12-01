@@ -54,4 +54,9 @@ public class Dash_Skill : Skill
            SkillManager .instance.clone.CreateClone(target, offset, damage);
         }
     }
+    protected override void CheckUnlocked()
+    {
+       UnlockDash();
+       UnlockDashCloneOnStart();
+    }
 }

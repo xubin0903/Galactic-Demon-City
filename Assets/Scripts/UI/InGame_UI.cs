@@ -15,6 +15,8 @@ public class InGame_UI : MonoBehaviour
     public Image swordCooldown;
     public Image flaskCooldown;
     public TextMeshProUGUI currentcy;
+    [SerializeField] private float currentcyValue;
+    [SerializeField] private float currentcyIncreaseSpeed;
     private void Awake()
     {
         
@@ -25,15 +27,17 @@ public class InGame_UI : MonoBehaviour
     }
     private void Update()
     {
+        UpdateCurrentcy();
+
         if (skill.dash_skill.dashUnlocked)
         {
             if (skill.dash_skill.coolTimer <= 0)
             {
                 dashCooldown.fillAmount = 0;
-                
+
             }
             else
-            dashCooldown.fillAmount = skill.dash_skill.coolTimer / skill.dash_skill.coolDown;
+                dashCooldown.fillAmount = skill.dash_skill.coolTimer / skill.dash_skill.coolDown;
 
         }
         else
@@ -45,10 +49,10 @@ public class InGame_UI : MonoBehaviour
             if (skill.crystal.coolTimer <= 0)
             {
                 crystalCooldown.fillAmount = 0;
-                
+
             }
             else
-            crystalCooldown.fillAmount = skill.crystal.coolTimer / skill.crystal.coolDown;
+                crystalCooldown.fillAmount = skill.crystal.coolTimer / skill.crystal.coolDown;
         }
         else
         {
@@ -56,13 +60,13 @@ public class InGame_UI : MonoBehaviour
         }
         if (skill.blackhole.blackHoleUnlocked)
         {
-            if(skill.blackhole.coolTimer <= 0)
+            if (skill.blackhole.coolTimer <= 0)
             {
                 blackHoleCoolDown.fillAmount = 0;
-                
+
             }
             else
-            blackHoleCoolDown.fillAmount = skill.blackhole.coolTimer / skill.blackhole.coolDown;
+                blackHoleCoolDown.fillAmount = skill.blackhole.coolTimer / skill.blackhole.coolDown;
         }
         else
         {
@@ -73,10 +77,10 @@ public class InGame_UI : MonoBehaviour
             if (skill.sword.coolTimer <= 0)
             {
                 swordCooldown.fillAmount = 0;
-                
+
             }
             else
-            swordCooldown.fillAmount = skill.sword.coolTimer / skill.sword.coolDown;
+                swordCooldown.fillAmount = skill.sword.coolTimer / skill.sword.coolDown;
         }
         else
         {
@@ -87,10 +91,10 @@ public class InGame_UI : MonoBehaviour
             if (skill.crystal.coolTimer <= 0)
             {
                 crystalCooldown.fillAmount = 0;
-                
+
             }
             else
-            crystalCooldown.fillAmount = skill.crystal.coolTimer / skill.crystal.coolDown;
+                crystalCooldown.fillAmount = skill.crystal.coolTimer / skill.crystal.coolDown;
         }
         else
         {
@@ -111,6 +115,21 @@ public class InGame_UI : MonoBehaviour
         {
             flaskCooldown.fillAmount = 1;
         }
-        currentcy.text=PlayerManager.instance.currency.ToString("#,#");//格式化看起来更舒服
+        //currentcy.text = PlayerManager.instance.currency.ToString("#,#");//格式化看起来更舒服
+    }
+
+    private void UpdateCurrentcy()
+    {
+        if (currentcyValue < PlayerManager.instance.currency)
+        {
+            currentcyValue += (currentcyIncreaseSpeed * Time.deltaTime);
+        }
+        else
+        {
+            currentcyValue = PlayerManager.instance.currency;
+        }
+        currentcy.text = ((int)currentcyValue).ToString("#,#");
+        if(currentcyValue==0)
+            currentcy.text = "0";
     }
 }

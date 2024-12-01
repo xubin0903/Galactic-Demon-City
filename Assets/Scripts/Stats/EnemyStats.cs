@@ -12,6 +12,7 @@ public class EnemyStats : CharacterStats
     public int level;
     [Range(0f, 1f)]
     [SerializeField] private float perecentage;
+    public Stat dropCurrency;
     
  
 
@@ -35,7 +36,7 @@ public class EnemyStats : CharacterStats
 
     protected override void Start()
     {
-
+        dropCurrency.SetDefaultValue(100);
      
         Modify(maxHealth);
         Modify(damage);
@@ -45,6 +46,7 @@ public class EnemyStats : CharacterStats
         Modify(criticalChance);
         Modify(evasion);
         Modify(armor);
+        Modify(dropCurrency);
         base.Start();
     }
     protected override void Update()
@@ -58,6 +60,7 @@ public class EnemyStats : CharacterStats
         enemy.OnDie();
         healthBar.gameObject.SetActive(false);
         dropitemSystem.GenerateDropItems();
+        PlayerManager.instance.currency+=(int)dropCurrency.GetValue();
 
     }
     private void Modify(Stat _stat)

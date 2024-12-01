@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour,ISaveManager
 {
     public static PlayerManager instance;
-    public int currency=100000;
+    public int currency;
     public Player player;
     private void Awake()
     {
@@ -33,5 +33,16 @@ public class PlayerManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    void ISaveManager.LoadData(GameData _gameData)
+    {
+       this.currency = _gameData.currentcy;
+    }
+
+    void ISaveManager.SaveData(ref GameData _gameData)
+    {
+        
+       _gameData.currentcy = this.currency;
     }
 }

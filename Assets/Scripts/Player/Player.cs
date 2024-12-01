@@ -436,6 +436,7 @@ public class Player :PublicCharacter
     private void Attack()
     {
         isAttack = true;
+        AudioManager.instance.PlaySFX(1);
         attackTimer = attackDuration;
         rb.velocity = new Vector2(0, rb.velocity.y);
         attackTime = 0.1f;

@@ -49,6 +49,7 @@ public class PlayerStats : CharacterStats
     public override void Die()
     {
         base.Die();
+       
         PlayerManager.instance.player.OnDie();
         dropitemSystem.GenerateDropItem();
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SkillSlot_UI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
+public class SkillSlot_UI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler,ISaveManager
 {
     public string skillName;
    
@@ -27,7 +27,11 @@ public class SkillSlot_UI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandl
     }
     private void Start()
     {
-       
+       if(unlocked == true)
+        {
+            skillImage.color = Color.white;
+
+        }else
         skillImage.color = lockedColor;
     }
     public void UnLockSkillSlot()
@@ -83,6 +87,26 @@ public class SkillSlot_UI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandl
         }
         UI.instance.skillToolTip.transform.position = new Vector3(x + offsetX, UI.instance.skillToolTip.transform.position.y, UI.instance.skillToolTip.transform.position.z);
     }
-        
-   
+
+    void ISaveManager.LoadData(GameData _gameData)
+    {
+        if(_gameData.SkillTree.TryGetValue(skillName,out bool value))
+        {
+            unlocked = value;
+            
+        }
+    }
+
+    void ISaveManager.SaveData(ref GameData _gameData)
+    {
+        if(_gameData.SkillTree.TryGetValue(skillName,out bool value))
+        {
+            _gameData.SkillTree.Remove(skillName);
+            _gameData.SkillTree.Add(skillName,unlocked);
+        }
+        else
+        {
+            _gameData.SkillTree.Add(skillName,unlocked);
+        }
+    }
 }

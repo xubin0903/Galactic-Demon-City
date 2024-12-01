@@ -164,4 +164,12 @@ public class Crystal_Skill : Skill
             mirageUnlocked = true;
         }
     }
+    protected override void CheckUnlocked()
+    {
+        CrystalUnlocked();
+        ExplodeUnlocked();
+        MoveUnlocked();
+        MulCrystalUnlocked();
+        MirageUnlocked();
+    }
 }

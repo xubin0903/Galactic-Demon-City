@@ -13,6 +13,10 @@ public class UI : MonoBehaviour
     public GameObject Options;
     public GameObject InGameUI;
     public UI_CraftWindow craftWindow;
+    public FadeScreen_UI fadeScreen;
+    public GameObject youDiedText;
+    public GameObject restartButton;
+   
     private void Awake()
     {
         if (instance == null)
@@ -28,6 +32,7 @@ public class UI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        fadeScreen.gameObject.SetActive(true);
         SwitchTo(InGameUI);
     }
 
@@ -56,6 +61,7 @@ public class UI : MonoBehaviour
     {
         for(int i = 0; i < transform.childCount; i++)
         {
+           if(transform.GetChild(i).gameObject.GetComponent<FadeScreen_UI>()==null)
             transform.GetChild(i).gameObject.SetActive(false);
         }
         if (_menu == null)
@@ -89,12 +95,25 @@ public class UI : MonoBehaviour
     {
         for(int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.activeSelf)
+            if (transform.GetChild(i).gameObject.activeSelf&&transform.GetChild(i).gameObject.GetComponent<FadeScreen_UI>() == null)
             {
                 return;
             }
         }
         SwitchTo(InGameUI);
+    }
+    public void ShowYouDiedText()
+    {
+        fadeScreen.FadeOut();
+        StartCoroutine(ShowYouDiedTextCoroutine(1.5f));
+    }
+    private IEnumerator ShowYouDiedTextCoroutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        youDiedText.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        restartButton.SetActive(true);
+       
     }
   
 }
