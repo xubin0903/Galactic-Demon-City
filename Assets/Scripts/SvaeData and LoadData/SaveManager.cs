@@ -49,6 +49,7 @@ public class SaveManager : MonoBehaviour
     {
        
         gameData = new GameData();
+       
     }
     public void Update()
     {

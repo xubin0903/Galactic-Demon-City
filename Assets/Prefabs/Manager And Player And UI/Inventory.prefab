@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4418292814819114197
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3527924000423551649}
+  - component: {fileID: 9067945527085648274}
+  - component: {fileID: 3297135621559041875}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3527924000423551649
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4418292814819114197}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 909.2256, y: 162.27148, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9067945527085648274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4418292814819114197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354e465c70eeb184bbc9daf4ee2adde9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingItems:
+  - {fileID: 11400000, guid: 8edee0a530ae61e428c74f1360979a8d, type: 2}
+  - {fileID: 11400000, guid: 93f47c3c5c4cefb489820856dc8dd5ed, type: 2}
+  - {fileID: 11400000, guid: 3fe26dd9f894f7a4c936f7b96a9f52db, type: 2}
+  - {fileID: 11400000, guid: 790a3e4aa8ea35b4ba2048cbf1e0a7aa, type: 2}
+  - {fileID: 11400000, guid: b653696926fb8884a82188f23b8443a8, type: 2}
+  - {fileID: 11400000, guid: 43534f5d2d5dc5d4e82d63f378ea1477, type: 2}
+  - {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
+  - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  inventoryItems: []
+  equipmentItems: []
+  equippedItems: []
+  itemSlotParent: {fileID: 0}
+  EquipmentSlotParent: {fileID: 0}
+  equippedSlotParent: {fileID: 0}
+  statsSlot: {fileID: 0}
+  equipmentSlots: []
+  flaskCoolTimer: 0
+  armorLastUseTime: -10000
+  loadItems: []
+--- !u!222 &3297135621559041875
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4418292814819114197}
+  m_CullTransparentMesh: 1

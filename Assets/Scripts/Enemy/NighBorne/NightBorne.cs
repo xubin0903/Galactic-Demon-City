@@ -8,6 +8,7 @@ public class NightBorne : Enemy
     public NightBorneAttack attackState;
     public NightBorneMove moveState;
     public NightBorneIdle idleState;
+    public NightBorneDiedState diedState;
 
     public override void Awake()
     {
@@ -16,6 +17,7 @@ public class NightBorne : Enemy
         idleState = new NightBorneIdle(this, stateMachine,"Idle",this);
         moveState = new NightBorneMove(this, stateMachine,"Move",this);
         attackState = new NightBorneAttack(this, stateMachine,"Attack",this);
+        diedState = new NightBorneDiedState(this, stateMachine,"Died",this);
         
     }
     public override void Start()
@@ -84,4 +86,11 @@ public class NightBorne : Enemy
     {
         stateMachine.currentState.Trigger();
     }
+
+    public override void OnDie()
+    {
+        base.OnDie();
+        stateMachine.ChangeState(diedState);
+    }
+
 }

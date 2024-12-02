@@ -8,12 +8,13 @@ public class GameManager : MonoBehaviour,ISaveManager
 {
     public static GameManager instance;
     public CheckPoint[] checkPoints;
-    public string cloestCheckPointID;
+    public string cloestCheckPointID=null;
     public float lostCurrentcyX;
     public float lostCurrentcyY;
     public int lostCurrentcyAmount;
     public GameObject lostCurrentcy;
     public GameObject currentLostCurrentcy;
+    public Vector2 playerStartPosition;
     private void Awake()
     {
         if (instance == null)
@@ -40,23 +41,35 @@ public class GameManager : MonoBehaviour,ISaveManager
 
     void ISaveManager.LoadData(GameData _gameData)
     {
-
+        //检查点数据
         foreach (KeyValuePair<string, bool> pair in _gameData.checkPoints)
         {
             foreach (CheckPoint _checkPoint in checkPoints)
             {
                 if (_checkPoint.checkPointID == pair.Key && pair.Value == true)
                 {
+                    _checkPoint.active = true;
                     _checkPoint.Activate();
                 }
             }
         }
+        
 
 
-        cloestCheckPointID = _gameData.cloestCheckPointID;
+        if (_gameData.cloestCheckPointID != null)
+        {
 
-        Invoke("PlacePlayerCloseCheckPoint", .1f);
-        CreateLostCurrentcy(_gameData);
+            cloestCheckPointID = _gameData.cloestCheckPointID;
+            Invoke("PlacePlayerCloseCheckPoint", .1f);
+            return;
+        }
+        else
+        {
+            PlayerManager.instance.player.transform.position = playerStartPosition;
+        }
+        CreateLostCurrentcy(_gameData);//创建丢失的钱币
+
+
 
     }
 
@@ -76,18 +89,24 @@ public class GameManager : MonoBehaviour,ISaveManager
 
     private void PlacePlayerCloseCheckPoint()
     {
-        Debug.Log("PlacePlayerCloseCheckPoint");
+        if (cloestCheckPointID != null)
+        {
         foreach (CheckPoint checkPoint in checkPoints)
         {
             if(cloestCheckPointID!= null&& checkPoint.checkPointID==cloestCheckPointID){
                 Debug.Log("Player Close to CheckPoint");
                 PlayerManager.instance.player.transform.position = checkPoint.transform.position+Vector3.up*3;
             }
+            
         }
+
+        }
+        
     }
 
     void ISaveManager.SaveData(ref GameData _gameData)
     {
+        //检查点数据
         Debug.Log("GameManager SaveData");
         _gameData.checkPoints.Clear();
        
@@ -97,6 +116,7 @@ public class GameManager : MonoBehaviour,ISaveManager
         {
             _gameData.checkPoints.Add(checkPoint.checkPointID,checkPoint.active);
         }
+        //丢失的钱币
         if (currentLostCurrentcy == null&&PlayerManager.instance.player.stats.currentHealth<=0)
         {
             _gameData.lostCurrentcyAmount = PlayerManager.instance.currency;
@@ -135,7 +155,19 @@ public class GameManager : MonoBehaviour,ISaveManager
         if (closestCheckPoint == null)
         {
             Debug.LogError("No Active CheckPoint");
+            return null;
         }
         return closestCheckPoint.checkPointID;
+    }
+    public void PauseGame(bool _isPaused)
+    {
+        if (_isPaused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 }

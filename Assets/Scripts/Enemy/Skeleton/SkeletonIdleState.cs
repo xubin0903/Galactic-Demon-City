@@ -25,6 +25,7 @@ public class SkeletonIdleState : EnemyState
         {
             enemy.Flip();
         }
+        AudioManager.instance.PlaySFX(24,enemy.transform);
     }
     public override void Update()
     {

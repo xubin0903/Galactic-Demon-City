@@ -18,6 +18,7 @@ public class ThunderStrike_Controller : MonoBehaviour
             coll.GetComponent<Enemy>().OtherDamage(new Vector2(0,8));
             CharacterStats _targetStats = coll.GetComponent<Enemy>().stats;
             stats.DoMagicDamage(_targetStats);
+            AudioManager.instance.PlaySFX(29, null);
             Invoke("OnDestroy", 1f);
         }
     }

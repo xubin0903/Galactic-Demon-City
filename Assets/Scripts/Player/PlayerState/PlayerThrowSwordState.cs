@@ -11,6 +11,7 @@ public class PlayerThrowSwordState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        AudioManager.instance.PlaySFX(27,null);
 
     }
 

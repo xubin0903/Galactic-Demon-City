@@ -25,6 +25,7 @@ public class Enemy : EnemyEntity
     [SerializeField] protected GameObject counterImage;
     [Header("Character Stats")]
     [SerializeField] public float damage;
+    //public string enemyID;
    
     public override void Awake()
     {
@@ -89,9 +90,9 @@ public class Enemy : EnemyEntity
         }
         else
         {
-            currentSpeed = beginSpeed;
             beginSpeed = defaultBeginSpeed;
             maxSpeed = defaultMaxSpeed;
+            currentSpeed = beginSpeed;
             anim.speed = 1;
             isFrozen = false;
             //Debug.Log(gameObject.name + " is unfrozen");
@@ -124,10 +125,15 @@ public class Enemy : EnemyEntity
     }
     public void ResetSpeed()
     {
-        currentSpeed = beginSpeed;
         beginSpeed = defaultBeginSpeed;
         maxSpeed = defaultMaxSpeed;
+        currentSpeed = beginSpeed;
         anim.speed = 1; 
 
     }
+    //[ContextMenu("Generate ID")]
+    //private void GenerateID()
+    //{
+    //    enemyID = System.Guid.NewGuid().ToString();
+    //}
 }

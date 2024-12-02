@@ -19,6 +19,7 @@ public class PlayerBlackHoleState : PlayerState
         stateTimer = flyTime;
         player.rb.gravityScale = 0;
         player.isBlackHole = true;
+        AudioManager.instance.PlaySFX(3, null);
         
     }
 

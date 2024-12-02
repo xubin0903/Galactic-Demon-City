@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource[] bgm;
     public bool isPlay;
     private int bgmIndex;
-
+    private bool canPlaySFX;
     private void Awake()
     {
         if (instance == null)
@@ -21,26 +21,62 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+       
+    }
+    private void Start()
+    {
+        Invoke("CanPlaySFX", 2f);
     }
     public void Update()
     {
         if (!isPlay)
         {
-            StopAllBGM();
+            RandomPlayBGM();
         }
-        else
+        if (bgm[bgmIndex].isPlaying == false)
         {
-            if(bgm[bgmIndex].isPlaying == false)
-            {
-                PlayBGM(bgmIndex);
-            }
+            isPlay = false;
         }
     }
 
-    public void PlaySFX(int index)
+    public void PlaySFX(int index,Transform _source)
     {
+        if (!canPlaySFX)
+            return;
+        float volume = sfx[index].volume;
+        if(_source != null)
+        {
+        //根据距离远近调整音效大小
+            float distance = Vector3.Distance(_source.position, PlayerManager.instance.player.transform.position);
+            if(distance > 20f)
+            {
+                volume = 0f;
+            }
+            else if (distance > 15f)
+            {
+                volume = 0.2f;
+            }
+            else if (distance > 10f)
+            {
+                volume = 0.5f;
+            }
+            else if (distance > 5f)
+            {
+                volume = 0.7f;
+            }
+            
+            else
+            {
+                volume = 1f;
+            }
+
+        }
+        
+        sfx[index].volume = volume;
         if(index < sfx.Length)
         {
+            if(sfx[index].isPlaying == true)
+                return;
             sfx[index].pitch=Random.Range(0.8f,1.2f);//随机播放音效减少音效爆炸
             sfx[index].Play();
 
@@ -53,6 +89,7 @@ public class AudioManager : MonoBehaviour
         if (index < bgm.Length)
         {
             bgmIndex = index;
+            isPlay = true;
             bgm[index].Play();
 
         }
@@ -81,4 +118,5 @@ public class AudioManager : MonoBehaviour
             sfx[index].Stop();
         }
     }
+    private void CanPlaySFX()=> canPlaySFX = true;
 }

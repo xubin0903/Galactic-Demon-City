@@ -11,6 +11,9 @@ public class EntityFX : MonoBehaviour
     [SerializeField] private Color icedColor;
     [SerializeField] private Color[] FiredColor;
     [SerializeField] private Color[] LightnedColor;
+    public ParticleSystem fireParticle;
+    public ParticleSystem lightnedParticle; 
+    public ParticleSystem iceParticle;
     private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
@@ -52,6 +55,10 @@ public class EntityFX : MonoBehaviour
         CancelInvoke();
         //Debug.Log("cancel");
         sr.color = Color.white;
+        StopFire();
+        StopLightned();
+        StopIce();
+    
     }
     public void TransParent(bool isParent)
     {
@@ -69,18 +76,22 @@ public class EntityFX : MonoBehaviour
         //Debug.Log("FiredColorFor");
         InvokeRepeating("FiredColorBlink", 0, 0.2f);
         Invoke("CancelColorBlink", time);
+        Fire();
+        
     }
     public void LightnedColorFor(float time)
     {
         //Debug.Log("LightnedColorFor");
         InvokeRepeating("LightnedColorBlink", 0, 0.2f);
         Invoke("CancelColorBlink", time);
+        Lightned();
     }
     public void IcedColorFor(float time)
     {
         //Debug.Log("IcedColorFor");
         InvokeRepeating("IcedColorBlink", 0,0.1f);
         Invoke("CancelColorBlink", time);
+        Ice();
     }
     private void LightnedColorBlink()
     {
@@ -112,4 +123,10 @@ public class EntityFX : MonoBehaviour
     {
         sr.color = icedColor;
     }
+    public void Fire()=> fireParticle.Play();
+    public void Lightned()=> lightnedParticle.Play();
+    public void Ice()=> iceParticle.Play();
+    public void StopFire()=> fireParticle.Stop();
+    public void StopLightned()=> lightnedParticle.Stop();
+    public void StopIce()=> iceParticle.Stop();
 }

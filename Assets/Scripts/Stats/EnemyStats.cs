@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class EnemyStats : CharacterStats
 {
     private EnemyDropItem dropitemSystem;
-    private Skeleton enemy;
+    private Enemy enemy;
     private Slider healthBar;
     [Header("Level")]
     public int level;
@@ -19,7 +19,7 @@ public class EnemyStats : CharacterStats
 
     private void Awake()
     {
-        enemy = GetComponent<Skeleton>();
+        enemy = GetComponent<Enemy>();
         healthBar=GetComponentInChildren<Slider>();
         dropitemSystem = GetComponent<EnemyDropItem>();
     }

@@ -22,6 +22,10 @@ public class Lighten_Controller : MonoBehaviour
     {
         
         transform.position=new Vector2(targetStats.transform.position.x,targetStats.transform.position.y+3f);
+        if (Vector2.Distance(transform.position, targetStats.transform.position) < 1f)
+        {
+            AudioManager.instance.PlaySFX(6, null);
+        }
     }
         
     
@@ -43,10 +47,21 @@ public class Lighten_Controller : MonoBehaviour
     {
         if (coll.GetComponent<Enemy>() != null)
         {
+            
             var enemy = coll.GetComponent<Enemy>();
+            
             enemy.OtherDamage(new Vector2(5, 5));
-            enemy.stats.TakeDamage(5);
+            
+            PlayerManager.instance.player.stats.DoMagicDamage(enemy.stats);
+            return;
+           
         }
+        if (coll.GetComponent<Player>() != null)
+        {
+            var player = coll.GetComponent<Player>();
+           
+        }
+        
     }
 
 }

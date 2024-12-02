@@ -25,6 +25,7 @@ public class SkeletonAnimationEvent : MonoBehaviour
                 enemy.stats.DoDamage(targetStats);
             }
         }
+       
     }
     public void OpenCounterWindow()=> enemy.OpenCounterWindow();
     public void CloseCounterWindow()=> enemy.CloseCounterWindow();

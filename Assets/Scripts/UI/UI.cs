@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviour,ISaveManager
 {
     public static UI instance;
     public UI_Item_ToolTip itemToolTip;
@@ -16,6 +16,7 @@ public class UI : MonoBehaviour
     public FadeScreen_UI fadeScreen;
     public GameObject youDiedText;
     public GameObject restartButton;
+    public VolumeSlide_UI[] volumeSliders;
    
     private void Awake()
     {
@@ -64,10 +65,24 @@ public class UI : MonoBehaviour
            if(transform.GetChild(i).gameObject.GetComponent<FadeScreen_UI>()==null)
             transform.GetChild(i).gameObject.SetActive(false);
         }
+        AudioManager.instance.PlaySFX(7, null);
+        if(GameManager.instance!= null)
+        {
+            if(_menu==null||_menu==InGameUI)
+            {
+                GameManager.instance.PauseGame(false);
+                
+            }
+            else
+            {
+                GameManager.instance.PauseGame(true);
+            }
+        }
         if (_menu == null)
         {
             return;
         }
+       
         _menu.SetActive(true);
         Inventory.instance.UpdateSlotUI();
     }
@@ -89,6 +104,7 @@ public class UI : MonoBehaviour
         Character.SetActive(false);
         Craft.SetActive(false);
         Options.SetActive(false);
+        AudioManager.instance.PlaySFX(7, null);
         CheckInGameUI();
     }
     private void CheckInGameUI()
@@ -110,10 +126,34 @@ public class UI : MonoBehaviour
     private IEnumerator ShowYouDiedTextCoroutine(float delay)
     {
         yield return new WaitForSeconds(delay);
+        AudioManager.instance.PlaySFX(11, null);
         youDiedText.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         restartButton.SetActive(true);
        
     }
-  
+
+    void ISaveManager.LoadData(GameData _gameData)
+    {
+       foreach(KeyValuePair<string, float> volumeSetting in _gameData.volumeSettings)
+        {
+            foreach(VolumeSlide_UI volumeSlider in volumeSliders)
+            {
+                if(volumeSlider.parameterName == volumeSetting.Key)
+                {
+                    volumeSlider.slider.value = volumeSetting.Value;
+                    volumeSlider.LoadVolume(volumeSetting.Value);
+                }
+            }
+        }
+    }
+
+    void ISaveManager.SaveData(ref GameData _gameData)
+    {
+        _gameData.volumeSettings.Clear();
+        foreach(VolumeSlide_UI volumeSlider in volumeSliders)
+        {
+            _gameData.volumeSettings.Add(volumeSlider.parameterName, volumeSlider.slider.value);
+        }
+    }
 }

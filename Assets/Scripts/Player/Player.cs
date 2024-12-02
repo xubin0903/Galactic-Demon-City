@@ -114,7 +114,7 @@ public class Player :PublicCharacter
     protected override void Update()
     {
         //人物死亡不进行任何输入
-        if (isDead)
+        if (isDead||Time.timeScale==0)
         {
             return;
         }
@@ -273,7 +273,9 @@ public class Player :PublicCharacter
     private void CheckInput()
     {
         //移动
+
         isMove = Input.GetButtonDown("Horizontal") || Input.GetButton("Horizontal");
+        if(!isMove) AudioManager.instance.StopSFX(14);
         if (isMove == true && !isDash && !isAttack&&!isKoncked&&stateMachine.currentState!=aimSword&&!isBlackHole)
         {
             Move();
@@ -377,6 +379,10 @@ public class Player :PublicCharacter
         
         rb.velocity = new Vector2( xInput * currentspeed, rb.velocity.y);
         
+        //音效
+        if (xInput != 0)
+            AudioManager.instance.PlaySFX(14,null);
+       
         //移动动画
         if (xInput < 0)
         {
@@ -436,20 +442,23 @@ public class Player :PublicCharacter
     private void Attack()
     {
         isAttack = true;
-        AudioManager.instance.PlaySFX(1);
         attackTimer = attackDuration;
         rb.velocity = new Vector2(0, rb.velocity.y);
         attackTime = 0.1f;
         if (comobatCount == 0)
         {
+            AudioManager.instance.PlaySFX(0,null);
             attackRadius = 0.85f;
         }
         else if (comobatCount == 1)
         {
+            AudioManager.instance.PlaySFX(1,null);
             attackRadius = 0.5f;
         }
         else if (comobatCount == 2)
         {
+            AudioManager.instance.PlaySFX(2,null);
+            AudioManager.instance.PlaySFX(15, null);
             attackRadius = 1.35f;
 
         }
