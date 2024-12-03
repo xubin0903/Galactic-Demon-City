@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 0
   itemName: Thunder_Sword
   itemIcon: {fileID: 367297872, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  itemDropChance: 0
+  itemID: 75d60f95bd200494fad68614dd09855c
+  itemDropChance: 0.444
   Effectdescription: "\u7ED9\u666E\u901A\u653B\u51FB\u589E\u52A0\u96F7\u7CFB\u4F24\u5BB3"
   equipmentType: 0
   cooldown: 0

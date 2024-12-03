@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 0
   itemName: FireDamage_Flask
   itemIcon: {fileID: 404454020, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  itemDropChance: 0
+  itemID: b653696926fb8884a82188f23b8443a8
+  itemDropChance: 0.51
   Effectdescription: "\u589E\u52A020\u70B9\u706B\u653B"
   equipmentType: 3
   cooldown: 10

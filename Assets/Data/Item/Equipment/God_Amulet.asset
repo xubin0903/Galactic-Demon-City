@@ -15,7 +15,8 @@ MonoBehaviour:
   itemType: 0
   itemName: God_Amulet
   itemIcon: {fileID: -245851270, guid: a9ca9a41598dd2e44b125928045c518f, type: 3}
-  itemDropChance: 0.05
+  itemID: 93f47c3c5c4cefb489820856dc8dd5ed
+  itemDropChance: 0.041
   Effectdescription: "\u7ED9\u6240\u6709\u975E\u666E\u5DE5\u653B\u51FB\u589E\u52A0\u96F7\u9706\u4E07\u94A7\u6548\u679C"
   equipmentType: 2
   cooldown: 0

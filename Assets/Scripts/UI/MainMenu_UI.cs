@@ -34,4 +34,12 @@ public class MainMenu_UI : MonoBehaviour
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(sceneName);
     }
+    public void Open(GameObject _menu)
+    {
+        _menu.SetActive(true);
+    }
+    public void Close(GameObject _menu)
+    {
+        _menu.SetActive(false);
+    }
 }

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStats : CharacterStats
+public class PlayerStats : CharacterStats,ISaveManager
 {
     [Header("Health Bar")]
     public Image greenHealBar;
     public Image redHealBar;
     public float bufferEffect;
 
-    public PlayerDropItem dropitemSystem;
+    private PlayerDropItem dropitemSystem;
     private void Awake()
     {
         dropitemSystem = GetComponent<PlayerDropItem>();
@@ -27,6 +27,7 @@ public class PlayerStats : CharacterStats
 
     protected override void Start()
     {
+        if(currentHealth <= 0)
         currentHealth = maxHealth.GetValue();
         criticalPower.SetDefaultValue(150);
         aliveEffectSprite = aliveEffectUI.GetComponent<Image>().sprite;
@@ -95,9 +96,21 @@ public class PlayerStats : CharacterStats
                 equipArmor.ExecuteEffects(PlayerManager.instance.player.transform);
             }
         }
+        if (_damage >= GetMaxHealth() * 0.25)
+        {
+            PlayerManager.instance.player.fx.ScreenShake(PlayerManager.instance.player.fx.highDamageShakePower);
+        }
     }
 
+    void ISaveManager.LoadData(GameData _gameData)
+    {
+        if(_gameData.currentHealth>= 0)
+        currentHealth = _gameData.currentHealth;
+        
+    }
 
-
-
+    void ISaveManager.SaveData(ref GameData _gameData)
+    {
+       _gameData.currentHealth = currentHealth;
+    }
 }

@@ -53,7 +53,7 @@ public class NightBorne : Enemy
             {
                 if (currentSpeed < maxSpeed)
                 {
-                    currentSpeed += Time.deltaTime * 0.8f;
+                    currentSpeed += Time.deltaTime * 10;
                     //Debug.Log(currentSpeed);
 
                 }

@@ -72,7 +72,11 @@ public class Player :PublicCharacter
     public PlayerBlackHoleState blackhole { get; private set; }
     public CharacterStats stats { get; private set; }
     public PlayerDieState die { get; private set; }
-    [Header("人物基本属性")]
+    [Header("After Image")]
+    public GameObject afterImagePrefab;
+    public float atterImagecoolDown;
+    public float afterImageTimer;
+    public float afterImageDescreaseSpeed;
    
     
 
@@ -147,6 +151,7 @@ public class Player :PublicCharacter
         CollisionCheck();
         AnimationControl();
         //冲刺
+        afterImageTimer -= Time.deltaTime;
         if (dashTime>0)
         {
             dashTime -= Time.deltaTime;
@@ -251,8 +256,13 @@ public class Player :PublicCharacter
         #region 黑洞技能相关控制
         if (  isGrounded&&!isKoncked && !isDash && !isAttack && !isSlideWall && !isSlide && !isMove)
         {
-            if (Input.GetKeyDown(KeyCode.R)&&canBlackHole&&SkillManager.instance.blackhole.blackHoleUnlocked)
+            if (Input.GetKeyDown(KeyCode.R)&&SkillManager.instance.blackhole.blackHoleUnlocked)
             {
+                if (!canBlackHole)
+                {
+                    fx.GeneratePopToolTip("黑洞技能冷却中");
+                    return;
+                }
                 isBlackHole = true;
                stateMachine.ChangeState(blackhole);
             }
@@ -481,10 +491,21 @@ public class Player :PublicCharacter
     }
     private void DashMent()
     {
-        
+
         rb.velocity = new Vector2(faceDir * currentspeed, 0);
+        if(afterImageTimer <= 0){
+            CreatAfterImage();
+            Debug.Log("创建了AfterImage");
+        }
         
 
+    }
+    private void CreatAfterImage()
+    {
+        afterImageTimer = atterImagecoolDown;
+        GameObject newafterImage = Instantiate(afterImagePrefab, transform.position, transform.rotation);
+        newafterImage.transform.localScale = transform.localScale;
+        newafterImage.GetComponent<AfterImageFX>().Setup(animator.GetComponent<SpriteRenderer>().sprite, afterImageDescreaseSpeed);
     }
     public void SlideOver()
     {
@@ -532,6 +553,22 @@ public class Player :PublicCharacter
         yield return new WaitForSeconds(duration);
         isKoncked = false;
     }
+    public IEnumerator HutrBackTO(float _duration,Transform _transform)
+    {
+        isKoncked = true;
+        Debug.Log("1");
+        if (_transform.position.x > transform.position.x)
+        {
+            rb.velocity = new Vector2(-6, 0);
+        }
+        else
+        {
+            rb.velocity = new Vector2(6, 0);
+        }
+        yield return new WaitForSeconds(_duration);
+        isKoncked = false;
+
+    }
     #region 检查并储存剑
     public void CheckSword(GameObject _sword)
     {
@@ -556,6 +593,7 @@ public class Player :PublicCharacter
             {
                 SkillManager.instance.sword.coolTimer=SkillManager.instance.sword.coolDown;
                 sword.GetComponent<Sword_Skill_Controller>().ReturnSword();
+            
                 
 
             }

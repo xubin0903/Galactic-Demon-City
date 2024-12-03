@@ -12,6 +12,7 @@ public class GameData
     public float lostCurrentcyX;
     public float lostCurrentcyY;
     public int lostCurrentcyAmount;
+    public float currentHealth;
     public  SerializableDictionary<string, float> volumeSettings;
     public  GameData()
     {
@@ -24,6 +25,7 @@ public class GameData
         lostCurrentcyY = 0;
         lostCurrentcyAmount = 0;
         volumeSettings = new SerializableDictionary<string, float>();
+        
 
     }
 

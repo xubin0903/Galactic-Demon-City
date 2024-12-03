@@ -52,7 +52,16 @@ public class BlackHole_Skill : Skill
         //{
         //    return false;
         //}
-        return base.CanUseSkill();
+        if (coolTimer <= 0)
+        {
+            UseSkill();
+            return true;
+        }
+        else
+        {
+           
+            return false;
+        }
 
     }
     public override void UseSkill()

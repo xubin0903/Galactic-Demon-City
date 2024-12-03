@@ -1,6 +1,5 @@
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -56,6 +55,7 @@ public class GameManager : MonoBehaviour,ISaveManager
         
 
 
+        CreateLostCurrentcy(_gameData);//创建丢失的钱币
         if (_gameData.cloestCheckPointID != null)
         {
 
@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour,ISaveManager
         {
             PlayerManager.instance.player.transform.position = playerStartPosition;
         }
-        CreateLostCurrentcy(_gameData);//创建丢失的钱币
 
 
 
@@ -77,11 +76,13 @@ public class GameManager : MonoBehaviour,ISaveManager
     {
         if (_gameData.lostCurrentcyAmount <= 0)//no lost currentcy
         {
+            Debug.Log("No Lost Currentcy");
             return;
         }
         this.lostCurrentcyAmount = _gameData.lostCurrentcyAmount;
         this.lostCurrentcyX = _gameData.lostCurrentcyX;
         this.lostCurrentcyY = _gameData.lostCurrentcyY;
+        Debug.Log("Create Lost Currentcy");
         GameObject newLostCurrentcy = Instantiate(lostCurrentcy, new Vector3(this.lostCurrentcyX, this.lostCurrentcyY, 0), Quaternion.identity);
         newLostCurrentcy.GetComponent<LostCurrentcy>().currentcy = this.lostCurrentcyAmount;
         this.currentLostCurrentcy = newLostCurrentcy;

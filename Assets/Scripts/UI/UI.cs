@@ -41,7 +41,7 @@ public class UI : MonoBehaviour,ISaveManager
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             SwitchWithKey(Character);
         }
@@ -155,5 +155,10 @@ public class UI : MonoBehaviour,ISaveManager
         {
             _gameData.volumeSettings.Add(volumeSlider.parameterName, volumeSlider.slider.value);
         }
+    }
+    public void SaveAndQuit()
+    {
+        SaveManager.instance.SaveGame();
+        Application.Quit();
     }
 }

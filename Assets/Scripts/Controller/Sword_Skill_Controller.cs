@@ -172,6 +172,7 @@ public class Sword_Skill_Controller : MonoBehaviour
         coll.enabled = false;
         //¹ÒÔØµ½ÎïÌå
         transform.parent = collision.transform;
+        transform.GetComponentInChildren<ParticleSystem>().Play();
     }
 
    

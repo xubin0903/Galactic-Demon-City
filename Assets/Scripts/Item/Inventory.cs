@@ -28,7 +28,7 @@ public class Inventory : MonoBehaviour,ISaveManager
     public float flaskCoolTimer;
     public float armorLastUseTime = -100000;
     [Header("Data Base")]
-    private List<ItemData> itemDataBase;
+    public List<ItemData> itemDataBase;
     public List<InventoryItem> loadItems;
 
     
@@ -311,7 +311,10 @@ public class Inventory : MonoBehaviour,ISaveManager
        
         if(flask == null||flaskCoolTimer>0)
         {
-            
+            if(flask == null)
+                PlayerManager.instance.player.fx.GeneratePopToolTip("没有药水");
+            else
+            PlayerManager.instance.player.fx.GeneratePopToolTip("药水冷却中");
             return false;
         }
         else
@@ -326,7 +329,7 @@ public class Inventory : MonoBehaviour,ISaveManager
         ItemData_Equipment armor = GetEquippedment(EquipmentType.Armor);
         if (armor == null||Time.time<armor.cooldown+armorLastUseTime)
         {
-            Debug.Log("装备冷却中");
+            //Debug.Log("装备冷却中");
             return false;
         }
         else
@@ -341,7 +344,7 @@ public class Inventory : MonoBehaviour,ISaveManager
         Debug.Log("加载背包数据");
        foreach(KeyValuePair<string,int> pair in _gameData.Inventory)
         {
-            foreach(var item in GetItemDataBase())
+            foreach(var item in itemDataBase)
             {
                 if(item!=null&&item.itemID == pair.Key)
                 {
@@ -369,6 +372,9 @@ public class Inventory : MonoBehaviour,ISaveManager
             _gameData.Inventory.Add(pair.Key.itemID, pair.Value.amount);
         }
     }
+#if UNITY_EDITOR
+    [ContextMenu("生成物品ID")]
+    private void FiilUpItemDataBase()=>itemDataBase = new List<ItemData>(GetItemDataBase());
     private List<ItemData> GetItemDataBase()
     {
         itemDataBase = new List<ItemData>();
@@ -381,6 +387,6 @@ public class Inventory : MonoBehaviour,ISaveManager
         }
         return itemDataBase;
     }
-        
-    
+#endif
+
 }

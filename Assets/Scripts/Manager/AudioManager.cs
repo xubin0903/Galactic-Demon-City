@@ -75,7 +75,7 @@ public class AudioManager : MonoBehaviour
         sfx[index].volume = volume;
         if(index < sfx.Length)
         {
-            if(sfx[index].isPlaying == true)
+            if(sfx[0].isPlaying == true||sfx[1].isPlaying == true||sfx[2].isPlaying == true&&index<=2)//攻击声音只允许播放一个不能同时播放
                 return;
             sfx[index].pitch=Random.Range(0.8f,1.2f);//随机播放音效减少音效爆炸
             sfx[index].Play();

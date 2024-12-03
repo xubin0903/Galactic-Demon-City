@@ -27,6 +27,7 @@ public class Skill : MonoBehaviour
         }
         else
         {
+            player.fx.GeneratePopToolTip("¼¼ÄÜÀäÈ´ÖĞ");
             return false;
         }
     }

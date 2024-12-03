@@ -13,6 +13,7 @@ public class EnemyEntity : MonoBehaviour
     [SerializeField] protected LayerMask groundLayer;
     [SerializeField] protected float offsetX;
     [SerializeField] protected float playerCheckDistance;
+    [SerializeField] protected Vector2 playerCheckoffset;
     [SerializeField] protected LayerMask playerLayer;
     public Transform attackCheck;
     [SerializeField] public float attackRadius;
@@ -63,7 +64,7 @@ public class EnemyEntity : MonoBehaviour
     
     public virtual void CollisionCheck()
     {
-        playerCheck = Physics2D.Raycast(transform.position,Vector2.right*faceDir,playerCheckDistance,playerLayer);
+        playerCheck = Physics2D.Raycast(transform.position+(Vector3)playerCheckoffset,Vector2.right*faceDir,playerCheckDistance,playerLayer);
         if(playerCheck.collider != null)
         {
             //Debug.Log("Player is detected");
@@ -76,7 +77,7 @@ public class EnemyEntity : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(groundCheckPosition.position +faceDir * offsetX * Vector3.right, Vector2.down*groundCheckDistance);
         Gizmos.DrawRay(wallCheckPosition.position,Vector2.right*wallCheckDistance*faceDir);
-        Gizmos.DrawRay(transform.position,Vector2.right*playerCheckDistance*faceDir);
+        Gizmos.DrawRay(transform.position+(Vector3)playerCheckoffset,Vector2.right*playerCheckDistance*faceDir);
         Gizmos.DrawWireSphere(attackCheck.position,attackRadius);
     }
     #endregion

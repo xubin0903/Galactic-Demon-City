@@ -166,7 +166,9 @@ public class CharacterStats : MonoBehaviour
         {
             return;
         }
+
         currentHealth -= _damage;
+        fx.GeneratePopToolTip(_damage.ToString());
         if (currentHealth <= 0)
         {
             Die();

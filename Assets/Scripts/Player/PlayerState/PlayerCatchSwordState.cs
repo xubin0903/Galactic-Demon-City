@@ -23,6 +23,9 @@ public class PlayerCatchSwordState : PlayerState
             //·­×ª
             player.transform.localScale = new Vector3(-player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
         }
+        player.fx.Dust();
+        player.fx.ScreenShake(player.fx.swordShakePower);
+       player.StartCoroutine(player.HutrBackTO(0.2f, player.sword.transform));
 
     }
 

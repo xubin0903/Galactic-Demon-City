@@ -1,5 +1,6 @@
+using Cinemachine;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EntityFX : MonoBehaviour
@@ -14,9 +15,20 @@ public class EntityFX : MonoBehaviour
     public ParticleSystem fireParticle;
     public ParticleSystem lightnedParticle; 
     public ParticleSystem iceParticle;
+    public ParticleSystem DustFX;
+    public GameObject interactionButton;
+    [Header("Cinemachine")]
+    public CinemachineImpulseSource screenShake;
+    [SerializeField] private float multiplier;
+    public Vector3 swordShakePower;
+    public Vector3 highDamageShakePower;
+    [Header("PopToolTip")]
+    public GameObject popToolTipPrefab;
+
     private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        screenShake = GetComponent<CinemachineImpulseSource>();
     }
     private void Start()
     {
@@ -35,6 +47,20 @@ public class EntityFX : MonoBehaviour
         yield return new WaitForSeconds(time);
         sr.color = color;
         sr.material = originalMaterial;
+    }
+    public void ScreenShake(Vector3 shakePower)
+    {
+        screenShake.m_DefaultVelocity =new  Vector3(shakePower.x*PlayerManager.instance.player.faceDir,shakePower.y)*multiplier;
+        screenShake.GenerateImpulse();
+    }
+    public void GeneratePopToolTip(string text)
+    {
+        int randomX = Random.Range(-1, 2);
+        int randomY = Random.Range(1, 3);
+        Vector3 position = transform.position + new Vector3(randomX, randomY, 0);
+        GameObject newPop=Instantiate(popToolTipPrefab, position, Quaternion.identity);
+        newPop.GetComponent<TextMeshPro>().text = text;
+    
     }
     public void RedColorBlink()
     {
@@ -129,4 +155,7 @@ public class EntityFX : MonoBehaviour
     public void StopFire()=> fireParticle.Stop();
     public void StopLightned()=> lightnedParticle.Stop();
     public void StopIce()=> iceParticle.Stop();
+    public void Dust()=> DustFX.Play();
+    public void OpenInteractionButton()=> interactionButton.SetActive(true);
+    public void CloseInteractionButton()=> interactionButton.SetActive(false);
 }

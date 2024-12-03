@@ -5,20 +5,23 @@ using UnityEngine;
 public class EnemyDropItem : MonoBehaviour
 {
     public GameObject dropPrefab;
-    public ItemData[] possibleItems;
-    private List<ItemData> possibleItemsList;
+    public ItemData[] baseItems;
+    public List<ItemData> possibleItemsList;
     public int maxDropCount;
+    public float dropBackX;
+    public float mindropBackY;
+    public float maxDropBackY;
 
     private void Start()
     {
-        possibleItemsList = new List<ItemData>(possibleItems);
+        possibleItemsList = new List<ItemData>();
     }
 
    public  virtual void GenerateDropItems()
     {
-        foreach (var item in possibleItems)
+        foreach (var item in baseItems)
         {
-            if (Random.Range(0, 1) < item.itemDropChance)
+            if (Random.Range(0, 1f) >=item.itemDropChance)
             {
                 possibleItemsList.Add(item);
             }
@@ -43,7 +46,7 @@ public class EnemyDropItem : MonoBehaviour
         Debug.Log("DropItem");
         var newItem = Instantiate(dropPrefab, transform.position, transform.rotation);
         var item=newItem.GetComponent<Item_Object>();
-        Vector2 randomDropForce=new Vector2(Random.Range(-5,5f),Random.Range(10,15));
+        Vector2 randomDropForce=new Vector2(Random.Range(-dropBackX,dropBackX),Random.Range(mindropBackY,maxDropBackY));
         item.SetUp(itemData,randomDropForce);
     }
 }

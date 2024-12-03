@@ -246,6 +246,13 @@ MonoBehaviour:
   fireParticle: {fileID: 2495861585769262340}
   lightnedParticle: {fileID: 2572905449557273017}
   iceParticle: {fileID: 1017198906183165549}
+  DustFX: {fileID: 0}
+  interactionButton: {fileID: 0}
+  screenShake: {fileID: 0}
+  multiplier: 0
+  swordShakePower: {x: 0, y: 0, z: 0}
+  highDamageShakePower: {x: 0, y: 0, z: 0}
+  popToolTipPrefab: {fileID: 2322398438546310355, guid: 0b726e8ba085bbd4e80cf34b252cc5b1, type: 3}
 --- !u!114 &6471146852566465837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,16 +340,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropPrefab: {fileID: 2880014966874016226, guid: f03b7f7414a95554982ee0cfb293809f, type: 3}
-  possibleItems:
+  baseItems:
   - {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
-  - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  - {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
+  - {fileID: 11400000, guid: cd33ffa9c62098444b2f6b1b5bf646d1, type: 2}
   - {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
-  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
-  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
   - {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
+  - {fileID: 11400000, guid: 6a061645f2f5de24e83c626254551efc, type: 2}
+  - {fileID: 11400000, guid: 26bc9c314116f3d488b531ceb7a98f39, type: 2}
+  - {fileID: 11400000, guid: 26bc9c314116f3d488b531ceb7a98f39, type: 2}
+  - {fileID: 11400000, guid: 26bc9c314116f3d488b531ceb7a98f39, type: 2}
+  - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
   - {fileID: 11400000, guid: cbdda5c053c891c45b76fca17b7752ff, type: 2}
   - {fileID: 11400000, guid: 1190bcb1bf2809a47933792580137b5e, type: 2}
+  - {fileID: 11400000, guid: 790a3e4aa8ea35b4ba2048cbf1e0a7aa, type: 2}
+  - {fileID: 11400000, guid: 30fc8f1b2bb3a4442b13d36a83dda367, type: 2}
   maxDropCount: 10
+  dropBackX: 5
+  mindropBackY: 8
+  maxDropBackY: 12
 --- !u!1 &5786783917281496470
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +433,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2118192269
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: -85727878, guid: 687df074731fbf744b668d2275dbb675, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -5258,7 +5275,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1933241663
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -10088,7 +10105,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1933241663
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -14918,7 +14935,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1933241663
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
