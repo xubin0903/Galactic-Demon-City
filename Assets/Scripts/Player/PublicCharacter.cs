@@ -16,7 +16,7 @@ public class PublicCharacter : MonoBehaviour
    [SerializeField] protected LayerMask groundLayer;
    [SerializeField] protected float groundCheckDistance;
    [SerializeField] protected float groundCheckRadius;
-   [SerializeField] protected bool isGrounded;
+   [SerializeField] public bool isGrounded;
     public Transform attackCheck;
     public float attackRadius;
 

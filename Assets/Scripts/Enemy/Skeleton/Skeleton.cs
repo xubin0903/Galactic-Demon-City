@@ -13,10 +13,7 @@ public class Skeleton : Enemy
     public SkeletonStundState stundState { get; private set; }
     public SkeletonDieState dieState { get; private set; }
     #endregion
-    [Header("яётн")]
-    public float stundDuration;
-    public bool isStund;
-    public Vector2 stundDir;
+    
 
 
     public override void Awake()

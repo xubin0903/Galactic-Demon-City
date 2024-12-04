@@ -65,8 +65,13 @@ public class EnemyStats : CharacterStats
     }
     private void Modify(Stat _stat)
     {
+        if (_stat.GetValue() == 0)
+        {
+            return;
+        }
         for (int i = 1; i < level; i++)
         {
+            
             float modifier = _stat.GetValue() * perecentage;
             _stat.AddModifier(Mathf.RoundToInt(modifier));
         }

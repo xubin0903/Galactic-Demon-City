@@ -541,7 +541,11 @@ public class Player :PublicCharacter
     private IEnumerator HurtBack(float duration,Enemy enemy)
     {
         isKoncked = true;
-        if (enemy.faceDir == faceDir)
+        if (enemy == null)
+        {
+            rb.velocity = new Vector2(3 * -faceDir, 0);
+        }
+        else if (enemy.faceDir == faceDir)
         {
             rb.velocity = new Vector2(HurtBackDir.x * (faceDir), HurtBackDir.y);
         }

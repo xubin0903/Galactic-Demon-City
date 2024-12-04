@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(EntityFX))]
+[RequireComponent(typeof(EnemyStats))]
+[RequireComponent(typeof(EnemyDropItem))]
 public class Enemy : EnemyEntity
 {
     
@@ -25,6 +30,14 @@ public class Enemy : EnemyEntity
     [SerializeField] protected GameObject counterImage;
     [Header("Character Stats")]
     [SerializeField] public float damage;
+    [Header("眩晕")]
+    public float stundDuration;
+    public bool isStund;
+    public Vector2 stundDir;
+    [Header("无敌")]
+    public bool isVulnerable;
+    public float vunlerabilityDuration;
+    public float vulnerableTimer;
     //public string enemyID;
    
     public override void Awake()
@@ -40,6 +53,15 @@ public class Enemy : EnemyEntity
         defaultMaxSpeed= maxSpeed;
         defaultBeginSpeed = beginSpeed;
 
+    }
+    public override void Update()
+    {
+        base.Update();
+        //vulnerableTimer -= Time.deltaTime;
+        //if (vulnerableTimer <= 0)
+        //{   
+        //    isVulnerable = false;
+        //}
     }
     public  void Move()
     {

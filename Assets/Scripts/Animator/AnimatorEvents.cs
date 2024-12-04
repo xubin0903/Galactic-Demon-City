@@ -19,6 +19,7 @@ public class AnimatorEvents : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
         foreach (var collider in colliders)
         {
+           
             //Debug.Log(collider.name);
             var enemy = collider.GetComponent<Enemy>();
             if (enemy!= null)
@@ -40,20 +41,30 @@ public class AnimatorEvents : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackRadius);
         foreach (var collider in colliders)
         {
+            if (collider.GetComponent<Arrow_Controller>() != null)
+            {
+                SuccessfulCounterAttack();
+                collider.GetComponent<Arrow_Controller>().FlipArrow();
+            }
             //Debug.Log(collider.name);
             var enemy = collider.GetComponent<Enemy>();
             if (enemy != null)
             {
                 if (enemy.CanStun())
                 {
-                    
-                    player.CounterAttackOver();
-                    player.isSuccessfulCounterAttack = true;
+                    SuccessfulCounterAttack();
                     SkillManager.instance.clone.CreateCloneOnCounterClone(collider.transform, new Vector3(player.faceDir * 1.5f, 0, 0));
                 }
             }
         }
     }
+
+    private void SuccessfulCounterAttack()
+    {
+        player.CounterAttackOver();
+        player.isSuccessfulCounterAttack = true;
+    }
+
     public void SuccessfulCounterAttackOverEvent()
     {
         player.SuccessfulCounterAttackOver();
