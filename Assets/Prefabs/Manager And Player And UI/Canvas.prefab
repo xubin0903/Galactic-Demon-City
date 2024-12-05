@@ -19939,6 +19939,7 @@ MonoBehaviour:
   volumeSliders:
   - {fileID: 4977786368099591759}
   - {fileID: 1373904715764309576}
+  mainMenuScene: {fileID: 0}
 --- !u!1 &7475040759339203082
 GameObject:
   m_ObjectHideFlags: 0

@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour,ISaveManager
         }
         if (closestCheckPoint == null)
         {
-            Debug.LogError("No Active CheckPoint");
+            //Debug.LogError("No Active CheckPoint");
             return null;
         }
         return closestCheckPoint.checkPointID;

@@ -11,20 +11,13 @@ public class ArcherAnimationTrigger : MonoBehaviour
     }
     public void AttackFinish()
     {
-        enemy.AttackFinish();
+        enemy.stateMachine.ChangeState(enemy.idleState);
+        Debug.Log("Attack Finish");
     }
     public void AttackEvent()
     {
-        Collider2D[] colls = Physics2D.OverlapCircleAll(enemy.attackCheck.position, enemy.attackRadius);
-        foreach (var coll in colls)
-        {
-            if (coll.GetComponent<Player>() != null)
-            {
-                coll.GetComponent<Player>().Damage(enemy);
-                PlayerStats targetStats = coll.GetComponent<PlayerStats>();
-                enemy.stats.DoDamage(targetStats);
-            }
-        }
+        GameObject newArrow=Instantiate(enemy.arrowPrefab,new Vector3(enemy.transform.position.x,enemy.transform.position.y+0.5f,enemy.transform.position.z),Quaternion.identity);
+        newArrow.transform.localScale=enemy.transform.localScale;
 
     }
     public void OpenCounterWindow() => enemy.OpenCounterWindow();

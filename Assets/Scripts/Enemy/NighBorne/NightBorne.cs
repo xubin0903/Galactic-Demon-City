@@ -29,6 +29,10 @@ public class NightBorne : Enemy
     }
     public override void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
         CanAttack();
         base.Update();
         stateMachine.currentState.Update();

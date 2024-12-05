@@ -25,6 +25,7 @@ public class Enemy : EnemyEntity
     public bool isMove;
     public bool canAttack=true;
     public bool isDead;
+    public string lastStateName;
     [Header("counter 窗户")]
     [SerializeField] protected bool canbeStunned;
     [SerializeField] protected GameObject counterImage;

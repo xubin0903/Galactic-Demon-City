@@ -5,10 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: ac82d9bf4bd830b49951ca5fe212844f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DarkFroest.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: e26606c1512ba3147bc17ca07f9c5b2a, type: 2}

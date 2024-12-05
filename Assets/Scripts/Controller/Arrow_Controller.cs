@@ -15,6 +15,7 @@ public class Arrow_Controller : MonoBehaviour
     {
        
         rb = GetComponent<Rigidbody2D>();
+        Destroy(gameObject, 10);
 
     }
     private void Update()

@@ -15,8 +15,18 @@ public class Archer : Enemy
 
 
     #endregion
+
     public bool isBattle;
     private CapsuleCollider2D coll;
+    [Header("Special InFo")]
+    public Vector2 jumpBackOPos;
+    [SerializeField] private float jumpcoolDown;
+    [SerializeField] private float lastJumpTime;
+    public GameObject arrowPrefab;
+    public float safeDistance;
+    public float attackDistance;
+    public Transform groundBehindCheck;
+
     public override void Awake()
     {
         base.Awake();
@@ -26,12 +36,14 @@ public class Archer : Enemy
         attackState = new ArcherAttackState(this, stateMachine, "Attack", this);
         moveState = new ArcherMoveState(this, stateMachine, "Move", this);
         dieState = new ArcherDieState(this, stateMachine, "Die", this);
+        jumpState = new ArcherJumpState(this, stateMachine, "Jump", this);
 
         coll = GetComponent<CapsuleCollider2D>();
     }
     public override void Start()
     {
         base.Start();
+        lastJumpTime=-jumpcoolDown;
         currentSpeed = beginSpeed;
         stateMachine.Initialize(idleState);
 
@@ -40,7 +52,7 @@ public class Archer : Enemy
     {
         if (isDead)
         {
-            rb.velocity = Vector2.zero;
+           rb.velocity = Vector2.zero;
             return;
         }
         CanAttack();
@@ -51,12 +63,8 @@ public class Archer : Enemy
             Move();
         }
         CollisionCheck();
-        //调试用
-        //if (Input.GetKeyUp(KeyCode.Mouse0))
-        //{
-        //    stateMachine.ChangeState(stundState);
-        //}
-
+        
+        Debug.Log(stateMachine.currentState.animName);
 
         FindPlayerAccelerate();
         if (isVulnerable && coll.enabled)
@@ -104,53 +112,88 @@ public class Archer : Enemy
         if (playerCheck.collider != null)
         {
             isBattle = true;
-            if (playerCheck.distance > 5)
+            if (playerCheck.distance > attackDistance)
             {
                 if (currentSpeed < maxSpeed)
                 {
                     currentSpeed += Time.deltaTime * 0.8f;
-                    //Debug.Log(currentSpeed);
+                   
 
                 }
-                //Debug.Log("skeleton accelerate");
+                
             }
-            else if (playerCheck.distance <= 5f&&playerCheck.distance>2f)
+            else if (playerCheck.distance <= attackDistance&&playerCheck.distance>safeDistance)
             {
-                SetZeroVelocity();
-                //Debug.Log("skeleton stop");
+               
 
                 if (stateMachine.currentState != attackState)
                 {
                     if (canAttack)
                     {
+                        Debug.Log("Archer attack");
                         stateMachine.ChangeState(attackState);
                         lastAttackTime = Time.time;
                     }
-                    //else
-                    //{
-                    //    stateMachine.ChangeState(idleState);
-                    //}
+                    
+
 
                 }
+                
 
             }
             else
             {
-                //TODO:距离太近，停止并且向后退
+                if (CanJump())
+                {
+                    if (stateMachine.currentState != jumpState)
+                    {
+                        stateMachine.ChangeState(jumpState);
+                        Debug.Log("Archer Jump");
+                    }
+                }
+                    
             }
         }
         else
         {
             if (currentSpeed > beginSpeed)
             {
-                currentSpeed -= Time.deltaTime;
+                currentSpeed -= Time.deltaTime ;
+               
+            }
+            else
+            {
+                currentSpeed = beginSpeed;
             }
 
         }
     }
 
+    public RaycastHit2D GroundBehind()=>Physics2D.BoxCast(groundBehindCheck.position, new Vector2(1, 1), 0, Vector2.down, 0f, groundLayer);
+    protected override void OnDrawGizmos()
+    {
+        base.OnDrawGizmos();
+        Gizmos.DrawCube(groundBehindCheck.position, new Vector3(1, 1, 0f));
+        
+    }
 
-
+    public bool CanJump()
+    {
+        if (GroundBehind().collider == null)
+        {
+            return false;
+        }
+        if (Time.time>lastJumpTime+jumpcoolDown)
+        {
+            lastJumpTime = Time.time;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+   
     public void AttackFinish()
     {
         stateMachine.currentState.Trigger();
@@ -170,9 +213,9 @@ public class Archer : Enemy
     //}
     public override void OnDie()
     {
+        stateMachine.ChangeState(dieState);
         base.OnDie();
 
-        stateMachine.ChangeState(dieState);
        
 
     }

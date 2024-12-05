@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour,ISaveManager
 {
@@ -17,6 +18,7 @@ public class UI : MonoBehaviour,ISaveManager
     public GameObject youDiedText;
     public GameObject restartButton;
     public VolumeSlide_UI[] volumeSliders;
+    public GameSceneSo mainMenuScene;
    
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class UI : MonoBehaviour,ISaveManager
     // Start is called before the first frame update
     void Start()
     {
-        fadeScreen.gameObject.SetActive(true);
+       
         SwitchTo(InGameUI);
     }
 
@@ -159,6 +161,10 @@ public class UI : MonoBehaviour,ISaveManager
     public void SaveAndQuit()
     {
         SaveManager.instance.SaveGame();
-        Application.Quit();
+        Time.timeScale = 1;
+
+
+        LoadManager.instance.Transition(mainMenuScene);
     }
+    
 }

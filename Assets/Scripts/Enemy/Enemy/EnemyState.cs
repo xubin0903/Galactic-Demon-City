@@ -29,6 +29,7 @@ public class EnemyState
     {
       //Debug.Log("Exit " + animName);
       enemyBase.anim.SetBool(animName, false);
+      enemyBase.lastStateName = animName;
     }
 
     public virtual void Update()
