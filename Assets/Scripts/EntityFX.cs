@@ -157,5 +157,11 @@ public class EntityFX : MonoBehaviour
     public void StopIce()=> iceParticle.Stop();
     public void Dust()=> DustFX.Play();
     public void OpenInteractionButton()=> interactionButton.SetActive(true);
-    public void CloseInteractionButton()=> interactionButton.SetActive(false);
+    public void CloseInteractionButton()
+    {
+        if (interactionButton != null)
+        {
+           interactionButton.SetActive(false);
+        }
+    }
 }

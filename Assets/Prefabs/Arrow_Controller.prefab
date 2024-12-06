@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb808eaac3c06e04fb64c46a3edba1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 40
   targetLayerName: Player
   xVelocity: 8
   canMove: 1

@@ -177,6 +177,7 @@ public class Slime : Enemy
             return;
         }
        CreateSlime(2,smallSlime);
+        
 
     }
     public void CreateSlime(int amount,GameObject slime)

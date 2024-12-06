@@ -17,6 +17,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isGrounded
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6042726234859266832}
   m_Solo: 0
@@ -154,6 +157,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: comobatCount
     m_EventTreshold: 1
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7363178029080130676}
   m_Solo: 0
@@ -490,6 +496,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isCounterAttack
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 7987267487968230228}
   m_Solo: 0
@@ -591,6 +600,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: comobatCount
     m_EventTreshold: 2
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4439483732017182030}
   m_Solo: 0
@@ -812,6 +824,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 6
     m_ConditionEvent: comobatCount
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8470803483195746180}
   m_Solo: 0
@@ -888,6 +903,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: isDash
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3983140930062632322}
@@ -1120,6 +1138,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isSlide
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1591719981560289260}
   m_Solo: 0
@@ -1227,6 +1248,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: isSlideWall
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Die
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3794619057587510280}

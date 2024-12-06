@@ -17,23 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 9bc99f5768b180d42b5a32f5e8a665fd
   m_SerializeEntries:
-  - m_GUID: 3dfb47874fbacc3439bd013ea0bda492
-    m_Address: Persistent
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 84cb9258a14a1e442b74f3e8958b8e4d
     m_Address: New Scene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8c9cfa26abfee488c85f1582747f6a02
-    m_Address: DarkFroest
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ac82d9bf4bd830b49951ca5fe212844f
-    m_Address: MainMenu
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -135,6 +135,12 @@ public class Enemy : EnemyEntity
     public virtual void OnDie()
     {
         isDead = true;
+        Destroy(gameObject, 7f);
+        CloseCounterWindow();
+        if (GetComponent<TeleportOnOpen>() != null)
+        {
+            GetComponent<TeleportOnOpen>().Open();
+        }
         //Debug.Log(gameObject.name + "OnDie");
 
     }

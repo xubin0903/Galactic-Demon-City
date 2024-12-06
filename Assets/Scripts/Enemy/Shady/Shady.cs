@@ -113,10 +113,9 @@ public class Shady : Enemy
     }
     public override void OnDie()
     {
-        stateMachine.ChangeState(dieState);
-        Destroy(gameObject, 7f);
-        CloseCounterWindow();
         base.OnDie();
+        stateMachine.ChangeState(dieState);
+        
 
     }
     public void Explode()

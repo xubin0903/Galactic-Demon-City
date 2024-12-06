@@ -30,7 +30,7 @@ public class SkeletonIdleState : EnemyState
     public override void Update()
     {
         base.Update();
-        stateTimer -= Time.deltaTime;
+       
        enemy.SetVelocity(Vector2.zero);
         if (stateTimer < 0)
         {

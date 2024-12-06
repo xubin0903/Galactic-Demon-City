@@ -543,7 +543,7 @@ public class Player :PublicCharacter
         isKoncked = true;
         if (enemy == null)
         {
-            rb.velocity = new Vector2(3 * -faceDir, 0);
+            rb.velocity = new Vector2(6* -faceDir, 0);
         }
         else if (enemy.faceDir == faceDir)
         {

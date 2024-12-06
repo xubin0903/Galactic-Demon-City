@@ -8,23 +8,23 @@ public class FadeScreen_UI : MonoBehaviour
     private void Awake()
     {
        animator=GetComponent<Animator>();
-        ResetAnimator();
+        //ResetAnimator();
     }
     public void FadeIn()
     {
-        ResetAnimator();
+        //ResetAnimator();
         animator.GetComponent<Animator>().SetBool("FadeOut", false);
         animator.GetComponent<Animator>().SetBool("FadeIn", true);
     }
     public void FadeOut()
     {
-        ResetAnimator();
+        //ResetAnimator();
         animator.GetComponent<Animator>().SetBool("FadeIn", false);
         animator.GetComponent<Animator>().SetBool("FadeOut", true);
     }
-    public void ResetAnimator()
-    {
-        animator.SetBool("FadeIn", false);
-        animator.SetBool("FadeOut", false);
-    }
+    //public void ResetAnimator()
+    //{
+    //    animator.SetBool("FadeIn", false);
+    //    animator.SetBool("FadeOut", false);
+    //}
 }

@@ -117,7 +117,7 @@ public class CharacterStats : MonoBehaviour
         }
         if (fireCooldownTimer < 0 && isFired)
         {
-            TakeDamage(FireDamage.GetValue()*0.05f);
+            TakeDamage(maxHealth.GetValue()*0.01f);
             Debug.Log(gameObject.name + "is do firedamage");
             fireCooldownTimer = fireCooldown;
         }

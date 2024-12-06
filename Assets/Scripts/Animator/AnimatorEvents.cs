@@ -44,6 +44,7 @@ public class AnimatorEvents : MonoBehaviour
             if (collider.GetComponent<Arrow_Controller>() != null)
             {
                 SuccessfulCounterAttack();
+                AudioManager.instance.PlaySFX(0,transform);
                 collider.GetComponent<Arrow_Controller>().FlipArrow();
             }
             //Debug.Log(collider.name);

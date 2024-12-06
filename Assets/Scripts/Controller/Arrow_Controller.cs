@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Arrow_Controller : MonoBehaviour
 {
-    [SerializeField] private float damage;
+    [SerializeField] private CharacterStats myStats;
     [SerializeField] private string targetLayerName = "Player";
     [SerializeField] private float xVelocity;
     private Rigidbody2D rb;
@@ -18,6 +18,10 @@ public class Arrow_Controller : MonoBehaviour
         Destroy(gameObject, 10);
 
     }
+    public void SetUp(CharacterStats _myStats)
+    {
+        myStats = _myStats;
+    }
     private void Update()
     {
         if(canMove)
@@ -27,7 +31,7 @@ public class Arrow_Controller : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer(targetLayerName))
         {
-            collision.GetComponent<CharacterStats>().TakeDamage(damage);
+            myStats.DoDamage(collision.GetComponent<CharacterStats>());
             if (targetLayerName == "Enemy")
             {
                 collision.GetComponent<Enemy>().OtherDamage(new Vector2(transform.localScale.x * 3, 0));

@@ -18,6 +18,7 @@ public class ArcherAnimationTrigger : MonoBehaviour
     {
         GameObject newArrow=Instantiate(enemy.arrowPrefab,new Vector3(enemy.transform.position.x,enemy.transform.position.y+0.5f,enemy.transform.position.z),Quaternion.identity);
         newArrow.transform.localScale=enemy.transform.localScale;
+        newArrow.GetComponent<Arrow_Controller>().SetUp(enemy.stats);
 
     }
     public void OpenCounterWindow() => enemy.OpenCounterWindow();

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour,ISaveManager
     public GameObject lostCurrentcy;
     public GameObject currentLostCurrentcy;
     public Vector2 playerStartPosition;
+    public GameSceneSo restartScene;
     private void Awake()
     {
         if (instance == null)
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour,ISaveManager
     public void RestartGame()
     {
         SaveManager.instance.SaveGame();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LoadManager.instance.Transition(restartScene);
     }
 
     void ISaveManager.LoadData(GameData _gameData)
