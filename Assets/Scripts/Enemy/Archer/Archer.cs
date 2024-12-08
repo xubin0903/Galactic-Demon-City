@@ -90,6 +90,7 @@ public class Archer : Enemy
                 //如果玩家走到敌人身后
                 if (PlayerManager.instance.player.transform.position.x - transform.position.x > 0 && faceDir == -1&&PlayerManager.instance.player.isGrounded|| PlayerManager.instance.player.transform.position.x - transform.position.x < 0 && faceDir == 1&&PlayerManager.instance.player.isGrounded)
                 {
+                    if(PlayerManager.instance.player.transform.position.y - transform.position.y<0.5f&& Vector2.Distance(PlayerManager.instance.player.transform.position, transform.position)>0.2f)
                     //翻转敌人
                     Flip();
                 }

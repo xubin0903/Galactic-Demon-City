@@ -71,13 +71,13 @@ public class Shady : Enemy
         }
         if (playerCheck.collider != null)
         {
-            if (playerCheck.distance > 1)
+            if (playerCheck.distance > 2)
             {
                 currentSpeed=maxSpeed;
                 stateMachine.ChangeState(moveFastState);
                 
             }
-            else if (playerCheck.distance < 0.8f)
+            else if (playerCheck.distance < 2f)
             {
                
                 stateMachine.ChangeState(explodeState);

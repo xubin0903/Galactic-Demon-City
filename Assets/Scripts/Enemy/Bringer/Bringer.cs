@@ -120,11 +120,11 @@ public class Bringer : Enemy
             spellPosition=new Vector3(player.transform.position.x , player.transform.position.y + 1.5f);
         }else if(player.rb.velocity.x < 5)
         {
-            spellPosition = new Vector3(player.transform.position.x +player.faceDir* 1f, player.transform.position.y+1.5f);
+            spellPosition = new Vector3(player.transform.position.x +player.faceDir* 1.5f, player.transform.position.y+1.5f);
         }
         else
         {
-           spellPosition = new Vector3(player.transform.position.x + player.faceDir * 2.5f, player.transform.position.y + 1.5f);
+           spellPosition = new Vector3(player.transform.position.x + player.faceDir * 3f, player.transform.position.y + 1.5f);
         }
         GameObject newSpell = Instantiate(spellPrefab, spellPosition, Quaternion.identity);
         newSpell.GetComponent<Bringer_Spell_Controller>().SetUp(stats);
@@ -224,6 +224,7 @@ public class Bringer : Enemy
 
         stateMachine.ChangeState(dieState);
         healthUI.SetActive(false);
+        UI.instance.ShowPop("恭喜你通关了游戏");
        
 
     }
@@ -247,5 +248,11 @@ public class Bringer : Enemy
         base.OnDrawGizmos();
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - GroundBelow().distance, transform.position.z));
         Gizmos.DrawWireCube(transform.position, surroundingCheckSize);
+    }
+    public override void Damage(Player player)
+    {
+        base.Damage(player);
+        if(!isBattle)
+        isBattle=true;
     }
 }

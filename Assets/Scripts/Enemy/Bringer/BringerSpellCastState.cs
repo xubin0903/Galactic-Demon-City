@@ -20,6 +20,7 @@ public class BringerSpellCastState : EnemyState
         amountofSpell = enemy.spellAmout;
         spellcoolTimer = 0.5f;
         stateTimer = 5f;
+        AudioManager.instance.PlaySFX(21, enemy.transform);
     }
 
     public override void Exit()

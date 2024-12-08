@@ -42,7 +42,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
                 return;
             }
             transform.position = Vector2.MoveTowards(transform.position, closestEnemy.position, moveSpeed * Time.deltaTime);
-            if (Vector2.Distance(transform.position, closestEnemy.position) <= 0.1f)
+            if (Vector2.Distance(transform.position, closestEnemy.position) <= 0.2f)
             {
                 canMove = false;
                 Set_Explode();
@@ -113,6 +113,7 @@ public class Crystal_Skill_Controller : MonoBehaviour
                 }
                 coll.gameObject.GetComponent<Enemy>().OtherDamage(attackForce);
                 PlayerManager.instance.player.stats.DoMagicDamage(coll.gameObject.GetComponent<Enemy>().stats);
+                coll.GetComponent<CharacterStats>().TakeDamage(damage);
                 ItemData_Equipment targetEquipment = Inventory.instance.GetEquippedment(EquipmentType.Amulet );
                 if (targetEquipment != null)
                 {

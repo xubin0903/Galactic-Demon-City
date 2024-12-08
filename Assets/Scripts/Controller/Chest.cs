@@ -1,16 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Chest : MonoBehaviour
 {
     public bool canOpen;
-    private bool open;
+    public bool open;
     private Animator animator;
     private bool possiblyOpen;
+    public string chestID;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        if (open == true)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
@@ -31,6 +35,7 @@ public class Chest : MonoBehaviour
             possiblyOpen = false;
             canOpen = false;
             PlayerManager.instance.player.fx.CloseInteractionButton();
+            AudioManager.instance.PlaySFX(22,transform);
         }
     }
     
@@ -45,8 +50,14 @@ public class Chest : MonoBehaviour
     }
     public void Destroy()
     {
-        
-        Destroy(this.gameObject);
+
         transform.GetComponent<ChestDropItem>().GenerateDropItems();
+        this.gameObject.SetActive(false);
+    }
+
+    [ContextMenu("Generate ID")]
+    private void GenerateID()
+    {
+        chestID = System.Guid.NewGuid().ToString();
     }
 }

@@ -14,6 +14,7 @@ public class BringerAttackState : EnemyState
     {
         base.Enter();
         enemy.teleportChance += 6;
+        AudioManager.instance.PlaySFX(20, enemy.transform);
     }
 
     public override void Exit()

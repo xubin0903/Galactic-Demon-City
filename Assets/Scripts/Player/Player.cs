@@ -122,7 +122,11 @@ public class Player :PublicCharacter
         {
             return;
         }
-      
+        //滑铲到空中直接切换为false
+        if (!isGrounded)
+        {
+            isSlide = false;
+        }
         
         stateMachine.currentState.Update();
         #region 基本状态检测

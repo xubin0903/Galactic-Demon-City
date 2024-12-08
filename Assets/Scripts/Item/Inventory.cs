@@ -266,10 +266,12 @@ public class Inventory : MonoBehaviour,ISaveManager
         if(!hasEnoughMaterial)
         {
             Debug.Log("材料不足");
+            UI.instance.ShowPop("制作失败，材料不足");
             return false;
         }
         //消耗材料
         ConsumeMaterial(consumMaterials,requierMaterials);
+        UI.instance.ShowPop("制作成功，返回Character面板装备上新装备吧");
       
      
         AddItem(_craftEquipment);
@@ -373,7 +375,7 @@ public class Inventory : MonoBehaviour,ISaveManager
         }
     }
 #if UNITY_EDITOR
-    [ContextMenu("生成物品ID")]
+    [ContextMenu("生成基础物品（所有物品）")]
     private void FiilUpItemDataBase()=>itemDataBase = new List<ItemData>(GetItemDataBase());
     private List<ItemData> GetItemDataBase()
     {

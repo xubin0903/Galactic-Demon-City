@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Teleport : MonoBehaviour
@@ -17,6 +18,10 @@ public class Teleport : MonoBehaviour
             PlayerManager.instance.player.fx.OpenInteractionButton();
             possibleOpen = true;
         }
+        else if (!isOpen && other.GetComponent<Player>() != null)
+        {
+            other.GetComponent<Player>().fx.GeneratePopToolTip("¥´ÀÕ√≈Œ¥Ω‚À¯");
+        }
     }
     public void TeleportTo()
     {
@@ -32,7 +37,7 @@ public class Teleport : MonoBehaviour
         if(possibleOpen && Input.GetKeyDown(KeyCode.E))
         {
             isOpen = true;
-            Opne = false;
+          
             possibleOpen = false;
             PlayerManager.instance.player.fx.CloseInteractionButton();
         }
@@ -41,7 +46,7 @@ public class Teleport : MonoBehaviour
             TeleportTo();
             PlayerManager.instance.player.fx.CloseInteractionButton();
             isOpen = false;
-            Opne = false;
+     
             possibleOpen = false;
         }
     }

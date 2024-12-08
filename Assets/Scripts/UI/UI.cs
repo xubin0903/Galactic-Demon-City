@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class UI : MonoBehaviour,ISaveManager
 {
@@ -19,6 +21,7 @@ public class UI : MonoBehaviour,ISaveManager
     public GameObject restartButton;
     public VolumeSlide_UI[] volumeSliders;
     public GameSceneSo mainMenuScene;
+    public TextMeshProUGUI popText;
    
     private void Awake()
     {
@@ -166,5 +169,13 @@ public class UI : MonoBehaviour,ISaveManager
 
         LoadManager.instance.Transition(mainMenuScene);
     }
-    
+    public void ShowPop(string _text)
+    {
+        popText.text = _text;
+        popText.gameObject.SetActive(true);
+        //Ä¬ÈÏÑÕÉ«
+        popText.color = new Color(1, 1, 1, 1);
+        popText.GetComponent<UI_Pop>().FadeOutText();
+
+    }
 }

@@ -140,8 +140,9 @@ public class Enemy : EnemyEntity
         if (GetComponent<TeleportOnOpen>() != null)
         {
             GetComponent<TeleportOnOpen>().Open();
+            fx.GeneratePopToolTip("成功解锁某个传送门");
         }
-        //Debug.Log(gameObject.name + "OnDie");
+      
 
     }
     public void IcedSlowEffect(float duration,float slowPercentage)

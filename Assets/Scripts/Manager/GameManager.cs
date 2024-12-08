@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour,ISaveManager
 {
     public static GameManager instance;
     public CheckPoint[] checkPoints;
+    public Chest[] chests;
     public string cloestCheckPointID=null;
     public float lostCurrentcyX;
     public float lostCurrentcyY;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour,ISaveManager
             Destroy(gameObject);
         }
         checkPoints = FindObjectsOfType<CheckPoint>(true);
+        chests = FindObjectsOfType<Chest>(true);
 
     }
     private void Start()
@@ -50,6 +52,21 @@ public class GameManager : MonoBehaviour,ISaveManager
                 {
                     _checkPoint.active = true;
                     _checkPoint.Activate();
+                }
+            }
+        }
+        //检查宝箱是否已经被打开
+        foreach(KeyValuePair<string,bool> pair in _gameData.chests)
+        {
+            foreach(Chest _chest in chests)
+            {
+                if (_chest.chestID == pair.Key)
+                {
+                    _chest.open = pair.Value;
+                    if (_chest.open == true)
+                    {
+                        _chest.gameObject.SetActive(false);
+                    }
                 }
             }
         }
@@ -117,6 +134,12 @@ public class GameManager : MonoBehaviour,ISaveManager
         foreach(CheckPoint checkPoint in checkPoints)
         {
             _gameData.checkPoints.Add(checkPoint.checkPointID,checkPoint.active);
+        }
+        //检查宝箱
+        _gameData.chests.Clear();
+        foreach(Chest _chest in chests)
+        {
+            _gameData.chests.Add(_chest.chestID, _chest.open);
         }
         //丢失的钱币
         if (currentLostCurrentcy == null&&PlayerManager.instance.player.stats.currentHealth<=0)
