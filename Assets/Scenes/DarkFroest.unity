@@ -104029,7 +104029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 633744235696587109, guid: 8820024e181da124589d40ccffc5515c, type: 3}
       propertyPath: maxHealth.baseValune
-      value: 200
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 633744235696587109, guid: 8820024e181da124589d40ccffc5515c, type: 3}
       propertyPath: magicResist.baseValune

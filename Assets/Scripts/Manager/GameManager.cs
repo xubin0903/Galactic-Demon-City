@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour,ISaveManager
     public int lostCurrentcyAmount;
     public GameObject lostCurrentcy;
     public GameObject currentLostCurrentcy;
+    private float currentLostCurrentcyAmount;
     public Vector2 playerStartPosition;
     public GameSceneSo restartScene;
     private void Awake()
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour,ISaveManager
     }
     private void Start()
     {
-       
+       CreateLostCurrentcy(currentLostCurrentcyAmount);
     }
     public void RestartGame()
     {
@@ -70,10 +71,13 @@ public class GameManager : MonoBehaviour,ISaveManager
                 }
             }
         }
+        //丢失的钱币数据
+        currentLostCurrentcyAmount = _gameData.lostCurrentcyAmount;
+        this.lostCurrentcyX = _gameData.lostCurrentcyX;
+        this.lostCurrentcyY = _gameData.lostCurrentcyY;
         
 
-
-        CreateLostCurrentcy(_gameData);//创建丢失的钱币
+        
         if (_gameData.cloestCheckPointID != null)
         {
 
@@ -90,18 +94,17 @@ public class GameManager : MonoBehaviour,ISaveManager
 
     }
 
-    private void CreateLostCurrentcy(GameData _gameData)
+
+    private void CreateLostCurrentcy(float _amount)
     {
-        if (_gameData.lostCurrentcyAmount <= 0)//no lost currentcy
+        if (_amount <= 0)//no lost currentcy
         {
             Debug.Log("No Lost Currentcy");
             return;
         }
-        this.lostCurrentcyAmount = _gameData.lostCurrentcyAmount;
-        this.lostCurrentcyX = _gameData.lostCurrentcyX;
-        this.lostCurrentcyY = _gameData.lostCurrentcyY;
+        
         Debug.Log("Create Lost Currentcy");
-        GameObject newLostCurrentcy = Instantiate(lostCurrentcy, new Vector3(this.lostCurrentcyX, this.lostCurrentcyY, 0), Quaternion.identity);
+        GameObject newLostCurrentcy = Instantiate(lostCurrentcy, new Vector3(this.lostCurrentcyX, this.lostCurrentcyY, 0), Quaternion.identity, transform);
         newLostCurrentcy.GetComponent<LostCurrentcy>().currentcy = this.lostCurrentcyAmount;
         this.currentLostCurrentcy = newLostCurrentcy;
     }
